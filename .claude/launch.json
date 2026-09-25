@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ui-preview",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@magwin/desktop", "preview:ui"],
+      "port": 5199
+    },
+    {
+      "name": "docs",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@magwin/docs", "start", "--port", "3099", "--no-open"],
+      "port": 3099
+    }
+  ]
+}

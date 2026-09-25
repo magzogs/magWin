@@ -1,0 +1,52 @@
+.layout-preview {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.layout-preview .desktop {
+  margin: 0;
+  width: 220px;
+}
+
+.layout-preview.compact .desktop {
+  width: 120px;
+}
+
+.layout-preview .screen {
+  position: relative;
+  width: 100%;
+  border-radius: 6px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.layout-preview .window {
+  position: absolute;
+  border-radius: 3px;
+  background: hsl(var(--hue) 70% 55% / 0.35);
+  border: 1px solid hsl(var(--hue) 70% 45% / 0.9);
+  overflow: hidden;
+}
+
+.layout-preview .window span {
+  display: block;
+  padding: 2px 4px;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.layout-preview.compact .window span {
+  display: none;
+}
+
+.layout-preview figcaption {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+}

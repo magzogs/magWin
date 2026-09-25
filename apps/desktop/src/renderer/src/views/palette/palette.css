@@ -1,0 +1,87 @@
+.palette {
+  position: relative;
+  border-radius: 14px;
+  background: var(--hud);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  touch-action: none;
+}
+
+.preset-label {
+  position: absolute;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  text-align: center;
+  line-height: 16px;
+}
+
+.preset-grid {
+  position: absolute;
+  display: grid;
+  gap: 3px;
+  padding: 3px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  outline: 2px solid transparent;
+  transition: outline-color 120ms ease;
+}
+
+.preset-grid.active {
+  outline-color: var(--accent);
+}
+
+.cell {
+  border-radius: 3px;
+  background: var(--cell);
+  transition:
+    background-color 90ms ease,
+    transform 90ms ease;
+}
+
+.cell:hover {
+  background: var(--cell-hover);
+}
+
+.cell.selected {
+  background: var(--accent);
+}
+
+/* Scoped under .palette so the hidden state wins over the generic button:disabled style. */
+.palette .apply {
+  position: absolute;
+  padding: 0;
+  border-radius: 13px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(-3px) scale(0.96);
+  pointer-events: none;
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease;
+}
+
+.palette.column .apply {
+  transform: translateX(-3px) scale(0.96);
+}
+
+.palette .apply.visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.palette .apply.visible:disabled {
+  opacity: 0.55;
+}
+
+.palette-error {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 4px;
+  font-size: 11px;
+  color: var(--danger);
+  text-align: center;
+}

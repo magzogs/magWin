@@ -1,0 +1,15 @@
+node_modules/
+dist/
+out/
+release/
+coverage/
+*.tsbuildinfo
+.DS_Store
+
+# Docusaurus
+docs/.docusaurus/
+docs/build/
+
+# Swift helper
+native/MagWinHelper/.build/
+native/MagWinHelper/.swiftpm/

@@ -1,0 +1,21 @@
+:root {
+  --ifm-color-primary: #0a84ff;
+  --ifm-color-primary-dark: #0077e6;
+  --ifm-color-primary-darker: #0070d9;
+  --ifm-color-primary-darkest: #005cb3;
+  --ifm-color-primary-light: #2491ff;
+  --ifm-color-primary-lighter: #3398ff;
+  --ifm-color-primary-lightest: #5cadff;
+  --ifm-font-family-base:
+    -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Pretendard', sans-serif;
+  --ifm-code-font-size: 92%;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #4da3ff;
+}
+
+table {
+  display: table;
+  width: 100%;
+}

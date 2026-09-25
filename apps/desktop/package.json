@@ -1,0 +1,30 @@
+{
+  "name": "@magwin/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "magWin desktop app: edge grid snapping and Desktop-aware layout snapshots",
+  "author": "magzog",
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "preview:ui": "vite --config vite.preview.config.ts",
+    "package": "electron-builder --mac --config electron-builder.yml",
+    "package:dir": "CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac --dir --config electron-builder.yml",
+    "typecheck": "tsc -p tsconfig.node.json --noEmit && tsc -p tsconfig.web.json --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@magwin/core": "workspace:*",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "5.2.0",
+    "electron": "44.4.5",
+    "electron-builder": "26.15.3",
+    "electron-vite": "5.0.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "zod": "4.6.5"
+  }
+}

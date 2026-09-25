@@ -1,0 +1,73 @@
+.progress-hud {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--hud);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.progress-hud header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.progress-hud header button {
+  border: none;
+  background: transparent;
+  padding: 2px 6px;
+  color: var(--muted);
+}
+
+.progress-hud .steps {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.progress-hud .steps li:last-child {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.progress-hud .spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-soft);
+  border-top-color: var(--accent);
+  animation: spin 800ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.progress-hud .summary p {
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.progress-hud .summary .ok {
+  color: var(--success);
+}
+
+.progress-hud .summary .partial {
+  color: var(--warning);
+}
+
+.progress-hud .issues {
+  margin: 0;
+  padding-left: 18px;
+  overflow: auto;
+  line-height: 1.5;
+  user-select: text;
+}

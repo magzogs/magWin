@@ -1,0 +1,10 @@
+node_modules
+dist
+out
+release
+coverage
+.docusaurus
+pnpm-lock.yaml
+docs/build
+native/MagWinHelper/.build
+native/MagWinHelper/.swiftpm
