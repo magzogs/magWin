@@ -42,3 +42,12 @@ swift build -c release --package-path native/MagWinHelper --arch arm64 --arch x8
 ```
 
 이 경우 결과 경로는 `.build/apple/Products/Release/MagWinHelper`이므로 `extraResources`의 `from`도 바꿉니다.
+
+## 공개 전에 바꿀 주소
+
+앱의 도움말·지원 탭은 `apps/desktop/src/shared/links.ts`의 주소를 씁니다. 지금은 자리표시자입니다.
+
+| 상수            | 지금 값                     | 바꿀 때 함께 바꿀 곳                |
+| --------------- | --------------------------- | ----------------------------------- |
+| `DOCS_URL`      | `https://docs.magwin.local` | `docs/docusaurus.config.ts`의 `url` |
+| `SUPPORT_EMAIL` | `support@magwin.local`      | 실제로 답장을 받는 지원 메일함      |

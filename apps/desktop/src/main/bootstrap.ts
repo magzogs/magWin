@@ -17,6 +17,7 @@ import { createHelperServices, type HelperServices } from './helperServices';
 import { MainWindow, ProgressHudWindow, SaveHudWindow } from './infrastructure/electron/AppWindows';
 import { GhostWindow, PaletteWindow } from './infrastructure/electron/OverlayWindows';
 import {
+  appInfo,
   ElectronScreen,
   GlobalShortcuts,
   openSystemSettings,
@@ -249,6 +250,7 @@ export async function bootstrap(): Promise<AppRuntime> {
       ui.saveHud.open();
     },
     openSettings: openSystemSettings,
+    about: appInfo,
   });
   wire(services, ui);
   services.palette.start();

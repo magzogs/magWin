@@ -1,6 +1,7 @@
 import type { Rect } from '@magwin/core';
 import { app, BrowserWindow, shell, type WebPreferences } from 'electron';
 import { join } from 'node:path';
+import { isAllowedExternalUrl } from '../../../shared/links';
 
 export type ViewName = 'palette' | 'ghost' | 'main' | 'save' | 'progress';
 
@@ -32,10 +33,13 @@ export function loadView(
   });
 }
 
-/** No navigation away from the app and no new windows; external links open in the browser. */
+/**
+ * No navigation away from the app and no new windows; https links open in the browser and
+ * mailto links in the mail app.
+ */
 export function hardenWebContents(window: BrowserWindow): void {
   window.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith('https://')) {
+    if (isAllowedExternalUrl(url)) {
       void shell.openExternal(url);
     }
     return { action: 'deny' };

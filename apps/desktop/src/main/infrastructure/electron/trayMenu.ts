@@ -144,6 +144,19 @@ export function buildTrayMenu(
     },
     { type: 'separator' },
     {
+      label: 'magWin 도움말…',
+      click: () => {
+        actions.openMain('help');
+      },
+    },
+    {
+      label: '지원 받기…',
+      click: () => {
+        actions.openMain('support');
+      },
+    },
+    { type: 'separator' },
+    {
       label: 'magWin 종료',
       accelerator: 'Command+Q',
       click: () => {

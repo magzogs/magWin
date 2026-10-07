@@ -14,6 +14,7 @@ import {
   saveLayoutRequestSchema,
   settingsTargetSchema,
   type ActionResult,
+  type AppInfo,
   type CaptureResponse,
   type MainTab,
   type SaveLayoutResult,
@@ -39,6 +40,7 @@ export interface IpcServices {
   readonly openMain: (tab: MainTab) => void;
   readonly openSaveHud: () => void;
   readonly openSettings: (target: SettingsTarget) => Promise<void>;
+  readonly about: () => AppInfo;
 }
 
 const none = z.undefined();
@@ -119,6 +121,7 @@ function registerSystem(services: IpcServices): void {
   handle(Channels.systemOpenSettings, settingsTargetSchema, (target) =>
     services.openSettings(target),
   );
+  handle(Channels.systemAbout, none, () => services.about());
   listen(Channels.windowOpenMain, mainTabSchema, (tab) => {
     services.openMain(tab);
   });

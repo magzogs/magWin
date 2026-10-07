@@ -33,3 +33,7 @@ sidebar_position: 4
 - `Helper binary not found`: `pnpm build:helper`로 헬퍼를 빌드하세요.
 - `protocol ... does not match`: 앱과 헬퍼 버전이 다릅니다. 둘 다 다시 빌드하세요.
 - 헬퍼가 계속 종료되면 다섯 번 재시작한 뒤 멈춥니다. 콘솔 로그의 `[helper]` 줄을 확인하세요.
+
+## 그래도 해결되지 않으면
+
+[지원 받기](get-support.md)의 순서대로 진단 정보를 복사해 이메일로 문의하세요.

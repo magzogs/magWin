@@ -260,6 +260,7 @@ export function createPreviewApi(): PreviewControls {
       status: () => Promise.resolve(STATUS),
       requestAccessibility: () => Promise.resolve(STATUS),
       openSettings: () => Promise.resolve(),
+      about: () => Promise.resolve({ appVersion: '0.1.0', osVersion: '26.6.2', arch: 'arm64' }),
       onStatus: channels.status.subscribe,
     },
     windows: {

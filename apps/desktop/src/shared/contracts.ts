@@ -127,6 +127,13 @@ export interface SystemStatus {
   readonly canUndo: boolean;
 }
 
+/** Versions shown on the support page and copied into support requests. */
+export interface AppInfo {
+  readonly appVersion: string;
+  readonly osVersion: string;
+  readonly arch: string;
+}
+
 export const settingsTargetSchema = z.enum([
   'accessibility',
   'screenRecording',
@@ -134,5 +141,5 @@ export const settingsTargetSchema = z.enum([
 ]);
 export type SettingsTarget = z.infer<typeof settingsTargetSchema>;
 
-export const mainTabSchema = z.enum(['layouts', 'grid', 'status']);
+export const mainTabSchema = z.enum(['layouts', 'grid', 'status', 'help', 'support']);
 export type MainTab = z.infer<typeof mainTabSchema>;

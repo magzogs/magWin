@@ -21,6 +21,7 @@ export const Channels = {
   systemStatus: 'system:status',
   systemRequestAccessibility: 'system:request-accessibility',
   systemOpenSettings: 'system:open-settings',
+  systemAbout: 'system:about',
   // renderer → main, fire and forget
   paletteReady: 'palette:ready',
   paletteSelection: 'palette:selection',

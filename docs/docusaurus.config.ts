@@ -29,7 +29,10 @@ const config: Config = {
     navbar: {
       title: 'magWin',
       logo: { alt: 'magWin', src: 'img/favicon.svg' },
-      items: [{ type: 'docSidebar', sidebarId: 'docs', position: 'left', label: '문서' }],
+      items: [
+        { type: 'docSidebar', sidebarId: 'docs', position: 'left', label: '문서' },
+        { to: '/help', position: 'left', label: '도움말' },
+      ],
     },
     footer: {
       style: 'dark',

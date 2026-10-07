@@ -1,6 +1,6 @@
 import type { Point } from '@magwin/core';
 import { app, globalShortcut, Menu, screen, shell, Tray } from 'electron';
-import type { SettingsTarget } from '../../../shared/contracts';
+import type { AppInfo, SettingsTarget } from '../../../shared/contracts';
 import type { Logger } from '../../domain/ports';
 import type { ScreenDisplay, ScreenInfo } from '../../domain/ui';
 import { createTrayIcon } from './trayIcon';
@@ -90,4 +90,12 @@ export function syncLoginItem(openAtLogin: boolean): void {
   if (app.isPackaged) {
     app.setLoginItemSettings({ openAtLogin });
   }
+}
+
+export function appInfo(): AppInfo {
+  return {
+    appVersion: app.getVersion(),
+    osVersion: process.getSystemVersion(),
+    arch: process.arch,
+  };
 }

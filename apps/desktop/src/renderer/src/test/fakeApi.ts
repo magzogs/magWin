@@ -6,7 +6,13 @@ import {
 } from '@magwin/core';
 import { vi } from 'vitest';
 import type { MagWinApi, Unsubscribe } from '../../../shared/api';
-import type { GhostState, MainTab, PaletteState, SystemStatus } from '../../../shared/contracts';
+import type {
+  AppInfo,
+  GhostState,
+  MainTab,
+  PaletteState,
+  SystemStatus,
+} from '../../../shared/contracts';
 
 /** A test double for one main → renderer event channel. */
 export class FakeChannel<T> {
@@ -31,6 +37,8 @@ export const readyStatus: SystemStatus = {
   restoring: false,
   canUndo: false,
 };
+
+export const testAppInfo: AppInfo = { appVersion: '0.1.0', osVersion: '26.6.2', arch: 'arm64' };
 
 export function createFakeApi() {
   const channels = {
@@ -76,6 +84,7 @@ export function createFakeApi() {
       status: vi.fn().mockResolvedValue(readyStatus),
       requestAccessibility: vi.fn().mockResolvedValue(readyStatus),
       openSettings: vi.fn().mockResolvedValue(undefined),
+      about: vi.fn().mockResolvedValue(testAppInfo),
       onStatus: channels.status.subscribe,
     },
     windows: {

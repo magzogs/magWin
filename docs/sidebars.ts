@@ -6,7 +6,13 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: '사용 안내',
-      items: ['guide/getting-started', 'guide/edge-snap', 'guide/layouts', 'guide/troubleshooting'],
+      items: [
+        'guide/getting-started',
+        'guide/edge-snap',
+        'guide/layouts',
+        'guide/troubleshooting',
+        'guide/get-support',
+      ],
     },
     {
       type: 'category',

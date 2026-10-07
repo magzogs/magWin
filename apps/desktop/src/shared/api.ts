@@ -8,6 +8,7 @@ import type {
 } from '@magwin/core';
 import type {
   ActionResult,
+  AppInfo,
   CaptureResponse,
   CustomGridSize,
   GhostState,
@@ -67,6 +68,7 @@ export interface MagWinApi {
     readonly status: () => Promise<SystemStatus>;
     readonly requestAccessibility: () => Promise<SystemStatus>;
     readonly openSettings: (target: SettingsTarget) => Promise<void>;
+    readonly about: () => Promise<AppInfo>;
     readonly onStatus: Listen<SystemStatus>;
   };
   readonly windows: {

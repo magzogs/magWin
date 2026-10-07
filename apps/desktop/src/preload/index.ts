@@ -76,6 +76,7 @@ const api: MagWinApi = {
     status: () => invoke(Channels.systemStatus),
     requestAccessibility: () => invoke(Channels.systemRequestAccessibility),
     openSettings: (target) => invoke(Channels.systemOpenSettings, target),
+    about: () => invoke(Channels.systemAbout),
     onStatus: (listener) => subscribe(Channels.systemStatusChanged, listener),
   },
   windows: {

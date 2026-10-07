@@ -299,3 +299,127 @@ fieldset.card > p {
   padding: 2px 8px;
   font-size: 12px;
 }
+
+.help-tab,
+.support-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.help-hero {
+  padding: 28px 24px;
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+  text-align: center;
+}
+
+.help-hero h2 {
+  margin: 0 0 14px;
+  font-size: 22px;
+}
+
+.help-hero input {
+  width: min(480px, 100%);
+  padding: 9px 12px;
+  border-radius: 9px;
+}
+
+.topic-grid {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.topic-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: inherit;
+  text-decoration: none;
+}
+
+.topic-card:hover {
+  border-color: var(--accent);
+}
+
+.faq details {
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+}
+
+.faq summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.faq details p {
+  margin: 6px 0 0;
+}
+
+.help-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+a {
+  color: var(--accent);
+}
+
+a.button {
+  display: inline-block;
+  padding: 5px 11px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: inherit;
+}
+
+a.button.primary {
+  background: var(--accent);
+  border-color: transparent;
+  color: var(--accent-text);
+}
+
+.support-step button {
+  align-self: flex-start;
+}
+
+.step-number {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: 12px;
+}
+
+.diagnostics {
+  margin: 10px 0;
+  padding: 10px 12px;
+  border-radius: 7px;
+  background: var(--surface-2);
+  font-size: 12px;
+  white-space: pre-wrap;
+  user-select: text;
+}
+
+.tips {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.6;
+}

@@ -115,4 +115,12 @@ describe('rasterizeGridGlyph', () => {
     expect(alpha(9, 9)).toBe(0);
     expect(alpha(0, 0)).toBe(0);
   });
+
+  it('opens the help and support pages', () => {
+    const a = actions();
+    const menu = buildTrayMenu(model(), a);
+    click(menu.find((item) => item.label === 'magWin 도움말…'));
+    click(menu.find((item) => item.label === '지원 받기…'));
+    expect(a.calls).toEqual(['open help', 'open support']);
+  });
 });
