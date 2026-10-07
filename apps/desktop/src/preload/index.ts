@@ -43,6 +43,7 @@ const api: MagWinApi = {
       send(Channels.paletteInteraction, active);
     },
     apply: (selection) => invoke(Channels.paletteApply, selection),
+    resizeCustom: (size) => invoke(Channels.paletteResizeCustom, size),
     dismiss: () => {
       send(Channels.paletteDismiss);
     },

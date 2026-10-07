@@ -1,15 +1,26 @@
 import {
   computePaletteLayout,
   containsPoint,
+  createPreset,
+  CUSTOM_PRESET_ID,
+  customPreset,
   DEFAULT_PALETTE_METRICS,
   isRangeWithin,
   keepOpenZone,
   placePalette,
+  replacePreset,
   type AppSettings,
   type GridPreset,
   type Rect,
+  type Result,
+  type SettingsPatch,
 } from '@magwin/core';
-import type { ActionResult, PaletteSelection, PaletteState } from '../../../shared/contracts';
+import type {
+  ActionResult,
+  CustomGridSize,
+  PaletteSelection,
+  PaletteState,
+} from '../../../shared/contracts';
 import type {
   Cancel,
   Clock,
@@ -35,6 +46,8 @@ export interface PaletteControllerDeps {
   readonly scheduler: Scheduler;
   readonly clock: Clock;
   readonly settings: () => AppSettings;
+  /** Persists the custom grid's shape so the next palette shows it as the user left it. */
+  readonly updateSettings: (patch: SettingsPatch) => Promise<Result<AppSettings>>;
   readonly logger: Logger;
 }
 
@@ -42,7 +55,7 @@ interface Session {
   readonly hover: EdgeHover;
   readonly display: ScreenDisplay;
   readonly zone: Rect;
-  readonly presets: readonly GridPreset[];
+  presets: readonly GridPreset[];
   readonly gapPx: number;
   lastInsideAt: number;
   interacting: boolean;
@@ -170,6 +183,29 @@ export class PaletteController {
       return { ok: false, code: result.error.code };
     }
     this.close();
+    return { ok: true };
+  }
+
+  /** Reshapes the custom grid (arrow buttons) for this session and for every later one. */
+  async resizeCustom(size: CustomGridSize): Promise<ActionResult> {
+    const session = this.session;
+    if (session === null) {
+      return { ok: false, code: 'paletteClosed' };
+    }
+    const valid = createPreset(size.cols, size.rows);
+    if (!valid.ok || !session.presets.some((p) => p.id === CUSTOM_PRESET_ID)) {
+      return { ok: false, code: 'invalidPreset' };
+    }
+    const next = customPreset(size.cols, size.rows);
+    session.presets = replacePreset(session.presets, next);
+    this.deps.ghost.hide();
+    const saved = await this.deps.updateSettings({
+      grid: { presets: replacePreset(this.deps.settings().grid.presets, next) },
+    });
+    if (!saved.ok) {
+      this.deps.logger.warn(`Custom grid not saved: ${saved.error.message}`);
+      return { ok: false, code: saved.error.code };
+    }
     return { ok: true };
   }
 

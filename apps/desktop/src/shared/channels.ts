@@ -6,6 +6,7 @@
 export const Channels = {
   // renderer → main, request/response
   paletteApply: 'palette:apply',
+  paletteResizeCustom: 'palette:resize-custom',
   settingsGet: 'settings:get',
   settingsUpdate: 'settings:update',
   layoutsList: 'layouts:list',

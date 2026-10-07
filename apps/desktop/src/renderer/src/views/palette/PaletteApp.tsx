@@ -1,34 +1,16 @@
-import { presetLabel, rangeToFrame, type Rect } from '@magwin/core';
-import { useCallback, useEffect, useState, type CSSProperties, type ReactNode } from 'react';
+import { replacePreset, resizePreset, type GridPreset, type ResizeDirection } from '@magwin/core';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import type { PaletteState } from '../../../../shared/contracts';
 import { useApi } from '../../api/ApiContext';
 import { errorMessage } from '../../i18n/ko';
 import './palette.css';
-import { PresetGrid } from './PresetGrid';
+import { PaletteSlotView } from './PaletteSlotView';
 import { usePaletteSelection } from './usePaletteSelection';
-
-function place(rect: Rect): CSSProperties {
-  return { left: rect.x, top: rect.y, width: rect.width, height: rect.height };
-}
-
-/** Size the window will get, shown on the apply button's tooltip. */
-function resultSize(
-  state: PaletteState,
-  presetId: string,
-  range: Parameters<typeof rangeToFrame>[2],
-): string {
-  const preset = state.presets.find((p) => p.id === presetId);
-  if (preset === undefined) {
-    return '';
-  }
-  const area = { x: 0, y: 0, ...state.workArea };
-  const frame = rangeToFrame(area, preset, range, state.gapPx);
-  return `${String(frame.width)} × ${String(frame.height)}`;
-}
 
 /**
  * The edge palette (feature 1). Selection lives in exactly one component; the apply button
- * appears next to that component as soon as a cell is selected and disappears with it.
+ * appears in that component's header, right of its title, as soon as a cell is selected and
+ * disappears with it. The custom grid is reshaped in place with arrow buttons.
  */
 export function PaletteApp(): ReactNode {
   const api = useApi();
@@ -48,18 +30,37 @@ export function PaletteApp(): ReactNode {
     [api, clear],
   );
 
+  const token = state?.token ?? null;
   useEffect(() => {
-    if (state === null) {
+    if (token === null) {
       return;
     }
     // Tell the main process once this state is on screen so the panel never flashes old content.
     const frame = requestAnimationFrame(() => {
-      api.palette.ready(state.token);
+      api.palette.ready(token);
     });
     return () => {
       cancelAnimationFrame(frame);
     };
-  }, [api, state]);
+  }, [api, token]);
+
+  const resize = useCallback(
+    (preset: GridPreset, direction: ResizeDirection) => {
+      const next = resizePreset(preset, direction);
+      // The old range may not exist in the new shape, so the selection starts over.
+      clear();
+      setError(null);
+      setState((current) =>
+        current === null ? current : { ...current, presets: replacePreset(current.presets, next) },
+      );
+      void api.palette.resizeCustom({ cols: next.cols, rows: next.rows }).then((result) => {
+        if (!result.ok) {
+          setError(errorMessage(result.code));
+        }
+      });
+    },
+    [api, clear],
+  );
 
   const apply = useCallback(async () => {
     if (selection === null || busy) {
@@ -106,34 +107,21 @@ export function PaletteApp(): ReactNode {
         if (preset === undefined) {
           return null;
         }
-        const range = selection?.presetId === preset.id ? selection.range : null;
         return (
-          <div key={slot.presetId} className="slot">
-            <div className="preset-label" style={place(slot.label)}>
-              {presetLabel(preset).replace('x', ' × ')}
-            </div>
-            <PresetGrid
-              preset={preset}
-              selection={selection}
-              style={place(slot.grid)}
-              onPointerDown={pointerDown}
-              onPointerEnter={pointerEnter}
-            />
-            <button
-              type="button"
-              className={`apply primary${range === null ? '' : ' visible'}`}
-              style={place(slot.apply)}
-              disabled={range === null || busy}
-              tabIndex={range === null ? -1 : 0}
-              aria-hidden={range === null}
-              title={range === null ? undefined : resultSize(state, preset.id, range)}
-              onClick={() => {
-                void apply();
-              }}
-            >
-              적용
-            </button>
-          </div>
+          <PaletteSlotView
+            key={slot.presetId}
+            state={state}
+            slot={slot}
+            preset={preset}
+            selection={selection}
+            busy={busy}
+            onPointerDown={pointerDown}
+            onPointerEnter={pointerEnter}
+            onApply={() => {
+              void apply();
+            }}
+            onResize={resize}
+          />
         );
       })}
       {error === null ? null : (

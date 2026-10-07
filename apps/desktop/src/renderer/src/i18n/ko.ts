@@ -8,6 +8,7 @@ const ERRORS: Record<string, string> = {
   fullscreen: '전체 화면 창은 옮길 수 없어요.',
   invalidRange: '선택한 칸이 올바르지 않아요.',
   paletteClosed: '팔레트가 이미 닫혔어요.',
+  invalidPreset: '그리드 크기가 올바르지 않아요.',
   helperTimeout: '네이티브 도우미가 응답하지 않아요.',
   helperClosed: '네이티브 도우미가 종료됐어요.',
   helperProtocol: '네이티브 도우미 버전이 맞지 않아요. 다시 빌드해 주세요.',

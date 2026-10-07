@@ -1,8 +1,10 @@
 import {
   applySettingsPatch,
   computePaletteLayout,
+  customPreset,
   DEFAULT_PALETTE_METRICS,
   DEFAULT_SETTINGS,
+  replacePreset,
   summarizeLayout,
   type AppSettings,
   type CaptureDraft,
@@ -239,6 +241,14 @@ export function createPreviewApi(): PreviewControls {
       interaction: () => undefined,
       apply: async () => {
         await delay(200);
+        return OK;
+      },
+      resizeCustom: async (size) => {
+        const presets = replacePreset(
+          state.settings.grid.presets,
+          customPreset(size.cols, size.rows),
+        );
+        await settingsApi(state).update({ grid: { presets } });
         return OK;
       },
       dismiss: () => undefined,

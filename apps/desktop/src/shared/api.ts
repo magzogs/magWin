@@ -9,6 +9,7 @@ import type {
 import type {
   ActionResult,
   CaptureResponse,
+  CustomGridSize,
   GhostState,
   MainTab,
   MoveLayoutRequest,
@@ -37,6 +38,7 @@ export interface MagWinApi {
     readonly selectionChanged: (selection: PaletteSelection | null) => void;
     readonly interaction: (active: boolean) => void;
     readonly apply: (selection: PaletteSelection) => Promise<ActionResult>;
+    readonly resizeCustom: (size: CustomGridSize) => Promise<ActionResult>;
     readonly dismiss: () => void;
   };
   readonly ghost: {

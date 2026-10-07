@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { Channels } from '../../shared/channels';
 import {
   captureScopeSchema,
+  customGridSizeSchema,
   layoutIdSchema,
   mainTabSchema,
   moveLayoutRequestSchema,
@@ -49,6 +50,9 @@ function toAction(result: Result<unknown>): ActionResult {
 function registerPalette(services: IpcServices): void {
   handle(Channels.paletteApply, paletteSelectionSchema, (selection) =>
     services.palette.apply(selection),
+  );
+  handle(Channels.paletteResizeCustom, customGridSizeSchema, (size) =>
+    services.palette.resizeCustom(size),
   );
   listen(Channels.paletteReady, z.number().int(), (token) => {
     services.markPaletteReady(token);

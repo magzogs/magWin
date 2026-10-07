@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { DEFAULT_SETTINGS } from '@magwin/core';
+import { customPreset, DEFAULT_SETTINGS, isCustomPreset } from '@magwin/core';
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { createFakeApi, readyStatus } from '../../test/fakeApi';
@@ -72,6 +72,30 @@ describe('GridTab', () => {
     });
     fireEvent.click(screen.getByRole('button', { name: '그리드 추가' }));
     expect(screen.getByRole('alert')).toHaveTextContent('3x3 그리드는 이미 있어요.');
+  });
+
+  it('names the custom grid and offers to add it back once removed', async () => {
+    const { api } = createFakeApi();
+    renderWithApi(<GridTab />, api);
+    expect(await screen.findByText('사용자 정의 (2 × 2)')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: '사용자 정의 그리드 추가' })).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: '사용자 정의 (2 × 2) 삭제' }));
+    const fixed = DEFAULT_SETTINGS.grid.presets.filter((p) => !isCustomPreset(p));
+    expect(api.settings.update).toHaveBeenLastCalledWith({ grid: { presets: fixed } });
+  });
+
+  it('adds the custom grid when it is missing', async () => {
+    const { api } = createFakeApi();
+    const fixed = DEFAULT_SETTINGS.grid.presets.filter((p) => !isCustomPreset(p));
+    api.settings.get.mockResolvedValue({
+      ...DEFAULT_SETTINGS,
+      grid: { ...DEFAULT_SETTINGS.grid, presets: fixed },
+    });
+    renderWithApi(<GridTab />, api);
+    fireEvent.click(await screen.findByRole('button', { name: '사용자 정의 그리드 추가' }));
+    expect(api.settings.update).toHaveBeenCalledWith({
+      grid: { presets: [...fixed, customPreset(2, 2)] },
+    });
   });
 
   it('turns edges on and off', async () => {

@@ -8,6 +8,7 @@ import type {
   Rect,
   Size,
 } from '@magwin/core';
+import { GRID_LIMITS } from '@magwin/core';
 import { z } from 'zod';
 
 /* ------------------------------ palette ------------------------------ */
@@ -27,6 +28,14 @@ export const paletteSelectionSchema = z.object({
 });
 
 export type PaletteSelection = z.infer<typeof paletteSelectionSchema>;
+
+/** New shape of the palette's custom grid after an arrow press. */
+export const customGridSizeSchema = z.object({
+  cols: z.number().int().min(GRID_LIMITS.min).max(GRID_LIMITS.max),
+  rows: z.number().int().min(GRID_LIMITS.min).max(GRID_LIMITS.max),
+});
+
+export type CustomGridSize = z.infer<typeof customGridSizeSchema>;
 
 /** Everything the palette renderer needs for one appearance. */
 export interface PaletteState {

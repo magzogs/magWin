@@ -1,4 +1,10 @@
-import { isCellSelected, type Cell, type GridPreset, type SelectionState } from '@magwin/core';
+import {
+  isCellSelected,
+  isCustomPreset,
+  type Cell,
+  type GridPreset,
+  type SelectionState,
+} from '@magwin/core';
 import type { CSSProperties, ReactNode } from 'react';
 
 export interface PresetGridProps {
@@ -23,7 +29,7 @@ export function PresetGrid(props: PresetGridProps): ReactNode {
     <div
       className={`preset-grid${active ? ' active' : ''}`}
       role="grid"
-      aria-label={`${String(preset.cols)} × ${String(preset.rows)} 그리드`}
+      aria-label={`${isCustomPreset(preset) ? '사용자 정의 ' : ''}${String(preset.cols)} × ${String(preset.rows)} 그리드`}
       style={{
         ...props.style,
         gridTemplateColumns: `repeat(${String(preset.cols)}, 1fr)`,

@@ -7,15 +7,50 @@ import {
   rangeSize,
   rangeToFrame,
 } from './cells';
-import { createPreset, DEFAULT_PRESETS, presetLabel } from './presets';
+import {
+  canResize,
+  createPreset,
+  CUSTOM_PRESET_ID,
+  customPreset,
+  DEFAULT_PRESETS,
+  GRID_LIMITS,
+  isCustomPreset,
+  presetLabel,
+  replacePreset,
+  resizePreset,
+} from './presets';
 
 const workArea = { x: 0, y: 25, width: 1440, height: 875 };
 const threeByTwo = { id: '3x2', cols: 3, rows: 2 };
 
 describe('presets', () => {
   it('ships the presets from the feature description, cols x rows', () => {
-    expect(DEFAULT_PRESETS.map(presetLabel)).toEqual(['2x2', '2x3', '3x2', '3x3', '4x4']);
+    expect(DEFAULT_PRESETS.map(presetLabel)).toEqual(['2x2', '2x3', '3x2', '3x3', '2x2']);
     expect(DEFAULT_PRESETS[2]).toEqual({ id: '3x2', cols: 3, rows: 2 });
+    expect(DEFAULT_PRESETS.filter(isCustomPreset)).toEqual([customPreset(2, 2)]);
+    expect(new Set(DEFAULT_PRESETS.map((p) => p.id)).size).toBe(DEFAULT_PRESETS.length);
+  });
+
+  it('reshapes the custom grid one arrow at a time within the limits', () => {
+    const grid = customPreset(2, 2);
+    expect(resizePreset(grid, 'right')).toEqual(customPreset(3, 2));
+    expect(resizePreset(grid, 'left')).toEqual(customPreset(1, 2));
+    expect(resizePreset(grid, 'down')).toEqual(customPreset(2, 3));
+    expect(resizePreset(grid, 'up')).toEqual(customPreset(2, 1));
+    const smallest = customPreset(GRID_LIMITS.min, GRID_LIMITS.min);
+    const largest = customPreset(GRID_LIMITS.max, GRID_LIMITS.max);
+    expect(resizePreset(smallest, 'left')).toEqual(smallest);
+    expect(canResize(smallest, 'up')).toBe(false);
+    expect(canResize(smallest, 'right')).toBe(true);
+    expect(canResize(largest, 'down')).toBe(false);
+    expect(canResize(largest, 'left')).toBe(true);
+  });
+
+  it('replaces a preset in place by id', () => {
+    const next = replacePreset(DEFAULT_PRESETS, customPreset(4, 3));
+    expect(next.map((p) => p.id)).toEqual(DEFAULT_PRESETS.map((p) => p.id));
+    expect(next.at(-1)).toEqual({ id: CUSTOM_PRESET_ID, cols: 4, rows: 3 });
+    expect(next[0]).toBe(DEFAULT_PRESETS[0]);
   });
 
   it('validates dimensions', () => {

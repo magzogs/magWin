@@ -56,6 +56,7 @@ sequenceDiagram
   Note over M: showInactive (포커스를 뺏지 않음)
   P->>M: palette:selection {preset, range}
   M->>G: 대상 프레임 미리보기
+  P->>M: palette:resize-custom {cols, rows} (사용자 정의 그리드, 설정에 저장)
   P->>M: palette:apply
   M->>H: windows.setFrame → windows.focus
   M->>H: edge.setPaused(false)

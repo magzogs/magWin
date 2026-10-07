@@ -115,13 +115,56 @@ describe('PaletteApp', () => {
 
   it('uses Escape to clear, then to dismiss', () => {
     const { api } = setup();
-    fireEvent.pointerDown(cell('4x4', 3, 3));
+    fireEvent.pointerDown(cell('custom', 1, 1));
     fireEvent.pointerUp(window);
     fireEvent.keyDown(window, { key: 'Escape' });
     expect(visibleApply()).toHaveLength(0);
     expect(api.palette.dismiss).not.toHaveBeenCalled();
     fireEvent.keyDown(window, { key: 'Escape' });
     expect(api.palette.dismiss).toHaveBeenCalledTimes(1);
+  });
+
+  it('puts the title on the left and apply on its right, above the grid', () => {
+    setup();
+    const slot = state.layout.slots[0];
+    const [button] = applyButtons();
+    expect(button?.style.left).toBe(`${String(slot?.apply.x)}px`);
+    expect(button?.style.top).toBe(`${String(slot?.label.y)}px`);
+    expect(screen.getAllByText('2 × 2')[0]?.style.left).toBe(`${String(slot?.label.x)}px`);
+  });
+
+  it('reshapes only the custom grid with its arrows and remembers the shape', () => {
+    const { api } = setup();
+    expect(screen.getAllByRole('button', { name: '열 추가' })).toHaveLength(1);
+    expect(screen.getByRole('button', { name: '행 추가' })).toBeEnabled();
+    fireEvent.pointerDown(cell('custom', 1, 1));
+    fireEvent.pointerUp(window);
+
+    fireEvent.click(screen.getByRole('button', { name: '열 추가' }));
+    expect(api.palette.resizeCustom).toHaveBeenLastCalledWith({ cols: 3, rows: 2 });
+    expect(visibleApply()).toHaveLength(0);
+    expect(cell('custom', 1, 2)).toBeInTheDocument();
+    expect(screen.getByRole('grid', { name: '사용자 정의 3 × 2 그리드' })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: '행 추가' }));
+    expect(api.palette.resizeCustom).toHaveBeenLastCalledWith({ cols: 3, rows: 3 });
+    fireEvent.click(screen.getByRole('button', { name: '행 줄이기' }));
+    fireEvent.click(screen.getByRole('button', { name: '행 줄이기' }));
+    expect(api.palette.resizeCustom).toHaveBeenLastCalledWith({ cols: 3, rows: 1 });
+    expect(screen.getByRole('button', { name: '행 줄이기' })).toBeDisabled();
+    expect(screen.queryByTestId('cell-custom-1-0')).toBeNull();
+
+    fireEvent.click(screen.getByRole('button', { name: '열 줄이기' }));
+    expect(api.palette.resizeCustom).toHaveBeenLastCalledWith({ cols: 2, rows: 1 });
+    expect(screen.getByText('2 × 1')).toBeInTheDocument();
+    expect(screen.getByRole('grid', { name: '사용자 정의 2 × 1 그리드' })).toBeInTheDocument();
+  });
+
+  it('shows when the custom grid could not be saved', async () => {
+    const { api } = setup();
+    api.palette.resizeCustom.mockResolvedValueOnce({ ok: false, code: 'paletteClosed' });
+    fireEvent.click(screen.getByRole('button', { name: '열 추가' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('팔레트가 이미 닫혔어요.');
   });
 
   it('starts fresh for every new appearance', () => {

@@ -1,4 +1,4 @@
-import { DEFAULT_SETTINGS, type AppSettings } from '@magwin/core';
+import { applySettingsPatch, DEFAULT_SETTINGS, type AppSettings } from '@magwin/core';
 import { beforeEach, describe, expect, it } from 'vitest';
 import type { EdgeHover } from '../../domain/ports';
 import { SnapService } from '../snap/SnapService';
@@ -58,6 +58,13 @@ describe('PaletteController', () => {
       scheduler,
       clock,
       settings: () => settings,
+      updateSettings: (patch) => {
+        const next = applySettingsPatch(settings, patch);
+        if (next.ok) {
+          settings = next.value;
+        }
+        return Promise.resolve(next);
+      },
       logger: new MemoryLogger(),
     });
     controller.start();
@@ -73,7 +80,7 @@ describe('PaletteController', () => {
       '2x3',
       '3x2',
       '3x3',
-      '4x4',
+      'custom',
     ]);
     expect(shown?.state.appName).toBe('Editor');
     expect(shown?.bounds.y).toBe(106);
@@ -164,5 +171,41 @@ describe('PaletteController', () => {
       ok: false,
       code: 'invalidRange',
     });
+  });
+
+  it('reshapes the custom grid for this session and saves it for the next one', async () => {
+    await controller.open(hover);
+    expect(await controller.resizeCustom({ cols: 3, rows: 2 })).toEqual({ ok: true });
+    expect(settings.grid.presets.at(-1)).toEqual({ id: 'custom', cols: 3, rows: 2 });
+    expect(settings.grid.presets.slice(0, -1)).toEqual(DEFAULT_SETTINGS.grid.presets.slice(0, -1));
+    const result = await controller.apply({
+      presetId: 'custom',
+      range: { top: 0, left: 2, bottom: 1, right: 2 },
+    });
+    expect(result).toEqual({ ok: true });
+    expect(world.frames).toEqual([
+      { windowId: 42, frame: { x: 960, y: 25, width: 480, height: 875 } },
+    ]);
+
+    await controller.open(hover);
+    const reopened = palette.shown.at(-1)?.state.presets.at(-1);
+    expect(reopened).toEqual({ id: 'custom', cols: 3, rows: 2 });
+  });
+
+  it('refuses to reshape when closed or without a custom grid', async () => {
+    expect(await controller.resizeCustom({ cols: 3, rows: 2 })).toEqual({
+      ok: false,
+      code: 'paletteClosed',
+    });
+    settings = {
+      ...DEFAULT_SETTINGS,
+      grid: { ...DEFAULT_SETTINGS.grid, presets: DEFAULT_SETTINGS.grid.presets.slice(0, -1) },
+    };
+    await controller.open(hover);
+    expect(await controller.resizeCustom({ cols: 3, rows: 2 })).toEqual({
+      ok: false,
+      code: 'invalidPreset',
+    });
+    expect(settings.grid.presets).toHaveLength(4);
   });
 });

@@ -49,6 +49,7 @@ export function createFakeApi() {
       selectionChanged: vi.fn(),
       interaction: vi.fn(),
       apply: vi.fn().mockResolvedValue({ ok: true }),
+      resizeCustom: vi.fn().mockResolvedValue({ ok: true }),
       dismiss: vi.fn(),
     },
     ghost: { onState: channels.ghostState.subscribe },

@@ -92,6 +92,7 @@ async function createServices(): Promise<Services> {
     scheduler,
     clock,
     settings: () => settings.get(),
+    updateSettings: (patch) => settings.update(patch),
     logger,
   });
   const capture = new LayoutCaptureService({
