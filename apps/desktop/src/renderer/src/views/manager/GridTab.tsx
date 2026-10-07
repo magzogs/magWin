@@ -4,9 +4,19 @@ import { useApi } from '../../api/ApiContext';
 import { EDGE_LABELS, errorMessage, MODIFIER_LABELS } from '../../i18n/ko';
 import { RangeField, Toggle } from './fields';
 import { PresetEditor } from './PresetEditor';
+import { SettingsSidebar, type SidebarItem } from './SettingsSidebar';
 import { useLive } from './useLive';
 
 type Update = (patch: SettingsPatch) => void;
+
+type SectionId = 'presets' | 'trigger' | 'placement' | 'layouts';
+
+const SECTIONS: readonly SidebarItem<SectionId>[] = [
+  { id: 'presets', label: '팔레트 그리드' },
+  { id: 'trigger', label: '가장자리 감지' },
+  { id: 'placement', label: '팔레트와 배치' },
+  { id: 'layouts', label: '레이아웃' },
+];
 
 function TriggerSettings({
   trigger,
@@ -190,10 +200,39 @@ function LayoutSettings({
   );
 }
 
-/** Feature 1 settings plus layout options. Every change is validated by the main process. */
+function SectionBody(props: {
+  section: SectionId;
+  settings: AppSettings;
+  update: Update;
+}): ReactNode {
+  const { settings, update } = props;
+  switch (props.section) {
+    case 'presets':
+      return (
+        <PresetEditor
+          presets={settings.grid.presets}
+          onChange={(presets) => {
+            update({ grid: { presets } });
+          }}
+        />
+      );
+    case 'trigger':
+      return <TriggerSettings trigger={settings.trigger} update={update} />;
+    case 'placement':
+      return <PlacementSettings settings={settings} update={update} />;
+    case 'layouts':
+      return <LayoutSettings settings={settings} update={update} />;
+  }
+}
+
+/**
+ * Feature 1 settings plus layout options, one section at a time: the sidebar on the left picks
+ * the section shown on the right. Every change is validated by the main process.
+ */
 export function GridTab(): ReactNode {
   const api = useApi();
   const settings = useLive(api.settings.get, api.settings.onChanged);
+  const [section, setSection] = useState<SectionId>('presets');
   const [error, setError] = useState<string | null>(null);
 
   const update = useCallback<Update>(
@@ -210,21 +249,26 @@ export function GridTab(): ReactNode {
     return <p className="muted">불러오는 중…</p>;
   }
   return (
-    <section className="grid-tab">
-      {error === null ? null : (
-        <p className="error-text" role="alert">
-          {error}
-        </p>
-      )}
-      <PresetEditor
-        presets={settings.grid.presets}
-        onChange={(presets) => {
-          update({ grid: { presets } });
-        }}
+    <section className="grid-tab settings-split">
+      <SettingsSidebar
+        label="설정 섹션"
+        items={SECTIONS}
+        selected={section}
+        onSelect={setSection}
       />
-      <TriggerSettings trigger={settings.trigger} update={update} />
-      <PlacementSettings settings={settings} update={update} />
-      <LayoutSettings settings={settings} update={update} />
+      <div
+        className="settings-panel"
+        id="settings-panel"
+        role="tabpanel"
+        aria-labelledby={`settings-tab-${section}`}
+      >
+        {error === null ? null : (
+          <p className="error-text" role="alert">
+            {error}
+          </p>
+        )}
+        <SectionBody section={section} settings={settings} update={update} />
+      </div>
     </section>
   );
 }

@@ -98,10 +98,24 @@ describe('GridTab', () => {
     });
   });
 
+  it('shows one section at a time, picked from the sidebar', async () => {
+    const { api } = createFakeApi();
+    renderWithApi(<GridTab />, api);
+    const presets = await screen.findByRole('tab', { name: '팔레트 그리드' });
+    expect(presets).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('tabpanel')).toHaveTextContent('팔레트 그리드');
+    expect(screen.queryByRole('checkbox', { name: '엣지 스냅 사용' })).toBeNull();
+    fireEvent.click(screen.getByRole('tab', { name: '레이아웃' }));
+    expect(screen.getByRole('tab', { name: '레이아웃' })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('checkbox', { name: '로그인 시 자동 실행' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: '그리드 추가' })).toBeNull();
+  });
+
   it('turns edges on and off', async () => {
     const { api } = createFakeApi();
     renderWithApi(<GridTab />, api);
-    fireEvent.click(await screen.findByRole('checkbox', { name: '위' }));
+    fireEvent.click(await screen.findByRole('tab', { name: '가장자리 감지' }));
+    fireEvent.click(screen.getByRole('checkbox', { name: '위' }));
     expect(api.settings.update).toHaveBeenCalledWith({
       trigger: { edges: { top: false, bottom: true, left: true, right: true } },
     });
@@ -111,7 +125,8 @@ describe('GridTab', () => {
     const { api } = createFakeApi();
     api.settings.update.mockResolvedValue({ ok: false, code: 'invalidSettings', message: 'x' });
     renderWithApi(<GridTab />, api);
-    fireEvent.click(await screen.findByRole('checkbox', { name: '엣지 스냅 사용' }));
+    fireEvent.click(await screen.findByRole('tab', { name: '가장자리 감지' }));
+    fireEvent.click(screen.getByRole('checkbox', { name: '엣지 스냅 사용' }));
     expect(await screen.findByRole('alert')).toHaveTextContent('설정 값이 올바르지 않아요.');
   });
 });

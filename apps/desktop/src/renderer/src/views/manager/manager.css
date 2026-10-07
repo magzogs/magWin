@@ -134,7 +134,42 @@ kbd {
   border-radius: var(--radius);
 }
 
-.grid-tab,
+.settings-split {
+  display: grid;
+  grid-template-columns: 168px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.settings-sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.settings-sidebar button {
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 7px 12px;
+  border-radius: 7px;
+}
+
+.settings-sidebar button.on {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.settings-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
 .status-tab {
   display: flex;
   flex-direction: column;
