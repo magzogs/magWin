@@ -7,6 +7,7 @@ export * from './palette/edges';
 export * from './palette/layout';
 export * from './palette/placement';
 export * from './settings/settings';
+export * from './settings/language';
 export * from './system/model';
 export * from './layouts/model';
 export * from './layouts/desktops';

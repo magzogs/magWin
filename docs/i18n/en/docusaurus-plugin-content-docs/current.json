@@ -1,0 +1,22 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.docs.category.사용 안내": {
+    "message": "User guide",
+    "description": "The label for category '사용 안내' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.아키텍처": {
+    "message": "Architecture",
+    "description": "The label for category '아키텍처' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.의사결정 기록 (ADR)": {
+    "message": "Decision records (ADR)",
+    "description": "The label for category '의사결정 기록 (ADR)' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.개발": {
+    "message": "Development",
+    "description": "The label for category '개발' in sidebar 'docs'"
+  }
+}

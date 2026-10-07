@@ -4,7 +4,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { createFakeApi } from '../../test/fakeApi';
 import { renderWithApi } from '../../test/render';
-import { defaultLayoutName, SaveHudApp } from './SaveHudApp';
+import { SaveHudApp } from './SaveHudApp';
 
 const display = {
   uuid: 'MAIN',
@@ -51,8 +51,13 @@ function setup() {
 }
 
 describe('SaveHudApp', () => {
-  it('names layouts after the time by default', () => {
-    expect(defaultLayoutName(new Date(2026, 8, 25, 16, 5))).toBe('9월 25일 16:05');
+  it('names layouts after the time by default and titles the window', async () => {
+    const { api } = createFakeApi();
+    renderWithApi(<SaveHudApp now={new Date(2026, 8, 25, 16, 5)} />, api);
+    expect(screen.getByRole('textbox', { name: '레이아웃 이름' })).toHaveValue('9월 25일 16:05');
+    await waitFor(() => {
+      expect(document.title).toBe('현재 레이아웃 저장');
+    });
   });
 
   it('captures every desktop and pre-selects the included windows', async () => {

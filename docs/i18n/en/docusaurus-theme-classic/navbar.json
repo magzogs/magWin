@@ -1,0 +1,18 @@
+{
+  "title": {
+    "message": "magWin",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "magWin",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.문서": {
+    "message": "Docs",
+    "description": "Navbar item with label 문서"
+  },
+  "item.label.도움말": {
+    "message": "Help",
+    "description": "Navbar item with label 도움말"
+  }
+}

@@ -1,3 +1,5 @@
+import type { Locale } from '@magwin/core';
+
 /**
  * External addresses used by the help and support pages. Keep DOCS_URL equal to `url` in
  * docs/docusaurus.config.ts. Both are placeholders until the docs site and a support mailbox
@@ -9,8 +11,9 @@ export const SUPPORT_EMAIL = 'support@magwin.local';
 /** Doc page ids under docs/docs, e.g. 'guide/edge-snap'. */
 export type DocPath = `guide/${string}`;
 
-export function docUrl(path: DocPath | 'help'): string {
-  return `${DOCS_URL}/${path}`;
+/** Korean is the docs site's default locale (no prefix); other locales live under /<locale>. */
+export function docUrl(path: DocPath | 'help', locale: Locale): string {
+  return locale === 'ko' ? `${DOCS_URL}/${path}` : `${DOCS_URL}/${locale}/${path}`;
 }
 
 export function supportMailto(subject: string, body: string): string {

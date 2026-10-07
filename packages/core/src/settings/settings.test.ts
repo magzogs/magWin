@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { applySettingsPatch, DEFAULT_SETTINGS, parseSettings } from './settings';
+import {
+  applySettingsPatch,
+  DEFAULT_SETTINGS,
+  parseSettings,
+  settingsPatchSchema,
+} from './settings';
 
 describe('parseSettings', () => {
   it('accepts valid settings unchanged', () => {
@@ -25,6 +30,32 @@ describe('parseSettings', () => {
   it('returns defaults for garbage', () => {
     expect(parseSettings('nope').settings).toEqual(DEFAULT_SETTINGS);
     expect(parseSettings(null).recovered).toBe(true);
+  });
+});
+
+describe('language setting', () => {
+  it('fills the language of settings saved before it existed', () => {
+    const raw = { ...DEFAULT_SETTINGS, general: { launchAtLogin: true } };
+    expect(parseSettings(raw)).toEqual({
+      settings: { ...DEFAULT_SETTINGS, general: { launchAtLogin: true, language: 'system' } },
+      recovered: false,
+    });
+  });
+
+  it('keeps the language when another general option changes', () => {
+    const english = {
+      ...DEFAULT_SETTINGS,
+      general: { launchAtLogin: false, language: 'en' as const },
+    };
+    const result = applySettingsPatch(
+      english,
+      settingsPatchSchema.parse({ general: { launchAtLogin: true } }),
+    );
+    expect(result.ok && result.value.general).toEqual({ launchAtLogin: true, language: 'en' });
+  });
+
+  it('rejects unsupported languages', () => {
+    expect(settingsPatchSchema.safeParse({ general: { language: 'xx' } }).success).toBe(false);
   });
 });
 

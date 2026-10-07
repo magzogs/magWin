@@ -48,7 +48,7 @@ pnpm format
 
 - 인터페이스(포트)는 접두사 없는 명사입니다: `WindowMover`, `DesktopNavigator`. 구현체는 기술 이름을 붙입니다: `HelperWindowService`, `FileLayoutRepository`, `ElectronScreen`.
 - 테스트 파일은 대상 옆 `*.test.ts(x)`, 테스트 더블은 `test/` 폴더에 둡니다.
-- 사용자에게 보이는 문구는 `renderer/src/i18n/ko.ts`에만 둡니다. 메인 프로세스는 오류 **코드**만 돌려줍니다.
+- 사용자에게 보이는 문구는 `src/shared/i18n/ko.ts`(원본)와 `en.ts`에만 둡니다. `en.ts`는 `Messages` 타입(= `ko`의 모양)을 따르므로 키가 빠지면 타입 검사가 실패합니다. 렌더러는 `useI18n()`, 메뉴 막대 메뉴는 `messagesFor(locale)`로 씁니다. 메인 프로세스의 서비스는 오류 **코드**만 돌려줍니다. 자세한 내용은 [ADR-005](../architecture/decisions/adr-005-localization.md).
 
 ## Electron 보안
 

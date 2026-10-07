@@ -6,6 +6,7 @@ import {
   type SelectionState,
 } from '@magwin/core';
 import type { CSSProperties, ReactNode } from 'react';
+import { useI18n } from '../../i18n/I18nContext';
 
 export interface PresetGridProps {
   readonly preset: GridPreset;
@@ -18,6 +19,7 @@ export interface PresetGridProps {
 /** One grid component: a miniature of the display split into `cols` × `rows` cells. */
 export function PresetGrid(props: PresetGridProps): ReactNode {
   const { preset, selection } = props;
+  const { t } = useI18n();
   const active = selection?.presetId === preset.id;
   const cells: Cell[] = [];
   for (let row = 0; row < preset.rows; row += 1) {
@@ -29,7 +31,7 @@ export function PresetGrid(props: PresetGridProps): ReactNode {
     <div
       className={`preset-grid${active ? ' active' : ''}`}
       role="grid"
-      aria-label={`${isCustomPreset(preset) ? '사용자 정의 ' : ''}${String(preset.cols)} × ${String(preset.rows)} 그리드`}
+      aria-label={t.palette.grid(preset.cols, preset.rows, isCustomPreset(preset))}
       style={{
         ...props.style,
         gridTemplateColumns: `repeat(${String(preset.cols)}, 1fr)`,

@@ -1,6 +1,7 @@
 import { EDGES, type Edge } from '@magwin/core';
 import { useEffect, useState, type ReactNode } from 'react';
 import { ApiProvider } from '../api/ApiContext';
+import { I18nProvider } from '../i18n/I18nContext';
 import { ManagerApp } from '../views/manager/ManagerApp';
 import { PaletteApp } from '../views/palette/PaletteApp';
 import { ProgressApp } from '../views/progress/ProgressApp';
@@ -29,51 +30,53 @@ export function PreviewShell({ controls }: { controls: PreviewControls }): React
 
   return (
     <ApiProvider api={controls.api}>
-      <div className="preview-shell">
-        <nav className="preview-bar">
-          <strong>magWin UI preview</strong>
-          {SCREENS.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={screen === item.id ? 'primary' : ''}
-              onClick={() => {
-                setScreen(item.id);
-              }}
-            >
-              {item.label}
-            </button>
-          ))}
-          {screen === 'palette'
-            ? EDGES.map((value) => (
-                <button
-                  key={value}
-                  type="button"
-                  className={edge === value ? 'primary' : ''}
-                  onClick={() => {
-                    setEdge(value);
-                  }}
-                >
-                  {value}
-                </button>
-              ))
-            : null}
-        </nav>
-        <div className={`preview-stage ${screen}`}>
-          {screen === 'palette' ? (
-            <div className="fake-window">
-              <PaletteApp />
-            </div>
-          ) : null}
-          {screen === 'manager' ? <ManagerApp initialTab="layouts" /> : null}
-          {screen === 'save' ? <SaveHudApp /> : null}
-          {screen === 'progress' ? (
-            <div className="hud-frame">
-              <ProgressApp />
-            </div>
-          ) : null}
+      <I18nProvider>
+        <div className="preview-shell">
+          <nav className="preview-bar">
+            <strong>magWin UI preview</strong>
+            {SCREENS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={screen === item.id ? 'primary' : ''}
+                onClick={() => {
+                  setScreen(item.id);
+                }}
+              >
+                {item.label}
+              </button>
+            ))}
+            {screen === 'palette'
+              ? EDGES.map((value) => (
+                  <button
+                    key={value}
+                    type="button"
+                    className={edge === value ? 'primary' : ''}
+                    onClick={() => {
+                      setEdge(value);
+                    }}
+                  >
+                    {value}
+                  </button>
+                ))
+              : null}
+          </nav>
+          <div className={`preview-stage ${screen}`}>
+            {screen === 'palette' ? (
+              <div className="fake-window">
+                <PaletteApp />
+              </div>
+            ) : null}
+            {screen === 'manager' ? <ManagerApp initialTab="layouts" /> : null}
+            {screen === 'save' ? <SaveHudApp /> : null}
+            {screen === 'progress' ? (
+              <div className="hud-frame">
+                <ProgressApp />
+              </div>
+            ) : null}
+          </div>
         </div>
-      </div>
+      </I18nProvider>
     </ApiProvider>
   );
 }

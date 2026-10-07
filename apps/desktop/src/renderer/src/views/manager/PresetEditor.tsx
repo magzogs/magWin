@@ -7,6 +7,8 @@ import {
   type GridPreset,
 } from '@magwin/core';
 import { useState, type ReactNode } from 'react';
+import type { Messages } from '../../../../shared/i18n';
+import { useI18n } from '../../i18n/I18nContext';
 import { GridThumbnail } from './fields';
 
 export const MAX_PRESETS = 12;
@@ -22,9 +24,18 @@ function moved(presets: readonly GridPreset[], index: number, delta: number): Gr
   return next;
 }
 
-function displayName(preset: GridPreset): string {
+function displayName(t: Messages, preset: GridPreset): string {
   const size = presetLabel(preset).replace('x', ' × ');
-  return isCustomPreset(preset) ? `사용자 정의 (${size})` : size;
+  return isCustomPreset(preset) ? t.presets.custom(size) : size;
+}
+
+/** Kept as data so the message follows a language change. */
+type AddError = { readonly kind: 'range' } | { readonly kind: 'duplicate'; readonly label: string };
+
+function addErrorText(t: Messages, error: AddError): string {
+  return error.kind === 'range'
+    ? t.presets.outOfRange(GRID_LIMITS.min, GRID_LIMITS.max)
+    : t.presets.duplicate(error.label);
 }
 
 function PresetRow(props: {
@@ -35,14 +46,15 @@ function PresetRow(props: {
   onMove: (delta: number) => void;
   onRemove: () => void;
 }): ReactNode {
-  const name = displayName(props.preset);
+  const { t } = useI18n();
+  const name = displayName(t, props.preset);
   return (
     <li>
       <GridThumbnail cols={props.preset.cols} rows={props.preset.rows} />
       <span className="preset-name">{name}</span>
       <button
         type="button"
-        aria-label={`${name} 앞으로`}
+        aria-label={t.presets.moveEarlier(name)}
         disabled={props.first}
         onClick={() => {
           props.onMove(-1);
@@ -52,7 +64,7 @@ function PresetRow(props: {
       </button>
       <button
         type="button"
-        aria-label={`${name} 뒤로`}
+        aria-label={t.presets.moveLater(name)}
         disabled={props.last}
         onClick={() => {
           props.onMove(1);
@@ -63,11 +75,11 @@ function PresetRow(props: {
       <button
         type="button"
         className="danger"
-        aria-label={`${name} 삭제`}
+        aria-label={t.presets.removeNamed(name)}
         disabled={props.only}
         onClick={props.onRemove}
       >
-        삭제
+        {t.common.remove}
       </button>
     </li>
   );
@@ -79,20 +91,21 @@ export function PresetEditor(props: {
   onChange: (presets: GridPreset[]) => void;
 }): ReactNode {
   const { presets, onChange } = props;
+  const { t } = useI18n();
   const [cols, setCols] = useState(3);
   const [rows, setRows] = useState(2);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<AddError | null>(null);
   const full = presets.length >= MAX_PRESETS;
   const hasCustom = presets.some(isCustomPreset);
 
   const add = (): void => {
     const created = createPreset(cols, rows);
     if (!created.ok) {
-      setError(`가로·세로는 ${String(GRID_LIMITS.min)}~${String(GRID_LIMITS.max)} 사이여야 해요.`);
+      setError({ kind: 'range' });
       return;
     }
     if (presets.some((p) => p.id === created.value.id)) {
-      setError(`${presetLabel(created.value)} 그리드는 이미 있어요.`);
+      setError({ kind: 'duplicate', label: presetLabel(created.value) });
       return;
     }
     setError(null);
@@ -101,11 +114,8 @@ export function PresetEditor(props: {
 
   return (
     <fieldset className="card">
-      <legend>팔레트 그리드</legend>
-      <p className="muted">
-        가로 칸 × 세로 칸. 창 가장자리에 머무르면 이 순서대로 나타나요. 사용자 정의 그리드는
-        팔레트에서 화살표로 바로 바꿀 수 있어요.
-      </p>
+      <legend>{t.settings.sections.presets}</legend>
+      <p className="muted">{t.presets.intro}</p>
       <ul className="preset-list">
         {presets.map((preset, index) => (
           <PresetRow
@@ -131,10 +141,10 @@ export function PresetEditor(props: {
         }}
       >
         <label>
-          가로
+          {t.presets.cols}
           <input
             type="number"
-            aria-label="가로 칸 수"
+            aria-label={t.presets.colsLabel}
             min={GRID_LIMITS.min}
             max={GRID_LIMITS.max}
             value={cols}
@@ -145,10 +155,10 @@ export function PresetEditor(props: {
         </label>
         <span>×</span>
         <label>
-          세로
+          {t.presets.rows}
           <input
             type="number"
-            aria-label="세로 칸 수"
+            aria-label={t.presets.rowsLabel}
             min={GRID_LIMITS.min}
             max={GRID_LIMITS.max}
             value={rows}
@@ -158,7 +168,7 @@ export function PresetEditor(props: {
           />
         </label>
         <button type="submit" disabled={full}>
-          그리드 추가
+          {t.presets.add}
         </button>
         {hasCustom ? null : (
           <button
@@ -169,13 +179,13 @@ export function PresetEditor(props: {
               onChange([...presets, customPreset(2, 2)]);
             }}
           >
-            사용자 정의 그리드 추가
+            {t.presets.addCustom}
           </button>
         )}
       </form>
       {error === null ? null : (
         <p className="error-text" role="alert">
-          {error}
+          {addErrorText(t, error)}
         </p>
       )}
     </fieldset>

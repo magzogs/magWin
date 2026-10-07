@@ -1,24 +1,26 @@
 import { useState, type ReactNode } from 'react';
 import type { MainTab } from '../../../../shared/contracts';
 import { docUrl } from '../../../../shared/links';
-import { HELP_QUESTIONS, HELP_TOPICS, searchHelp } from './helpContent';
+import { useI18n } from '../../i18n/I18nContext';
+import { helpQuestions, helpTopics, searchHelp } from './helpContent';
 
 /**
  * magWin help: search, topic cards that open the docs site, and short answers that work
  * offline. Modeled on a help center front page.
  */
 export function HelpTab({ onNavigate }: { onNavigate: (tab: MainTab) => void }): ReactNode {
+  const { t, locale } = useI18n();
   const [query, setQuery] = useState('');
-  const { topics, questions } = searchHelp(query, HELP_TOPICS, HELP_QUESTIONS);
+  const { topics, questions } = searchHelp(query, helpTopics(t), helpQuestions(t));
   const empty = topics.length === 0 && questions.length === 0;
   return (
     <section className="help-tab">
       <header className="help-hero">
-        <h2>무엇을 도와드릴까요?</h2>
+        <h2>{t.help.title}</h2>
         <input
           type="search"
-          aria-label="도움말 검색"
-          placeholder="답을 검색하거나 아래 주제를 둘러보세요"
+          aria-label={t.help.searchLabel}
+          placeholder={t.help.searchPlaceholder}
           value={query}
           onChange={(event) => {
             setQuery(event.target.value);
@@ -26,10 +28,15 @@ export function HelpTab({ onNavigate }: { onNavigate: (tab: MainTab) => void }):
         />
       </header>
       {topics.length === 0 ? null : (
-        <ul className="topic-grid" aria-label="도움말 주제">
+        <ul className="topic-grid" aria-label={t.help.topicsLabel}>
           {topics.map((topic) => (
             <li key={topic.id}>
-              <a className="topic-card" href={docUrl(topic.doc)} target="_blank" rel="noreferrer">
+              <a
+                className="topic-card"
+                href={docUrl(topic.doc, locale)}
+                target="_blank"
+                rel="noreferrer"
+              >
                 <strong>{topic.title}</strong>
                 <span className="muted">{topic.summary}</span>
               </a>
@@ -39,7 +46,7 @@ export function HelpTab({ onNavigate }: { onNavigate: (tab: MainTab) => void }):
       )}
       {questions.length === 0 ? null : (
         <div className="card faq">
-          <h3>자주 묻는 질문</h3>
+          <h3>{t.help.faq}</h3>
           {questions.map((item) => (
             <details key={item.id}>
               <summary>{item.question}</summary>
@@ -48,9 +55,9 @@ export function HelpTab({ onNavigate }: { onNavigate: (tab: MainTab) => void }):
           ))}
         </div>
       )}
-      {empty ? <p className="muted">"{query.trim()}"에 대한 결과가 없어요.</p> : null}
+      {empty ? <p className="muted">{t.help.noResults(query.trim())}</p> : null}
       <footer className="help-footer">
-        <span>원하는 답을 찾지 못했나요?</span>
+        <span>{t.help.notFound}</span>
         <button
           type="button"
           className="primary"
@@ -58,10 +65,10 @@ export function HelpTab({ onNavigate }: { onNavigate: (tab: MainTab) => void }):
             onNavigate('support');
           }}
         >
-          지원 받기
+          {t.help.getSupport}
         </button>
-        <a href={docUrl('help')} target="_blank" rel="noreferrer">
-          도움말 센터 전체 보기
+        <a href={docUrl('help', locale)} target="_blank" rel="noreferrer">
+          {t.help.allHelp}
         </a>
       </footer>
     </section>

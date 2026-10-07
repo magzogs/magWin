@@ -1,7 +1,8 @@
 import type { RestoreProgress, RestoreReport } from '@magwin/core';
 import { useEffect, useState, type ReactNode } from 'react';
 import { useApi } from '../../api/ApiContext';
-import { issueMessage, progressMessage } from '../../i18n/ko';
+import { issueMessage, progressMessage } from '../../../../shared/i18n';
+import { useI18n } from '../../i18n/I18nContext';
 import './progress.css';
 
 /** A clean restore closes itself after this long; one with issues stays until dismissed. */
@@ -10,7 +11,8 @@ export const AUTO_CLOSE_MS = 4_000;
 interface ProgressState {
   readonly layoutName: string;
   readonly total: number;
-  readonly steps: readonly string[];
+  /** Raw events, worded at render time so a language change applies at once. */
+  readonly steps: readonly RestoreProgress[];
   readonly report: RestoreReport | null;
 }
 
@@ -22,26 +24,27 @@ function reduce(state: ProgressState, progress: RestoreProgress): ProgressState 
       return {
         layoutName: progress.layoutName,
         total: progress.totalWindows,
-        steps: [progressMessage(progress)],
+        steps: [progress],
         report: null,
       };
     case 'finished':
       return {
         ...state,
         report: progress.report,
-        steps: [...state.steps, progressMessage(progress)],
+        steps: [...state.steps, progress],
       };
     case 'switching':
     case 'launching':
     case 'waiting':
     case 'placing':
-      return { ...state, steps: [...state.steps.slice(-5), progressMessage(progress)] };
+      return { ...state, steps: [...state.steps.slice(-5), progress] };
   }
 }
 
 /** Restore HUD: what magWin is doing right now, then a summary that explains any leftovers. */
 export function ProgressApp(): ReactNode {
   const api = useApi();
+  const { t } = useI18n();
   const [state, setState] = useState<ProgressState>(EMPTY);
 
   useEffect(
@@ -66,10 +69,10 @@ export function ProgressApp(): ReactNode {
   return (
     <section className="progress-hud" aria-live="polite">
       <header>
-        <strong>{state.layoutName === '' ? '레이아웃 복원' : `'${state.layoutName}' 복원`}</strong>
+        <strong>{t.progress.title(state.layoutName)}</strong>
         <button
           type="button"
-          aria-label="닫기"
+          aria-label={t.common.close}
           onClick={() => {
             api.windows.closeSelf();
           }}
@@ -82,19 +85,19 @@ export function ProgressApp(): ReactNode {
           <div className="spinner" aria-hidden />
           <ol className="steps">
             {state.steps.map((step, index) => (
-              <li key={`${String(index)}-${step}`}>{step}</li>
+              <li key={`${String(index)}-${step.type}`}>{progressMessage(t, step)}</li>
             ))}
           </ol>
         </>
       ) : (
         <div className="summary">
           <p className={report.issues.length === 0 ? 'ok' : 'partial'}>
-            {report.total}개 중 {report.placed}개 창을 배치했어요
+            {t.progress.finished(report.placed, report.total)}
           </p>
           {report.issues.length === 0 ? null : (
             <ul className="issues">
               {report.issues.map((issue, index) => (
-                <li key={`${String(index)}-${issue.appName}`}>{issueMessage(issue)}</li>
+                <li key={`${String(index)}-${issue.appName}`}>{issueMessage(t, issue)}</li>
               ))}
             </ul>
           )}

@@ -1,12 +1,15 @@
 import type { LayoutSummary } from '@magwin/core';
 import type { MenuItemConstructorOptions } from 'electron';
 import type { MainTab, SystemStatus } from '../../../shared/contracts';
+import type { Messages } from '../../../shared/i18n';
 
 export interface TrayModel {
   readonly layouts: readonly LayoutSummary[];
   readonly status: SystemStatus;
   readonly edgeSnapEnabled: boolean;
   readonly hotkeysEnabled: boolean;
+  /** Menu text in the resolved UI language. */
+  readonly text: Messages['tray'];
 }
 
 export interface TrayActions {
@@ -31,17 +34,17 @@ function layoutItem(
   const hotkey =
     model.hotkeysEnabled && index < SLOT_COUNT ? `Control+Alt+Command+${index + 1}` : undefined;
   const perDesktop = layout.desktopNumbers.map((number): MenuItemConstructorOptions => ({
-    label: `Desktop ${number}만 복원`,
+    label: model.text.restoreDesktop(number),
     enabled: !busy,
     click: () => {
       actions.restore(layout.id, number);
     },
   }));
   return {
-    label: `${layout.name}  ·  창 ${layout.windowCount}개`,
+    label: model.text.layoutItem(layout.name, layout.windowCount),
     submenu: [
       {
-        label: '전체 복원',
+        label: model.text.restoreAll,
         enabled: !busy,
         ...(hotkey === undefined ? {} : { accelerator: hotkey, registerAccelerator: false }),
         click: () => {
@@ -51,7 +54,7 @@ function layoutItem(
       ...(perDesktop.length > 1 ? perDesktop : []),
       { type: 'separator' },
       {
-        label: '레이아웃 관리…',
+        label: model.text.manageLayouts,
         click: () => {
           actions.openMain('layouts');
         },
@@ -65,7 +68,7 @@ function statusItems(model: TrayModel, actions: TrayActions): MenuItemConstructo
   if (status.helper === 'failed') {
     return [
       {
-        label: '⚠️ 네이티브 도우미 오류 — 상태 보기',
+        label: model.text.helperError,
         click: () => {
           actions.openMain('status');
         },
@@ -75,7 +78,7 @@ function statusItems(model: TrayModel, actions: TrayActions): MenuItemConstructo
   if (status.helper === 'ready' && !status.accessibility) {
     return [
       {
-        label: '⚠️ 손쉬운 사용 권한 필요',
+        label: model.text.accessibilityNeeded,
         click: () => {
           actions.openMain('status');
         },
@@ -95,7 +98,7 @@ export function buildTrayMenu(
   return [
     ...(warnings.length > 0 ? [...warnings, { type: 'separator' as const }] : []),
     {
-      label: '현재 레이아웃 저장…',
+      label: model.text.saveLayout,
       ...(model.hotkeysEnabled
         ? { accelerator: 'Control+Alt+Command+S', registerAccelerator: false }
         : {}),
@@ -105,11 +108,11 @@ export function buildTrayMenu(
     },
     { type: 'separator' },
     ...(layouts.length === 0
-      ? [{ label: '저장된 레이아웃이 없어요', enabled: false }]
+      ? [{ label: model.text.noLayouts, enabled: false }]
       : layouts.map((layout, index) => layoutItem(layout, index, model, actions))),
     { type: 'separator' },
     {
-      label: model.status.restoring ? '복원 중…' : '직전 배치로 되돌리기',
+      label: model.status.restoring ? model.text.restoring : model.text.undo,
       enabled: model.status.canUndo && !model.status.restoring,
       click: () => {
         actions.undo();
@@ -117,7 +120,7 @@ export function buildTrayMenu(
     },
     { type: 'separator' },
     {
-      label: '엣지 스냅 사용',
+      label: model.text.edgeSnap,
       type: 'checkbox',
       checked: model.edgeSnapEnabled,
       click: () => {
@@ -125,39 +128,39 @@ export function buildTrayMenu(
       },
     },
     {
-      label: '레이아웃 관리…',
+      label: model.text.manageLayouts,
       click: () => {
         actions.openMain('layouts');
       },
     },
     {
-      label: '그리드 설정…',
+      label: model.text.settings,
       click: () => {
         actions.openMain('grid');
       },
     },
     {
-      label: '권한 및 상태…',
+      label: model.text.status,
       click: () => {
         actions.openMain('status');
       },
     },
     { type: 'separator' },
     {
-      label: 'magWin 도움말…',
+      label: model.text.help,
       click: () => {
         actions.openMain('help');
       },
     },
     {
-      label: '지원 받기…',
+      label: model.text.support,
       click: () => {
         actions.openMain('support');
       },
     },
     { type: 'separator' },
     {
-      label: 'magWin 종료',
+      label: model.text.quit,
       accelerator: 'Command+Q',
       click: () => {
         actions.quit();

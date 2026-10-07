@@ -19,19 +19,20 @@ for Accessibility, CGWindowList and private CGS calls. `packages/core` holds all
 
 ## Read these before changing code
 
-| Topic                                          | Doc                                         |
-| ---------------------------------------------- | ------------------------------------------- |
-| Processes, layers, flows                       | `docs/docs/architecture/overview.md`        |
-| Helper wire protocol (keep Swift + TS in sync) | `docs/docs/architecture/helper-protocol.md` |
-| Coordinates and cell → frame math              | `docs/docs/architecture/coordinates.md`     |
-| Edge detection, dwell, palette lifetime        | `docs/docs/architecture/edge-detection.md`  |
-| Grid selection rules                           | `docs/docs/architecture/grid-selection.md`  |
-| Layout capture and restore                     | `docs/docs/architecture/layout-restore.md`  |
-| Folder structure and dependency direction      | `docs/docs/development/monorepo.md`         |
-| Coding standards, SOLID, lint rules            | `docs/docs/development/coding-standards.md` |
-| Testing and the manual checklist               | `docs/docs/development/testing.md`          |
-| When and how to update docs                    | `docs/docs/development/docs-workflow.md`    |
-| Architecture decisions (ADRs)                  | `docs/docs/architecture/decisions/`         |
+| Topic                                          | Doc                                                        |
+| ---------------------------------------------- | ---------------------------------------------------------- |
+| Processes, layers, flows                       | `docs/docs/architecture/overview.md`                       |
+| Helper wire protocol (keep Swift + TS in sync) | `docs/docs/architecture/helper-protocol.md`                |
+| Coordinates and cell → frame math              | `docs/docs/architecture/coordinates.md`                    |
+| Edge detection, dwell, palette lifetime        | `docs/docs/architecture/edge-detection.md`                 |
+| Grid selection rules                           | `docs/docs/architecture/grid-selection.md`                 |
+| Layout capture and restore                     | `docs/docs/architecture/layout-restore.md`                 |
+| Folder structure and dependency direction      | `docs/docs/development/monorepo.md`                        |
+| Coding standards, SOLID, lint rules            | `docs/docs/development/coding-standards.md`                |
+| Testing and the manual checklist               | `docs/docs/development/testing.md`                         |
+| When and how to update docs                    | `docs/docs/development/docs-workflow.md`                   |
+| Localization (catalogs, language setting)      | `docs/docs/architecture/decisions/adr-005-localization.md` |
+| Architecture decisions (ADRs)                  | `docs/docs/architecture/decisions/`                        |
 
 Run `pnpm dev:docs` to browse them.
 
@@ -53,8 +54,10 @@ Run `pnpm dev:docs` to browse them.
    channels go in `src/shared/channels.ts` with a zod schema validated in `src/main/ipc`.
 8. **Restore order is a product decision** (ADR-002): switch to the Desktop first, then launch and
    place. Do not add code that moves other apps' windows between Spaces through private APIs.
-9. User-facing text lives in `apps/desktop/src/renderer/src/i18n/ko.ts`; the main process returns
-   error codes.
+9. User-facing text lives in the catalogs `apps/desktop/src/shared/i18n/ko.ts` (source of truth)
+   and `en.ts` — add every new string to both (ADR-005). Components read it with `useI18n()`;
+   main-process services return error codes. Docs changes also update the English translation
+   under `docs/i18n/en/`.
 
 ## Commands
 

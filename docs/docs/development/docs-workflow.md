@@ -19,6 +19,7 @@ sidebar_position: 5
 | 폴더 구조·패키지 추가                 | [모노레포 구조](monorepo.md)                                                                     |
 | lint·코딩 규칙                        | [코딩 표준](coding-standards.md)                                                                 |
 | 아키텍처 수준의 결정                  | 새 ADR                                                                                           |
+| 문서 내용                             | 영어 번역 `docs/i18n/en/docusaurus-plugin-content-docs/current/` 의 같은 파일                    |
 
 ## ADR 작성
 

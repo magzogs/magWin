@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { Unsubscribe } from '../../../../shared/api';
+import type { Unsubscribe } from '../../../shared/api';
 
 /**
  * Loads a value once and keeps it fresh from a change event.

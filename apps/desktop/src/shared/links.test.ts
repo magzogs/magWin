@@ -2,9 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { docUrl, DOCS_URL, isAllowedExternalUrl, SUPPORT_EMAIL, supportMailto } from './links';
 
 describe('links', () => {
-  it('builds doc page addresses on the docs site', () => {
-    expect(docUrl('guide/edge-snap')).toBe(`${DOCS_URL}/guide/edge-snap`);
-    expect(docUrl('help')).toBe(`${DOCS_URL}/help`);
+  it('builds doc page addresses in the docs locale', () => {
+    expect(docUrl('guide/edge-snap', 'ko')).toBe(`${DOCS_URL}/guide/edge-snap`);
+    expect(docUrl('help', 'ko')).toBe(`${DOCS_URL}/help`);
+    expect(docUrl('guide/edge-snap', 'en')).toBe(`${DOCS_URL}/en/guide/edge-snap`);
+    expect(docUrl('help', 'en')).toBe(`${DOCS_URL}/en/help`);
   });
 
   it('encodes the support mail draft with %20 spaces', () => {

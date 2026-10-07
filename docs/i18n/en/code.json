@@ -1,0 +1,59 @@
+{
+  "help.topic.start.title": {
+    "message": "Getting started"
+  },
+  "help.topic.start.summary": {
+    "message": "Installing, first launch, the menu bar icon and permissions"
+  },
+  "help.topic.snap.title": {
+    "message": "Edge grid snapping"
+  },
+  "help.topic.snap.summary": {
+    "message": "Rest on a window edge, pick cells in the palette and snap the window"
+  },
+  "help.topic.layouts.title": {
+    "message": "Saving and restoring layouts"
+  },
+  "help.topic.layouts.summary": {
+    "message": "Window arrangements that remember their Desktop, shortcuts and undo"
+  },
+  "help.topic.trouble.title": {
+    "message": "Troubleshooting"
+  },
+  "help.topic.trouble.summary": {
+    "message": "No palette, permission problems, Desktop switching and helper errors"
+  },
+  "help.topic.support.title": {
+    "message": "Get support"
+  },
+  "help.topic.support.summary": {
+    "message": "How to contact us and what to include"
+  },
+  "help.topic.dev.title": {
+    "message": "Developer docs"
+  },
+  "help.topic.dev.summary": {
+    "message": "Architecture, helper protocol and design decisions"
+  },
+  "help.title": {
+    "message": "How can we help?"
+  },
+  "help.pageTitle": {
+    "message": "magWin Help"
+  },
+  "help.search.label": {
+    "message": "Search help"
+  },
+  "help.search.placeholder": {
+    "message": "Search for answers or browse the topics below"
+  },
+  "help.search.empty": {
+    "message": "No results."
+  },
+  "help.support.prompt": {
+    "message": "Didn’t find what you need?"
+  },
+  "help.support.button": {
+    "message": "Get Support"
+  }
+}

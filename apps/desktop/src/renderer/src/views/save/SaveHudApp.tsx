@@ -3,17 +3,9 @@ import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react
 import type { MagWinApi } from '../../../../shared/api';
 import { useApi } from '../../api/ApiContext';
 import { LayoutPreview } from '../../components/LayoutPreview';
-import { errorMessage } from '../../i18n/ko';
+import { errorMessage } from '../../../../shared/i18n';
+import { useI18n } from '../../i18n/I18nContext';
 import './save.css';
-
-export function defaultLayoutName(now: Date): string {
-  const time = now.toLocaleTimeString('ko-KR', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  });
-  return `${String(now.getMonth() + 1)}월 ${String(now.getDate())}일 ${time}`;
-}
 
 interface Capture {
   readonly draftId: string;
@@ -23,6 +15,7 @@ interface Capture {
 interface CaptureState {
   readonly capture: Capture | null;
   readonly included: ReadonlySet<string>;
+  /** Error code, translated when rendered. */
   readonly error: string | null;
 }
 
@@ -44,7 +37,7 @@ function useCapture(api: MagWinApi, scope: CaptureScope) {
               included: new Set(response.draft.entries.filter((e) => e.included).map((e) => e.key)),
               error: null,
             }
-          : { ...EMPTY, error: errorMessage(response.code) },
+          : { ...EMPTY, error: response.code },
       );
     });
     return () => {
@@ -65,8 +58,9 @@ function ScopeToggle(props: {
   scope: CaptureScope;
   onChange: (scope: CaptureScope) => void;
 }): ReactNode {
+  const { t } = useI18n();
   return (
-    <div className="segmented" role="radiogroup" aria-label="저장 범위">
+    <div className="segmented" role="radiogroup" aria-label={t.save.scope}>
       {(['all', 'currentDesktop'] as const).map((value) => (
         <button
           key={value}
@@ -78,7 +72,7 @@ function ScopeToggle(props: {
             props.onChange(value);
           }}
         >
-          {value === 'all' ? '모든 Desktop' : '현재 Desktop만'}
+          {value === 'all' ? t.save.scopeAll : t.save.scopeCurrent}
         </button>
       ))}
     </div>
@@ -96,8 +90,9 @@ function EntryList(props: {
   included: ReadonlySet<string>;
   onToggle: (key: string) => void;
 }): ReactNode {
+  const { t } = useI18n();
   return (
-    <ul className="entries" aria-label="저장할 창">
+    <ul className="entries" aria-label={t.save.windows}>
       {props.entries.map((entry) => (
         <li key={entry.key}>
           <label>
@@ -109,7 +104,7 @@ function EntryList(props: {
               }}
             />
             <span className="app">{entry.window.app.name}</span>
-            <span className="title muted">{entry.window.title ?? '제목 없음'}</span>
+            <span className="title muted">{entry.window.title ?? t.save.untitled}</span>
             <span className="desktop muted">{desktopLabel(entry)}</span>
           </label>
         </li>
@@ -155,7 +150,7 @@ function useSave(api: MagWinApi, capture: Capture | null, included: ReadonlySet<
       if (result.ok) {
         api.windows.closeSelf();
       } else {
-        setSaveError(errorMessage(result.code));
+        setSaveError(result.code);
       }
     },
     [api, capture, included],
@@ -169,9 +164,10 @@ function useSave(api: MagWinApi, capture: Capture | null, included: ReadonlySet<
  */
 export function SaveHudApp({ now = new Date() }: { now?: Date }): ReactNode {
   const api = useApi();
+  const { t } = useI18n();
   const [scope, setScope] = useState<CaptureScope>('all');
   const { capture, included, error, toggle } = useCapture(api, scope);
-  const [name, setName] = useState(() => defaultLayoutName(now));
+  const [name, setName] = useState(() => t.save.defaultName(now));
   const { save, saving, saveError } = useSave(api, capture, included);
 
   const { entries, displays, skippedFullscreen } = captureView(capture);
@@ -181,6 +177,10 @@ export function SaveHudApp({ now = new Date() }: { now?: Date }): ReactNode {
   );
   const shownError = saveError ?? error;
   const canSave = isSavable({ capture, included, name, saving });
+
+  useEffect(() => {
+    document.title = t.save.title;
+  }, [t]);
 
   return (
     <form
@@ -194,22 +194,22 @@ export function SaveHudApp({ now = new Date() }: { now?: Date }): ReactNode {
       }}
     >
       <header>
-        <h1>현재 레이아웃 저장</h1>
+        <h1>{t.save.title}</h1>
         <ScopeToggle scope={scope} onChange={setScope} />
       </header>
       <LayoutPreview displays={displays} windows={chosen} />
       <EntryList entries={entries} included={included} onToggle={toggle} />
       {skippedFullscreen > 0 ? (
-        <p className="muted">전체 화면 창 {skippedFullscreen}개는 저장하지 않아요.</p>
+        <p className="muted">{t.save.skippedFullscreen(skippedFullscreen)}</p>
       ) : null}
       {shownError === null ? null : (
         <p className="error-text" role="alert">
-          {shownError}
+          {errorMessage(t, shownError)}
         </p>
       )}
       <footer>
         <input
-          aria-label="레이아웃 이름"
+          aria-label={t.save.name}
           value={name}
           maxLength={80}
           autoFocus
@@ -223,10 +223,10 @@ export function SaveHudApp({ now = new Date() }: { now?: Date }): ReactNode {
             api.windows.closeSelf();
           }}
         >
-          취소
+          {t.common.cancel}
         </button>
         <button type="submit" className="primary" disabled={!canSave}>
-          저장
+          {t.common.save}
         </button>
       </footer>
     </form>

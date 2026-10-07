@@ -12,6 +12,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import type { PaletteState } from '../../../../shared/contracts';
 import { PresetGrid } from './PresetGrid';
 import { ResizeArrows } from './ResizeArrows';
+import { useI18n } from '../../i18n/I18nContext';
 
 function place(rect: Rect): CSSProperties {
   return { left: rect.x, top: rect.y, width: rect.width, height: rect.height };
@@ -43,6 +44,7 @@ export interface PaletteSlotViewProps {
 /** One component: a header (title left, apply right), the grid, and arrows for the custom grid. */
 export function PaletteSlotView(props: PaletteSlotViewProps): ReactNode {
   const { slot, preset, selection } = props;
+  const { t } = useI18n();
   const range = selection?.presetId === preset.id ? selection.range : null;
   return (
     <div className="slot">
@@ -66,7 +68,7 @@ export function PaletteSlotView(props: PaletteSlotViewProps): ReactNode {
         title={range === null ? undefined : resultSize(props.state, preset, range)}
         onClick={props.onApply}
       >
-        적용
+        {t.palette.apply}
       </button>
       {slot.resize === null ? null : (
         <ResizeArrows

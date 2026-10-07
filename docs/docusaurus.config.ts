@@ -9,7 +9,11 @@ const config: Config = {
   url: 'https://docs.magwin.local',
   baseUrl: '/',
   onBrokenLinks: 'throw',
-  i18n: { defaultLocale: 'ko', locales: ['ko'] },
+  i18n: {
+    defaultLocale: 'ko',
+    locales: ['ko', 'en'],
+    localeConfigs: { ko: { label: '한국어' }, en: { label: 'English' } },
+  },
   markdown: { mermaid: true, hooks: { onBrokenMarkdownLinks: 'throw' } },
   themes: ['@docusaurus/theme-mermaid'],
   presets: [
@@ -32,6 +36,7 @@ const config: Config = {
       items: [
         { type: 'docSidebar', sidebarId: 'docs', position: 'left', label: '문서' },
         { to: '/help', position: 'left', label: '도움말' },
+        { type: 'localeDropdown', position: 'right' },
       ],
     },
     footer: {

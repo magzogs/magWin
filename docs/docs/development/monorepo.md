@@ -12,6 +12,7 @@ magWin/
 │   ├── electron-builder.yml      # 패키징
 │   └── src/
 │       ├── shared/               # main·preload·renderer 공용: 채널, zod 계약, MagWinApi
+│       │   └── i18n/             # ko.ts(원본) · en.ts · messagesFor
 │       ├── preload/              # contextBridge — 허용 목록 채널만
 │       ├── main/
 │       │   ├── domain/           # 포트(인터페이스)와 Emitter — 의존성 없음
@@ -27,7 +28,7 @@ magWin/
 │               ├── api/          # ApiContext (MagWinApi 주입)
 │               ├── views/        # palette · ghost · manager · save · progress
 │               ├── components/   # LayoutPreview …
-│               ├── i18n/ko.ts    # 모든 문구와 오류 코드 번역
+│               ├── i18n/         # I18nProvider · useI18n (언어 선택 반영)
 │               └── preview/      # 브라우저 미리보기용 가짜 API
 ├── packages/core/                # 순수 TS 도메인 (zod만 의존)
 │   └── src/ geometry · grid · selection · palette · settings · system · layouts · restore

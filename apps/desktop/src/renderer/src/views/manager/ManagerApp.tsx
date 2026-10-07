@@ -1,6 +1,8 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import type { MainTab } from '../../../../shared/contracts';
+import type { Messages } from '../../../../shared/i18n';
 import { useApi } from '../../api/ApiContext';
+import { useI18n } from '../../i18n/I18nContext';
 import { GridTab } from './GridTab';
 import { HelpTab } from './HelpTab';
 import { LayoutsTab } from './LayoutsTab';
@@ -8,17 +10,18 @@ import './manager.css';
 import { StatusTab } from './StatusTab';
 import { SupportTab } from './SupportTab';
 
-const TABS: readonly { readonly id: MainTab; readonly label: string }[] = [
-  { id: 'layouts', label: '레이아웃' },
-  { id: 'grid', label: '그리드 설정' },
-  { id: 'status', label: '권한 및 상태' },
-  { id: 'help', label: 'magWin 도움말' },
-  { id: 'support', label: '지원 받기' },
+const TABS: readonly { readonly id: MainTab; readonly label: keyof Messages['tabs'] }[] = [
+  { id: 'layouts', label: 'layouts' },
+  { id: 'grid', label: 'settings' },
+  { id: 'status', label: 'status' },
+  { id: 'help', label: 'help' },
+  { id: 'support', label: 'support' },
 ];
 
 /** The main window: layouts manager, grid settings, system status, help and support. */
 export function ManagerApp({ initialTab }: { initialTab: MainTab }): ReactNode {
   const api = useApi();
+  const { t } = useI18n();
   const [tab, setTab] = useState<MainTab>(initialTab);
 
   useEffect(() => api.windows.onNavigate(setTab), [api]);
@@ -37,7 +40,7 @@ export function ManagerApp({ initialTab }: { initialTab: MainTab }): ReactNode {
               setTab(item.id);
             }}
           >
-            {item.label}
+            {t.tabs[item.label]}
           </button>
         ))}
       </nav>

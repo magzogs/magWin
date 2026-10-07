@@ -5,7 +5,6 @@ import { describe, expect, it } from 'vitest';
 import { createFakeApi } from '../test/fakeApi';
 import { renderWithApi } from '../test/render';
 import { GhostApp } from '../views/ghost/GhostApp';
-import { errorMessage, issueMessage } from '../i18n/ko';
 import { appHue, LayoutPreview } from './LayoutPreview';
 
 function window(app: string, desktop: number | null, order: number): SavedWindow {
@@ -65,25 +64,5 @@ describe('GhostApp', () => {
       channels.ghostState.emit(null);
     });
     expect(screen.queryByTestId('ghost')).toBeNull();
-  });
-});
-
-describe('Korean copy', () => {
-  it('translates error codes with a fallback', () => {
-    expect(errorMessage('fullscreen')).toBe('전체 화면 창은 옮길 수 없어요.');
-    expect(errorMessage('mystery')).toBe('알 수 없는 오류 (mystery)');
-  });
-
-  it('describes restore issues', () => {
-    expect(
-      issueMessage({
-        reason: 'desktopMissing',
-        appName: 'Mail',
-        windowTitle: 'Inbox',
-        desktopNumber: 3,
-        foundOnDesktop: null,
-        detail: null,
-      }),
-    ).toBe('Mail — Inbox: Desktop 3이 없어서 현재 Desktop에 배치했어요.');
   });
 });

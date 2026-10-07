@@ -107,7 +107,7 @@ describe('GridTab', () => {
     expect(screen.queryByRole('checkbox', { name: '엣지 스냅 사용' })).toBeNull();
     fireEvent.click(screen.getByRole('tab', { name: '레이아웃' }));
     expect(screen.getByRole('tab', { name: '레이아웃' })).toHaveAttribute('aria-selected', 'true');
-    expect(screen.getByRole('checkbox', { name: '로그인 시 자동 실행' })).toBeInTheDocument();
+    expect(screen.getByRole('checkbox', { name: /실행 중이 아닌 앱 실행/ })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: '그리드 추가' })).toBeNull();
   });
 

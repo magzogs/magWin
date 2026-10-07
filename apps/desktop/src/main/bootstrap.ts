@@ -1,8 +1,9 @@
-import { EDGES, type AppSettings } from '@magwin/core';
+import { EDGES, resolveLocale, type AppSettings } from '@magwin/core';
 import { app, session } from 'electron';
 import { join } from 'node:path';
 import { Channels } from '../shared/channels';
 import type { MainTab } from '../shared/contracts';
+import { messagesFor } from '../shared/i18n';
 import { LayoutCaptureService } from './application/layouts/LayoutCaptureService';
 import { LayoutLibrary } from './application/layouts/LayoutLibrary';
 import { LayoutRestoreService } from './application/layouts/LayoutRestoreService';
@@ -182,6 +183,8 @@ function createUi(services: Services): Ui {
       status: services.status.current(),
       edgeSnapEnabled: settings.trigger.enabled,
       hotkeysEnabled: settings.layouts.hotkeysEnabled,
+      text: messagesFor(resolveLocale(settings.general.language, app.getPreferredSystemLanguages()))
+        .tray,
     };
   };
   return { main, saveHud, tray, shortcuts, model };

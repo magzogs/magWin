@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { DEFAULT_PRESETS, GRID_LIMITS } from '../grid/presets';
 import { DEFAULT_PALETTE_METRICS } from '../palette/layout';
 import { appError, err, ok, type Result } from '../result';
+import { languagePreferenceSchema } from './language';
 
 export const modifierSchema = z.enum(['none', 'option', 'control', 'command', 'shift']);
 export type TriggerModifier = z.infer<typeof modifierSchema>;
@@ -42,9 +43,19 @@ const layoutSettingsSchema = z.object({
   excludedBundleIds: z.array(z.string().min(1)).max(200),
 });
 
-const generalSettingsSchema = z.object({
+const generalFields = {
   launchAtLogin: z.boolean(),
+  language: languagePreferenceSchema,
+};
+
+/** Settings files written before `language` existed get the default instead of a reset. */
+const generalSettingsSchema = z.object({
+  ...generalFields,
+  language: languagePreferenceSchema.default('system'),
 });
+
+/** No defaults here: a patch that omits `language` must not reset it. */
+const generalPatchSchema = z.object(generalFields).partial();
 
 export const settingsSchema = z.object({
   schemaVersion: z.literal(1),
@@ -62,7 +73,7 @@ export const settingsPatchSchema = z.object({
   trigger: triggerSettingsSchema.partial().optional(),
   palette: paletteSettingsSchema.partial().optional(),
   layouts: layoutSettingsSchema.partial().optional(),
-  general: generalSettingsSchema.partial().optional(),
+  general: generalPatchSchema.optional(),
 });
 
 /** One level deep partial update, e.g. `{ trigger: { dwellMs: 500 } }`. */
@@ -83,7 +94,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
     hideDelayMs: 450,
   },
   layouts: { launchMissingApps: true, hotkeysEnabled: true, excludedBundleIds: [] },
-  general: { launchAtLogin: false },
+  general: { launchAtLogin: false, language: 'system' },
 };
 
 type SectionKey = Exclude<keyof AppSettings, 'schemaVersion'>;

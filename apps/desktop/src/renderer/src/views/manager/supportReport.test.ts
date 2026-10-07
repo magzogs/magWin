@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { readyStatus, testAppInfo } from '../../test/fakeApi';
-import { HELP_QUESTIONS, HELP_TOPICS, searchHelp } from './helpContent';
+import { ko } from '../../../../shared/i18n/ko';
+import { helpQuestions, helpTopics, searchHelp } from './helpContent';
+
+const HELP_TOPICS = helpTopics(ko);
+const HELP_QUESTIONS = helpQuestions(ko);
 import { buildDiagnostics } from './supportReport';
 
 describe('buildDiagnostics', () => {

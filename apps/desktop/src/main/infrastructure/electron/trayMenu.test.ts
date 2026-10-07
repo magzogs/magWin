@@ -1,6 +1,8 @@
 import type { MenuItemConstructorOptions } from 'electron';
 import { describe, expect, it, vi } from 'vitest';
 import type { SystemStatus } from '../../../shared/contracts';
+import { en } from '../../../shared/i18n/en';
+import { ko } from '../../../shared/i18n/ko';
 import { rasterizeGridGlyph } from './trayIcon';
 import { buildTrayMenu, type TrayActions, type TrayModel } from './trayMenu';
 
@@ -45,6 +47,7 @@ function model(overrides: Partial<TrayModel> = {}): TrayModel {
     status: readyStatus,
     edgeSnapEnabled: true,
     hotkeysEnabled: true,
+    text: ko.tray,
     ...overrides,
   };
 }
@@ -122,5 +125,13 @@ describe('rasterizeGridGlyph', () => {
     click(menu.find((item) => item.label === 'magWin 도움말…'));
     click(menu.find((item) => item.label === '지원 받기…'));
     expect(a.calls).toEqual(['open help', 'open support']);
+  });
+
+  it('uses the text of the resolved language', () => {
+    const menu = buildTrayMenu(model({ text: en.tray }), actions());
+    const labels = menu.map((item) => item.label);
+    expect(labels).toContain('Save current layout…');
+    expect(labels).toContain('Coding  ·  3 windows');
+    expect(labels).toContain('Quit magWin');
   });
 });

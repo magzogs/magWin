@@ -63,7 +63,8 @@ export class SaveHudWindow {
       height: 600,
       minWidth: 640,
       minHeight: 460,
-      title: '레이아웃 저장',
+      // The renderer sets the localized title once it loads.
+      title: 'magWin',
       show: false,
       alwaysOnTop: true,
       fullscreenable: false,

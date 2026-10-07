@@ -1,42 +1,43 @@
 import type { ReactNode } from 'react';
 import type { HotkeySummary, SystemStatus } from '../../../../shared/contracts';
+import type { Messages } from '../../../../shared/i18n';
 import { useApi } from '../../api/ApiContext';
-import { useLive } from './useLive';
+import { useI18n } from '../../i18n/I18nContext';
+import { useLive } from '../../api/useLive';
 
 function Badge({ ok, label }: { ok: boolean; label: string }): ReactNode {
   return <span className={`badge ${ok ? 'ok' : 'bad'}`}>{label}</span>;
 }
 
-function helperText(status: SystemStatus): string {
+function helperText(t: Messages, status: SystemStatus): string {
   switch (status.helper) {
     case 'ready':
-      return '실행 중';
+      return t.status.helperReady;
     case 'starting':
-      return '시작하는 중…';
+      return t.status.helperStarting;
     case 'failed':
-      return status.helperMessage ?? '실행하지 못했어요';
+      return status.helperMessage ?? t.status.helperFailed;
   }
 }
 
-function shortcutText(hotkeys: HotkeySummary): string {
+function shortcutText(t: Messages, hotkeys: HotkeySummary): string {
   const direct =
     hotkeys.directDesktops.length > 0
-      ? `"Desktop N으로 전환" 켜짐: ${hotkeys.directDesktops.join(', ')}`
-      : '"Desktop N으로 전환" 꺼짐';
-  const move =
-    hotkeys.moveLeft && hotkeys.moveRight
-      ? '"왼쪽/오른쪽 Space로 이동" 켜짐'
-      : '"왼쪽/오른쪽 Space로 이동" 꺼짐';
+      ? t.status.directOn(hotkeys.directDesktops.join(', '))
+      : t.status.directOff;
+  const move = hotkeys.moveLeft && hotkeys.moveRight ? t.status.moveOn : t.status.moveOff;
   return `${direct} · ${move}`;
 }
 
 /** Permissions and platform prerequisites, with direct links to System Settings. */
 export function StatusTab(): ReactNode {
   const api = useApi();
+  const { t } = useI18n();
   const status = useLive(api.system.status, api.system.onStatus);
   if (status === null) {
-    return <p className="muted">확인하는 중…</p>;
+    return <p className="muted">{t.status.checking}</p>;
   }
+  const s = t.status;
   const hotkeys = status.hotkeys;
   const canSwitch =
     hotkeys !== null &&
@@ -45,21 +46,16 @@ export function StatusTab(): ReactNode {
     <section className="status-tab">
       <article className="card">
         <h3>
-          네이티브 도우미 <Badge ok={status.helper === 'ready'} label={helperText(status)} />
+          {s.helper} <Badge ok={status.helper === 'ready'} label={helperText(t, status)} />
         </h3>
-        <p className="muted">
-          다른 앱의 창을 찾고 옮기는 작은 Swift 프로그램이에요. 앱과 함께 실행돼요.
-        </p>
+        <p className="muted">{s.helperBody}</p>
       </article>
       <article className="card">
         <h3>
-          손쉬운 사용{' '}
-          <Badge ok={status.accessibility} label={status.accessibility ? '허용됨' : '필요'} />
+          {s.accessibility}{' '}
+          <Badge ok={status.accessibility} label={status.accessibility ? s.allowed : s.required} />
         </h3>
-        <p className="muted">
-          창을 옮기고 Desktop을 전환하려면 시스템 설정 › 개인정보 보호 및 보안 › 손쉬운 사용에서
-          magWin을 허용해야 해요. 개발 중(pnpm dev)에는 명령을 실행한 터미널 앱을 허용해 주세요.
-        </p>
+        <p className="muted">{s.accessibilityBody}</p>
         {status.accessibility ? null : (
           <div className="inline">
             <button
@@ -69,7 +65,7 @@ export function StatusTab(): ReactNode {
                 void api.system.requestAccessibility();
               }}
             >
-              권한 요청
+              {s.requestPermission}
             </button>
             <button
               type="button"
@@ -77,18 +73,17 @@ export function StatusTab(): ReactNode {
                 void api.system.openSettings('accessibility');
               }}
             >
-              시스템 설정 열기
+              {s.openSystemSettings}
             </button>
           </div>
         )}
       </article>
       <article className="card">
         <h3>
-          Desktop 전환 단축키 <Badge ok={canSwitch} label={canSwitch ? '사용 가능' : '꺼짐'} />
+          {s.shortcuts} <Badge ok={canSwitch} label={canSwitch ? s.available : s.off} />
         </h3>
         <p className="muted">
-          macOS에는 Desktop을 옮기는 공개 API가 없어서, 키보드 설정 › 키보드 단축키 › Mission
-          Control의 단축키를 magWin이 대신 눌러요. {hotkeys === null ? '' : shortcutText(hotkeys)}
+          {s.shortcutsBody} {hotkeys === null ? '' : shortcutText(t, hotkeys)}
         </p>
         <button
           type="button"
@@ -96,25 +91,22 @@ export function StatusTab(): ReactNode {
             void api.system.openSettings('keyboardShortcuts');
           }}
         >
-          키보드 단축키 설정 열기
+          {s.openShortcuts}
         </button>
       </article>
       <article className="card">
         <h3>
-          화면 기록 (선택){' '}
-          <Badge ok={status.screenRecording} label={status.screenRecording ? '허용됨' : '꺼짐'} />
+          {s.screenRecording}{' '}
+          <Badge ok={status.screenRecording} label={status.screenRecording ? s.allowed : s.off} />
         </h3>
-        <p className="muted">
-          다른 Desktop에 있는 창의 제목을 읽을 때만 쓰여요. 없어도 저장·복원은 동작하지만, 같은 앱의
-          창이 여러 개일 때 짝을 맞추는 정확도가 떨어질 수 있어요.
-        </p>
+        <p className="muted">{s.screenRecordingBody}</p>
         <button
           type="button"
           onClick={() => {
             void api.system.openSettings('screenRecording');
           }}
         >
-          화면 기록 설정 열기
+          {s.openScreenRecording}
         </button>
       </article>
     </section>

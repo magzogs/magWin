@@ -2,7 +2,8 @@ import { replacePreset, resizePreset, type GridPreset, type ResizeDirection } fr
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import type { PaletteState } from '../../../../shared/contracts';
 import { useApi } from '../../api/ApiContext';
-import { errorMessage } from '../../i18n/ko';
+import { errorMessage } from '../../../../shared/i18n';
+import { useI18n } from '../../i18n/I18nContext';
 import './palette.css';
 import { PaletteSlotView } from './PaletteSlotView';
 import { usePaletteSelection } from './usePaletteSelection';
@@ -15,6 +16,8 @@ import { usePaletteSelection } from './usePaletteSelection';
 export function PaletteApp(): ReactNode {
   const api = useApi();
   const [state, setState] = useState<PaletteState | null>(null);
+  const { t } = useI18n();
+  /** Error code, translated when rendered. */
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const { selection, pointerDown, pointerEnter, clear } = usePaletteSelection(api.palette);
@@ -55,7 +58,7 @@ export function PaletteApp(): ReactNode {
       );
       void api.palette.resizeCustom({ cols: next.cols, rows: next.rows }).then((result) => {
         if (!result.ok) {
-          setError(errorMessage(result.code));
+          setError(result.code);
         }
       });
     },
@@ -72,7 +75,7 @@ export function PaletteApp(): ReactNode {
       range: selection.range,
     });
     setBusy(false);
-    setError(result.ok ? null : errorMessage(result.code));
+    setError(result.ok ? null : result.code);
   }, [api, busy, selection]);
 
   useEffect(() => {
@@ -100,7 +103,7 @@ export function PaletteApp(): ReactNode {
     <div
       className={`palette ${state.layout.orientation}`}
       style={{ width: state.layout.size.width, height: state.layout.size.height }}
-      aria-label={`${state.appName} 창 배치`}
+      aria-label={t.palette.label(state.appName)}
     >
       {state.layout.slots.map((slot) => {
         const preset = state.presets.find((p) => p.id === slot.presetId);
@@ -126,7 +129,7 @@ export function PaletteApp(): ReactNode {
       })}
       {error === null ? null : (
         <div className="palette-error" role="alert">
-          {error}
+          {errorMessage(t, error)}
         </div>
       )}
     </div>
