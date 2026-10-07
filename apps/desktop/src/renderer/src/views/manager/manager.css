@@ -32,6 +32,12 @@
   padding: 20px 24px 32px;
 }
 
+/* The window width is fixed; every tab is a centered column inside it. */
+.tab-body > * {
+  max-width: 760px;
+  margin-inline: auto;
+}
+
 .section-head {
   display: flex;
   justify-content: space-between;
@@ -133,7 +139,6 @@ kbd {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  max-width: 720px;
 }
 
 fieldset.card {

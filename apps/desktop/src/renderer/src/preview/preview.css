@@ -61,3 +61,11 @@
   width: 380px;
   height: 360px;
 }
+
+/* Mirrors the main window's fixed width (main/infrastructure/electron/windowSizes.ts). */
+.preview-stage.manager {
+  width: 900px;
+  margin: 0 auto;
+  border-inline: 1px solid var(--border);
+  background: var(--bg);
+}

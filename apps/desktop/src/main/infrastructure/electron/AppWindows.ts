@@ -4,6 +4,7 @@ import { Channels } from '../../../shared/channels';
 import type { MainTab } from '../../../shared/contracts';
 import type { RestoreProgressView } from '../../domain/ui';
 import { hardenWebContents, loadView, secureWebPreferences, type DockPresence } from './views';
+import { mainWindowSizeOptions } from './windowSizes';
 
 function bringToFront(window: BrowserWindow): void {
   app.focus({ steal: true });
@@ -27,10 +28,7 @@ export class MainWindow {
       return;
     }
     const window = new BrowserWindow({
-      width: 980,
-      height: 720,
-      minWidth: 820,
-      minHeight: 560,
+      ...mainWindowSizeOptions(),
       title: 'magWin',
       show: false,
       webPreferences: secureWebPreferences(),
