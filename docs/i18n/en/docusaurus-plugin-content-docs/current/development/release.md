@@ -77,7 +77,7 @@ Release files ship through the Releases of this repository, [magzogs/orgawin](ht
 
 1. Bump `version` in `apps/desktop/package.json` (for example `0.1.0` → `0.1.1`). Auto-update compares this value.
 2. Check with `gh auth status` that the account can write to `magzogs/orgawin`.
-3. Run `pnpm release:publish`. After signing and notarization it uploads the dmg, zip and `latest-mac.yml` as a **draft** release `v<version>`. The token is read with `gh auth token` only while it runs.
+3. Run `pnpm release:publish`. If there is no `v<version>` draft yet it first creates one with `gh` (otherwise electron-builder uploads the dmg and zip concurrently and races into two drafts). After signing and notarization it uploads the dmg, zip and `latest-mac.yml` as a **draft** release `v<version>`. The token is read with `gh auth token` only while it runs.
 4. On GitHub, check the draft's files and notes, then press **Publish release**. From then on users can download it and installed apps find the update.
 
 `pnpm package` and `pnpm release` pass `--publish never` and upload nothing.

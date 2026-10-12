@@ -77,7 +77,7 @@ xcrun stapler validate apps/desktop/release/mac-arm64/OrgaWin.app
 
 1. `apps/desktop/package.json`의 `version`을 올립니다(예: `0.1.0` → `0.1.1`). 자동 업데이트는 이 값을 비교합니다.
 2. `gh auth status`로 `magzogs/orgawin`에 쓸 수 있는 계정인지 확인합니다.
-3. `pnpm release:publish`를 실행합니다. 서명·공증 후 dmg, zip, `latest-mac.yml`이 `v<version>` **초안** 릴리스로 올라갑니다. 토큰은 `gh auth token`으로 실행할 때만 읽습니다.
+3. `pnpm release:publish`를 실행합니다. `v<version>` 초안이 없으면 `gh`로 먼저 만들고(electron-builder가 dmg·zip을 동시에 올리며 초안을 두 개 만드는 경쟁을 막음), 서명·공증 후 dmg, zip, `latest-mac.yml`이 `v<version>` **초안** 릴리스로 올라갑니다. 토큰은 `gh auth token`으로 실행할 때만 읽습니다.
 4. GitHub에서 초안의 파일과 변경 내역을 확인하고 **Publish release**를 누릅니다. 이때부터 사용자가 받을 수 있고, 설치된 앱이 업데이트를 찾습니다.
 
 `pnpm package`와 `pnpm release`는 `--publish never`라 아무것도 올리지 않습니다.
