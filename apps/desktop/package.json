@@ -1,6 +1,6 @@
 {
   "name": "@magwin/desktop",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "OrgaWin desktop app: edge grid snapping and Desktop-aware layout snapshots",
   "author": "magzog",
