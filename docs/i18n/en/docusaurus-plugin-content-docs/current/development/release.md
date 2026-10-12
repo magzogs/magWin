@@ -11,7 +11,8 @@ OrgaWin uses private APIs (CGS, `_AXUIElementGetWindow`), so it **cannot be publ
 ## Building
 
 ```bash
-pnpm package            # helper release + bundle + electron-builder (dmg, zip)
+pnpm package            # helper release + bundle + electron-builder (dmg, zip), no notarization
+pnpm release            # same, plus notarization (see "Signing and notarization" below)
 pnpm --filter @magwin/desktop package:dir   # unsigned .app only (quick check)
 ```
 
@@ -47,7 +48,27 @@ macOS remembers Accessibility approval by binding it to the **code signature**.
 
 - An ad-hoc signature (no certificate) changes with every build, so the approval appears to disappear. Use the same certificate (Apple Development or Developer ID) for test builds too.
 - The helper binary must be signed with the same certificate as the app. electron-builder also signs the executables under `Contents/Resources/bin`.
-- Notarization: set the `APPLE_ID`, `APPLE_APP_SPECIFIC_PASSWORD`, and `APPLE_TEAM_ID` environment variables and change `mac.notarize` to `true`.
+- Release builds are signed with a **Developer ID Application** certificate. electron-builder finds it in the keychain automatically.
+
+## Signing and notarization
+
+`mac.notarize` is `true`, but when no credentials are in the environment electron-builder only logs a warning and skips notarization. So `pnpm package` keeps working with just the certificate.
+
+Once, store the notarization credentials as a keychain profile. Create an app-specific password at appleid.apple.com, then run the command below; it asks for your Apple ID, team ID, and the password. The values live only in the keychain, so no password sits in the repository or shell config.
+
+```bash
+xcrun notarytool store-credentials orgawin-notary
+```
+
+`pnpm release` runs `pnpm package` with `APPLE_KEYCHAIN_PROFILE=orgawin-notary`, which signs, notarizes, and staples. Check the result with:
+
+```bash
+codesign -dv --verbose=2 apps/desktop/release/mac-arm64/OrgaWin.app
+spctl -a -vv apps/desktop/release/mac-arm64/OrgaWin.app
+xcrun stapler validate apps/desktop/release/mac-arm64/OrgaWin.app
+```
+
+`spctl` should report `source=Notarized Developer ID`.
 
 ## Architecture
 

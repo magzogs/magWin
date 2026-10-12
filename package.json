@@ -16,6 +16,7 @@
     "build": "pnpm build:helper && pnpm --filter @magwin/desktop build",
     "build:docs": "pnpm --filter @magwin/docs build",
     "package": "pnpm build && pnpm --filter @magwin/desktop package",
+    "release": "APPLE_KEYCHAIN_PROFILE=orgawin-notary pnpm package",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
