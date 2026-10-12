@@ -14,7 +14,8 @@ public final class EdgeWatcher {
     private var paused = false
     private var tracker = DwellTracker(dwell: 0.35)
     private var monitor: Any?
-    private var visibleFrames: [Rect] = []
+    private var screens: [ScreenArea] = []
+    private var dockSide: Edge?
     private var cachedWindows: [WindowCandidate] = []
     private var cacheTime: TimeInterval = 0
     private var dwellCheck: DispatchWorkItem?
@@ -59,7 +60,8 @@ public final class EdgeWatcher {
     private func handle(_ event: NSEvent) {
         switch event.type {
         case .leftMouseUp, .rightMouseUp, .otherMouseUp:
-            cacheTime = 0  // a drag may have moved or resized windows
+            // A drag may have moved or resized windows, or a click may have moved the Dock.
+            refreshScreens()
         default:
             break
         }
@@ -76,7 +78,8 @@ public final class EdgeWatcher {
         let location = CGEvent(source: nil)?.location ?? .zero
         let point = Point(x: location.x, y: location.y)
         let hit = EdgeDetector.hit(
-            at: point, windows: candidates(now: now), visibleFrames: visibleFrames, band: config.bandPx,
+            at: point, windows: candidates(now: now), screens: screens, dockSide: dockSide,
+            band: config.bandPx,
             edges: Set(config.edges))
         if let fire = tracker.observe(hit: hit, point: point, now: now, gate: gate()) {
             onFire(fire)
@@ -131,7 +134,8 @@ public final class EdgeWatcher {
     }
 
     private func refreshScreens() {
-        visibleFrames = displays.displays().map(\.visibleFrame)
+        screens = displays.displays().map { ScreenArea(frame: $0.frame, visibleFrame: $0.visibleFrame) }
+        dockSide = displays.dockSide()
         cacheTime = 0
     }
 }
