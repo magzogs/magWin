@@ -21,9 +21,25 @@ The key settings in `electron-builder.yml` are:
 | ---------------------------- | ----------------------------------------------------- |
 | `extraResources`             | Helper binary → `Contents/Resources/bin/MagWinHelper` |
 | `mac.extendInfo.LSUIElement` | `true` (menu bar app, no Dock icon)                   |
+| `mac.icon`                   | `build/icon.icns`                                     |
 | `mac.hardenedRuntime`        | `true`                                                |
 | `mac.entitlements`           | `build/entitlements.mac.plist`                        |
 | Sandbox                      | Not used (controls other apps, private APIs)          |
+
+## App Icon
+
+The source is `apps/desktop/build/icon.svg`: the docs logo (`docs/static/img/logo.svg`) placed on the macOS icon grid (1024px canvas, 824px shape). After editing it, regenerate `icon.png` (dev-mode Dock icon) and `icon.icns` (packaged app). Requires `brew install librsvg`.
+
+```bash
+cd apps/desktop/build
+rsvg-convert -w 1024 -h 1024 icon.svg -o icon.png
+mkdir -p /tmp/icon.iconset
+for s in 16 32 128 256 512; do
+  rsvg-convert -w $s -h $s icon.svg -o /tmp/icon.iconset/icon_${s}x${s}.png
+  rsvg-convert -w $((s*2)) -h $((s*2)) icon.svg -o /tmp/icon.iconset/icon_${s}x${s}@2x.png
+done
+iconutil -c icns /tmp/icon.iconset -o icon.icns
+```
 
 ## Signing and Permission Persistence
 

@@ -21,9 +21,25 @@ pnpm --filter @magwin/desktop package:dir   # 서명 없이 .app만 (빠른 확�
 | ---------------------------- | ----------------------------------------------------- |
 | `extraResources`             | 헬퍼 바이너리 → `Contents/Resources/bin/MagWinHelper` |
 | `mac.extendInfo.LSUIElement` | `true` (메뉴 막대 앱, Dock 아이콘 없음)               |
+| `mac.icon`                   | `build/icon.icns`                                     |
 | `mac.hardenedRuntime`        | `true`                                                |
 | `mac.entitlements`           | `build/entitlements.mac.plist`                        |
 | 샌드박스                     | 사용하지 않음 (다른 앱 제어·비공개 API)               |
+
+## 앱 아이콘
+
+원본은 `apps/desktop/build/icon.svg`입니다. 문서 로고(`docs/static/img/logo.svg`)를 macOS 아이콘 격자(1024px 캔버스, 824px 도형)에 맞춘 것입니다. 원본을 고치면 `icon.png`(개발 모드 Dock 아이콘)와 `icon.icns`(패키지 앱)를 다시 만드세요. `brew install librsvg`가 필요합니다.
+
+```bash
+cd apps/desktop/build
+rsvg-convert -w 1024 -h 1024 icon.svg -o icon.png
+mkdir -p /tmp/icon.iconset
+for s in 16 32 128 256 512; do
+  rsvg-convert -w $s -h $s icon.svg -o /tmp/icon.iconset/icon_${s}x${s}.png
+  rsvg-convert -w $((s*2)) -h $((s*2)) icon.svg -o /tmp/icon.iconset/icon_${s}x${s}@2x.png
+done
+iconutil -c icns /tmp/icon.iconset -o icon.icns
+```
 
 ## 서명과 권한 유지
 

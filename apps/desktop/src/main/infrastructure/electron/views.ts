@@ -77,6 +77,10 @@ export class DockPresence {
   windowOpened(): void {
     this.open += 1;
     void app.dock?.show();
+    // Packaged builds take the icon from the bundle; dev runs inside Electron.app.
+    if (!app.isPackaged) {
+      app.dock?.setIcon(join(app.getAppPath(), 'build', 'icon.png'));
+    }
   }
 
   windowClosed(): void {
