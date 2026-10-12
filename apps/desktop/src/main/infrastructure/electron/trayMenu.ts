@@ -2,7 +2,6 @@ import { SUPPORTED_LOCALES, type LanguagePreference, type LayoutSummary } from '
 import type { MenuItemConstructorOptions } from 'electron';
 import type { MainTab, SystemStatus, UpdateState } from '../../../shared/contracts';
 import { LANGUAGE_NAMES, type Messages } from '../../../shared/i18n';
-import { SPONSOR_NAMES, SPONSOR_PLATFORMS, type SponsorPlatform } from '../../../shared/links';
 
 export interface TrayModel {
   readonly layouts: readonly LayoutSummary[];
@@ -24,7 +23,6 @@ export interface TrayActions {
   setLanguage(language: LanguagePreference): void;
   checkForUpdates(): void;
   installUpdate(): void;
-  sponsor(platform: SponsorPlatform): void;
   quit(): void;
 }
 
@@ -143,18 +141,6 @@ function updateItems(model: TrayModel, actions: TrayActions): MenuItemConstructo
   }
 }
 
-function sponsorItem(model: TrayModel, actions: TrayActions): MenuItemConstructorOptions {
-  return {
-    label: model.text.sponsor,
-    submenu: SPONSOR_PLATFORMS.map((platform): MenuItemConstructorOptions => ({
-      label: SPONSOR_NAMES[platform],
-      click: () => {
-        actions.sponsor(platform);
-      },
-    })),
-  };
-}
-
 function helpItems(model: TrayModel, actions: TrayActions): MenuItemConstructorOptions[] {
   return [
     {
@@ -169,7 +155,6 @@ function helpItems(model: TrayModel, actions: TrayActions): MenuItemConstructorO
         actions.openMain('support');
       },
     },
-    sponsorItem(model, actions),
     ...updateItems(model, actions),
   ];
 }

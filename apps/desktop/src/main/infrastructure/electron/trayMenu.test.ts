@@ -30,7 +30,6 @@ function actions(): TrayActions & { calls: string[] } {
     setLanguage: (language) => calls.push(`language ${language}`),
     checkForUpdates: () => calls.push('check updates'),
     installUpdate: () => calls.push('install update'),
-    sponsor: (platform) => calls.push(`sponsor ${platform}`),
     quit: () => calls.push('quit'),
   };
 }
@@ -116,7 +115,7 @@ describe('buildTrayMenu', () => {
 describe('buildTrayMenu update entry', () => {
   const updateLabels = (update: TrayModel['update']): (string | undefined)[] => {
     const menu = buildTrayMenu(model({ update }), actions());
-    const support = menu.findIndex((item) => item.label === '♥ OrgaWin 후원하기');
+    const support = menu.findIndex((item) => item.label === '지원 받기…');
     return menu.slice(support + 1, support + 2).map((item) => item.label ?? item.type);
   };
 
@@ -188,16 +187,6 @@ describe('rasterizeGridGlyph', () => {
     click(menu.find((item) => item.label === 'OrgaWin 도움말…'));
     click(menu.find((item) => item.label === '지원 받기…'));
     expect(a.calls).toEqual(['open help', 'open support']);
-  });
-
-  it('offers each sponsor platform under one submenu', () => {
-    const a = actions();
-    const menu = buildTrayMenu(model(), a);
-    const sponsor = menu.find((item) => item.label === '♥ OrgaWin 후원하기');
-    const platforms = Array.isArray(sponsor?.submenu) ? sponsor.submenu : [];
-    expect(platforms.map((item) => item.label)).toEqual(['GitHub Sponsors', 'Buy Me a Coffee']);
-    platforms.forEach(click);
-    expect(a.calls).toEqual(['sponsor githubSponsors', 'sponsor buyMeACoffee']);
   });
 
   it('uses the text of the resolved language', () => {

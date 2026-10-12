@@ -1,10 +1,9 @@
 import { EDGES, resolveLocale, type AppSettings } from '@magwin/core';
-import { app, session, shell } from 'electron';
+import { app, session } from 'electron';
 import { join } from 'node:path';
 import { Channels } from '../shared/channels';
 import type { MainTab } from '../shared/contracts';
 import { messagesFor } from '../shared/i18n';
-import { SPONSOR_LINKS } from '../shared/links';
 import { LayoutCaptureService } from './application/layouts/LayoutCaptureService';
 import { LayoutLibrary } from './application/layouts/LayoutLibrary';
 import { LayoutRestoreService } from './application/layouts/LayoutRestoreService';
@@ -175,9 +174,6 @@ function createUi(services: Services): Ui {
     },
     installUpdate: () => {
       services.updates.installAndRestart();
-    },
-    sponsor: (platform) => {
-      void shell.openExternal(SPONSOR_LINKS[platform]);
     },
     quit: () => {
       app.quit();
