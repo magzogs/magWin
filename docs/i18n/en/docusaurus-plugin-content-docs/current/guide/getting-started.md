@@ -20,7 +20,7 @@ pnpm install        # dependencies + Electron binary
 pnpm dev            # build Swift helper → electron-vite dev mode
 ```
 
-Once running, a 2×2 grid icon appears in the menu bar. The Dock icon appears only while the settings window is open.
+Once running, an icon shaped like the OrgaWin logo (one large tile and five small ones) appears in the menu bar. The Dock icon appears only while the settings window is open.
 
 ## Permissions
 

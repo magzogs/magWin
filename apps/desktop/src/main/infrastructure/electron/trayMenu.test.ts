@@ -110,15 +110,20 @@ describe('buildTrayMenu', () => {
 });
 
 describe('rasterizeGridGlyph', () => {
-  it('draws four opaque tiles with transparent gaps', () => {
-    const size = 18;
+  it('draws the logo: one opaque large tile and translucent small tiles', () => {
+    const size = 36;
     const pixels = rasterizeGridGlyph(size);
     const alpha = (x: number, y: number) => pixels[(y * size + x) * 4 + 3];
     expect(pixels).toHaveLength(size * size * 4);
-    expect(alpha(5, 5)).toBe(255);
-    expect(alpha(12, 12)).toBe(255);
-    expect(alpha(9, 9)).toBe(0);
+    // Large tile (top left).
+    expect(alpha(11, 11)).toBe(255);
+    // Small tiles at 35% (right column and bottom row).
+    expect(alpha(29, 6)).toBe(89);
+    expect(alpha(6, 29)).toBe(89);
+    expect(alpha(29, 29)).toBe(89);
+    // Corner outside the tiles and the gap between the large tile and the right column.
     expect(alpha(0, 0)).toBe(0);
+    expect(alpha(24, 11)).toBe(0);
   });
 
   it('opens the help and support pages', () => {

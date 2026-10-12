@@ -76,11 +76,17 @@ export class DockPresence {
 
   windowOpened(): void {
     this.open += 1;
-    void app.dock?.show();
-    // Packaged builds take the icon from the bundle; dev runs inside Electron.app.
-    if (!app.isPackaged) {
-      app.dock?.setIcon(join(app.getAppPath(), 'build', 'icon.png'));
+    const dock = app.dock;
+    if (dock === undefined) {
+      return;
     }
+    // Packaged builds take the icon from the bundle; dev runs inside Electron.app. Showing the
+    // Dock tile resets it to the bundle icon, so the dev icon is set once show() has finished.
+    void dock.show().then(() => {
+      if (!app.isPackaged) {
+        dock.setIcon(join(app.getAppPath(), 'build', 'icon.png'));
+      }
+    });
   }
 
   windowClosed(): void {
