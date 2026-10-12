@@ -13,6 +13,7 @@ OrgaWin은 비공개 API(CGS, `_AXUIElementGetWindow`)를 쓰므로 **Mac App St
 ```bash
 pnpm package            # 헬퍼 release + 번들 + electron-builder (dmg, zip), 공증 없음
 pnpm release            # 위와 같고 공증까지 (아래 '서명과 공증' 참고)
+pnpm release:publish    # 공증 후 GitHub Releases에 초안으로 업로드 (아래 '공개 배포' 참고)
 pnpm --filter @magwin/desktop package:dir   # 서명 없이 .app만 (빠른 확인)
 ```
 
@@ -69,6 +70,24 @@ xcrun stapler validate apps/desktop/release/mac-arm64/OrgaWin.app
 ```
 
 `spctl`이 `source=Notarized Developer ID`를 보여 주면 됩니다.
+
+## 공개 배포
+
+배포 파일은 이 저장소 [magzogs/orgawin](https://github.com/magzogs/orgawin)의 Releases로 배포합니다. 배경과 보안은 [ADR-006](../architecture/decisions/adr-006-auto-update.md)을 보세요.
+
+1. `apps/desktop/package.json`의 `version`을 올립니다(예: `0.1.0` → `0.1.1`). 자동 업데이트는 이 값을 비교합니다.
+2. `gh auth status`로 `magzogs/orgawin`에 쓸 수 있는 계정인지 확인합니다.
+3. `pnpm release:publish`를 실행합니다. 서명·공증 후 dmg, zip, `latest-mac.yml`이 `v<version>` **초안** 릴리스로 올라갑니다. 토큰은 `gh auth token`으로 실행할 때만 읽습니다.
+4. GitHub에서 초안의 파일과 변경 내역을 확인하고 **Publish release**를 누릅니다. 이때부터 사용자가 받을 수 있고, 설치된 앱이 업데이트를 찾습니다.
+
+`pnpm package`와 `pnpm release`는 `--publish never`라 아무것도 올리지 않습니다.
+
+## 자동 업데이트
+
+설치된 앱은 시작 30초 뒤와 이후 6시간마다 Releases의 `latest-mac.yml`을 확인하고, 새 버전을 백그라운드로 받습니다. 메뉴 막대 메뉴의 업데이트 항목이 **재시작해서 업데이트 (v…)**로 바뀌면 누르거나, 앱을 종료할 때 설치됩니다. 개발 실행(`pnpm dev`)에서는 동작하지 않습니다.
+
+- 업데이트는 `/Applications`에 설치된 앱에서 가장 안정적으로 동작합니다.
+- 업데이트를 시험하려면 낮은 버전을 설치한 뒤 더 높은 버전을 Publish하고 메뉴에서 **업데이트 확인…**을 누릅니다.
 
 ## 아키텍처
 

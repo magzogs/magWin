@@ -28,6 +28,9 @@ function actions(): TrayActions & { calls: string[] } {
     openMain: (tab) => calls.push(`open ${tab}`),
     setEdgeSnap: (enabled) => calls.push(`edge ${String(enabled)}`),
     setLanguage: (language) => calls.push(`language ${language}`),
+    checkForUpdates: () => calls.push('check updates'),
+    installUpdate: () => calls.push('install update'),
+    sponsor: (platform) => calls.push(`sponsor ${platform}`),
     quit: () => calls.push('quit'),
   };
 }
@@ -49,6 +52,7 @@ function model(overrides: Partial<TrayModel> = {}): TrayModel {
     edgeSnapEnabled: true,
     hotkeysEnabled: true,
     language: 'system',
+    update: { kind: 'idle' },
     text: ko.tray,
     ...overrides,
   };
@@ -109,6 +113,58 @@ describe('buildTrayMenu', () => {
   });
 });
 
+describe('buildTrayMenu update entry', () => {
+  const updateLabels = (update: TrayModel['update']): (string | undefined)[] => {
+    const menu = buildTrayMenu(model({ update }), actions());
+    const support = menu.findIndex((item) => item.label === '♥ OrgaWin 후원하기');
+    return menu.slice(support + 1, support + 2).map((item) => item.label ?? item.type);
+  };
+
+  it('is hidden in development runs', () => {
+    expect(updateLabels({ kind: 'unsupported' })).toEqual(['separator']);
+  });
+
+  it('follows the update state', () => {
+    expect(updateLabels({ kind: 'idle' })).toEqual(['업데이트 확인…']);
+    expect(updateLabels({ kind: 'checking' })).toEqual(['업데이트 확인 중…']);
+    expect(updateLabels({ kind: 'upToDate' })).toEqual(['최신 버전 사용 중 — 다시 확인']);
+    expect(updateLabels({ kind: 'failed' })).toEqual(['⚠️ 업데이트 확인 실패 — 다시 시도']);
+    expect(updateLabels({ kind: 'downloading', version: '1.2.0' })).toEqual([
+      'v1.2.0 내려받는 중…',
+    ]);
+    expect(updateLabels({ kind: 'ready', version: '1.2.0' })).toEqual([
+      '재시작해서 업데이트 (v1.2.0)',
+    ]);
+  });
+
+  it('checks again, waits while busy and installs a downloaded update', () => {
+    const a = actions();
+    click(
+      buildTrayMenu(model({ update: { kind: 'upToDate' } }), a).find((item) =>
+        item.label?.startsWith('최신 버전'),
+      ),
+    );
+    const busy = buildTrayMenu(model({ update: { kind: 'checking' } }), a).find(
+      (item) => item.label === '업데이트 확인 중…',
+    );
+    expect(busy?.enabled).toBe(false);
+    click(
+      buildTrayMenu(model({ update: { kind: 'ready', version: '1.2.0' } }), a).find((item) =>
+        item.label?.startsWith('재시작'),
+      ),
+    );
+    expect(a.calls).toEqual(['check updates', 'install update']);
+  });
+
+  it('uses the English text', () => {
+    const menu = buildTrayMenu(
+      model({ text: en.tray, update: { kind: 'ready', version: '1.2.0' } }),
+      actions(),
+    );
+    expect(menu.map((item) => item.label)).toContain('Restart to update (v1.2.0)');
+  });
+});
+
 describe('rasterizeGridGlyph', () => {
   it('draws the logo: one opaque large tile and translucent small tiles', () => {
     const size = 36;
@@ -132,6 +188,16 @@ describe('rasterizeGridGlyph', () => {
     click(menu.find((item) => item.label === 'OrgaWin 도움말…'));
     click(menu.find((item) => item.label === '지원 받기…'));
     expect(a.calls).toEqual(['open help', 'open support']);
+  });
+
+  it('offers each sponsor platform under one submenu', () => {
+    const a = actions();
+    const menu = buildTrayMenu(model(), a);
+    const sponsor = menu.find((item) => item.label === '♥ OrgaWin 후원하기');
+    const platforms = Array.isArray(sponsor?.submenu) ? sponsor.submenu : [];
+    expect(platforms.map((item) => item.label)).toEqual(['GitHub Sponsors', 'Buy Me a Coffee']);
+    platforms.forEach(click);
+    expect(a.calls).toEqual(['sponsor githubSponsors', 'sponsor buyMeACoffee']);
   });
 
   it('uses the text of the resolved language', () => {

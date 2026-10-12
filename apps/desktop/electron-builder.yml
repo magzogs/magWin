@@ -30,3 +30,10 @@ mac:
     LSUIElement: true
 dmg:
   title: OrgaWin
+# Release files go to this repository's GitHub Releases. Releases are created as drafts and only
+# reach users (and the auto-updater) once published on GitHub.
+publish:
+  provider: github
+  owner: magzogs
+  repo: orgawin
+  releaseType: draft

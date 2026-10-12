@@ -32,6 +32,7 @@ for Accessibility, CGWindowList and private CGS calls. `packages/core` holds all
 | Testing and the manual checklist               | `docs/docs/development/testing.md`                         |
 | When and how to update docs                    | `docs/docs/development/docs-workflow.md`                   |
 | Localization (catalogs, language setting)      | `docs/docs/architecture/decisions/adr-005-localization.md` |
+| GitHub Releases and auto-update                | `docs/docs/architecture/decisions/adr-006-auto-update.md`  |
 | Architecture decisions (ADRs)                  | `docs/docs/architecture/decisions/`                        |
 
 Run `pnpm dev:docs` to browse them.

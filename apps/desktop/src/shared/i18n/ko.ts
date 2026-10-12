@@ -262,6 +262,8 @@ export const ko = {
       '같은 문제로 새 문의를 또 보내기보다 받은 메일에 답장해 주세요.',
       '진단 정보에는 창 제목, 앱 이름, 레이아웃 이름이 들어가지 않아요.',
     ],
+    sponsorTitle: '개발 후원하기',
+    sponsorBody: 'OrgaWin은 무료예요. 도움이 됐다면 후원으로 개발을 응원해 주세요.',
   },
   save: {
     title: '현재 레이아웃 저장',
@@ -301,6 +303,13 @@ export const ko = {
     status: '권한 및 상태…',
     help: 'OrgaWin 도움말…',
     support: '지원 받기…',
+    sponsor: '♥ OrgaWin 후원하기',
+    checkForUpdates: '업데이트 확인…',
+    checkingForUpdates: '업데이트 확인 중…',
+    upToDate: '최신 버전 사용 중 — 다시 확인',
+    updateFailed: '⚠️ 업데이트 확인 실패 — 다시 시도',
+    downloadingUpdate: (version: string): string => `v${version} 내려받는 중…`,
+    installUpdate: (version: string): string => `재시작해서 업데이트 (v${version})`,
     quit: 'OrgaWin 종료',
   },
 };

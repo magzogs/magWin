@@ -13,6 +13,7 @@ OrgaWin uses private APIs (CGS, `_AXUIElementGetWindow`), so it **cannot be publ
 ```bash
 pnpm package            # helper release + bundle + electron-builder (dmg, zip), no notarization
 pnpm release            # same, plus notarization (see "Signing and notarization" below)
+pnpm release:publish    # notarize, then upload a draft to GitHub Releases (see "Public release" below)
 pnpm --filter @magwin/desktop package:dir   # unsigned .app only (quick check)
 ```
 
@@ -69,6 +70,24 @@ xcrun stapler validate apps/desktop/release/mac-arm64/OrgaWin.app
 ```
 
 `spctl` should report `source=Notarized Developer ID`.
+
+## Public release
+
+Release files ship through the Releases of this repository, [magzogs/orgawin](https://github.com/magzogs/orgawin). See [ADR-006](../architecture/decisions/adr-006-auto-update.md) for the background and security model.
+
+1. Bump `version` in `apps/desktop/package.json` (for example `0.1.0` → `0.1.1`). Auto-update compares this value.
+2. Check with `gh auth status` that the account can write to `magzogs/orgawin`.
+3. Run `pnpm release:publish`. After signing and notarization it uploads the dmg, zip and `latest-mac.yml` as a **draft** release `v<version>`. The token is read with `gh auth token` only while it runs.
+4. On GitHub, check the draft's files and notes, then press **Publish release**. From then on users can download it and installed apps find the update.
+
+`pnpm package` and `pnpm release` pass `--publish never` and upload nothing.
+
+## Auto-update
+
+An installed app checks `latest-mac.yml` in Releases 30 seconds after launch and then every six hours, and downloads a new version in the background. When the update item in the menu bar menu turns into **Restart to update (v…)**, click it, or the update installs when the app quits. It does nothing in a development run (`pnpm dev`).
+
+- Updates are most reliable for an app installed in `/Applications`.
+- To test an update, install a lower version, publish a higher one, then choose **Check for updates…** in the menu.
 
 ## Architecture
 

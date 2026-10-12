@@ -1,7 +1,8 @@
 import { SUPPORTED_LOCALES, type LanguagePreference, type LayoutSummary } from '@magwin/core';
 import type { MenuItemConstructorOptions } from 'electron';
-import type { MainTab, SystemStatus } from '../../../shared/contracts';
+import type { MainTab, SystemStatus, UpdateState } from '../../../shared/contracts';
 import { LANGUAGE_NAMES, type Messages } from '../../../shared/i18n';
+import { SPONSOR_NAMES, SPONSOR_PLATFORMS, type SponsorPlatform } from '../../../shared/links';
 
 export interface TrayModel {
   readonly layouts: readonly LayoutSummary[];
@@ -9,6 +10,7 @@ export interface TrayModel {
   readonly edgeSnapEnabled: boolean;
   readonly hotkeysEnabled: boolean;
   readonly language: LanguagePreference;
+  readonly update: UpdateState;
   /** Menu text in the resolved UI language. */
   readonly text: Messages['tray'];
 }
@@ -20,6 +22,9 @@ export interface TrayActions {
   openMain(tab: MainTab): void;
   setEdgeSnap(enabled: boolean): void;
   setLanguage(language: LanguagePreference): void;
+  checkForUpdates(): void;
+  installUpdate(): void;
+  sponsor(platform: SponsorPlatform): void;
   quit(): void;
 }
 
@@ -107,6 +112,68 @@ function statusItems(model: TrayModel, actions: TrayActions): MenuItemConstructo
   return [];
 }
 
+/** One entry whose label and action follow the update state; absent in development runs. */
+function updateItems(model: TrayModel, actions: TrayActions): MenuItemConstructorOptions[] {
+  const { update, text } = model;
+  const check = (): void => {
+    actions.checkForUpdates();
+  };
+  switch (update.kind) {
+    case 'unsupported':
+      return [];
+    case 'idle':
+      return [{ label: text.checkForUpdates, click: check }];
+    case 'checking':
+      return [{ label: text.checkingForUpdates, enabled: false }];
+    case 'upToDate':
+      return [{ label: text.upToDate, click: check }];
+    case 'failed':
+      return [{ label: text.updateFailed, click: check }];
+    case 'downloading':
+      return [{ label: text.downloadingUpdate(update.version), enabled: false }];
+    case 'ready':
+      return [
+        {
+          label: text.installUpdate(update.version),
+          click: () => {
+            actions.installUpdate();
+          },
+        },
+      ];
+  }
+}
+
+function sponsorItem(model: TrayModel, actions: TrayActions): MenuItemConstructorOptions {
+  return {
+    label: model.text.sponsor,
+    submenu: SPONSOR_PLATFORMS.map((platform): MenuItemConstructorOptions => ({
+      label: SPONSOR_NAMES[platform],
+      click: () => {
+        actions.sponsor(platform);
+      },
+    })),
+  };
+}
+
+function helpItems(model: TrayModel, actions: TrayActions): MenuItemConstructorOptions[] {
+  return [
+    {
+      label: model.text.help,
+      click: () => {
+        actions.openMain('help');
+      },
+    },
+    {
+      label: model.text.support,
+      click: () => {
+        actions.openMain('support');
+      },
+    },
+    sponsorItem(model, actions),
+    ...updateItems(model, actions),
+  ];
+}
+
 /** Pure template builder so the menu can be unit tested without Electron. */
 export function buildTrayMenu(
   model: TrayModel,
@@ -166,18 +233,7 @@ export function buildTrayMenu(
       },
     },
     { type: 'separator' },
-    {
-      label: model.text.help,
-      click: () => {
-        actions.openMain('help');
-      },
-    },
-    {
-      label: model.text.support,
-      click: () => {
-        actions.openMain('support');
-      },
-    },
+    ...helpItems(model, actions),
     { type: 'separator' },
     {
       label: model.text.quit,

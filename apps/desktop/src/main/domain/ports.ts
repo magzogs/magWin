@@ -113,6 +113,19 @@ export interface SettingsRepository {
   save(settings: AppSettings): Promise<void>;
 }
 
+/** Where new app versions come from. Implementations download an available update on their own. */
+export interface UpdateSource {
+  /** False when updates cannot apply (development run); the service then stays idle. */
+  readonly supported: boolean;
+  /** Resolves with the newer version being downloaded, or null when already up to date. */
+  check(): Promise<Result<string | null>>;
+  onDownloaded(listener: (version: string) => void): Unsubscribe;
+  /** Errors that happen after `check` resolved, e.g. while downloading. */
+  onFailed(listener: (message: string) => void): Unsubscribe;
+  /** Quits the app, installs the downloaded update and relaunches. */
+  installAndRestart(): void;
+}
+
 export interface Clock {
   now(): number;
   isoNow(): string;

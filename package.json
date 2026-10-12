@@ -17,6 +17,7 @@
     "build:docs": "pnpm --filter @magwin/docs build",
     "package": "pnpm build && pnpm --filter @magwin/desktop package",
     "release": "APPLE_KEYCHAIN_PROFILE=orgawin-notary pnpm package",
+    "release:publish": "pnpm build && APPLE_KEYCHAIN_PROFILE=orgawin-notary GH_TOKEN=$(gh auth token) pnpm --filter @magwin/desktop package:publish",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",

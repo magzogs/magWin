@@ -1,9 +1,10 @@
 import { EDGES, resolveLocale, type AppSettings } from '@magwin/core';
-import { app, session } from 'electron';
+import { app, session, shell } from 'electron';
 import { join } from 'node:path';
 import { Channels } from '../shared/channels';
 import type { MainTab } from '../shared/contracts';
 import { messagesFor } from '../shared/i18n';
+import { SPONSOR_LINKS } from '../shared/links';
 import { LayoutCaptureService } from './application/layouts/LayoutCaptureService';
 import { LayoutLibrary } from './application/layouts/LayoutLibrary';
 import { LayoutRestoreService } from './application/layouts/LayoutRestoreService';
@@ -13,9 +14,11 @@ import { PaletteController } from './application/palette/PaletteController';
 import { SettingsService } from './application/settings/SettingsService';
 import { SnapService } from './application/snap/SnapService';
 import { SystemStatusService } from './application/system/SystemStatusService';
+import { UpdateService } from './application/system/UpdateService';
 import type { EdgeTriggerConfig, Logger } from './domain/ports';
 import { createHelperServices, type HelperServices } from './helperServices';
 import { MainWindow, ProgressHudWindow, SaveHudWindow } from './infrastructure/electron/AppWindows';
+import { ElectronUpdater } from './infrastructure/electron/ElectronUpdater';
 import { GhostWindow, PaletteWindow } from './infrastructure/electron/OverlayWindows';
 import {
   appInfo,
@@ -61,6 +64,7 @@ interface Services {
   readonly settings: SettingsService;
   readonly library: LayoutLibrary;
   readonly status: SystemStatusService;
+  readonly updates: UpdateService;
   readonly palette: PaletteController;
   readonly paletteWindow: PaletteWindow;
   readonly capture: LayoutCaptureService;
@@ -119,12 +123,14 @@ async function createServices(): Promise<Services> {
     logger,
   });
   const status = new SystemStatusService({ ...helper, scheduler, logger });
+  const updates = new UpdateService({ source: new ElectronUpdater(logger), scheduler, logger });
   return {
     logger,
     helper,
     settings,
     library,
     status,
+    updates,
     palette,
     paletteWindow,
     capture,
@@ -164,6 +170,15 @@ function createUi(services: Services): Ui {
     setLanguage: (language) => {
       void services.settings.update({ general: { language } });
     },
+    checkForUpdates: () => {
+      void services.updates.check();
+    },
+    installUpdate: () => {
+      services.updates.installAndRestart();
+    },
+    sponsor: (platform) => {
+      void shell.openExternal(SPONSOR_LINKS[platform]);
+    },
     quit: () => {
       app.quit();
     },
@@ -187,6 +202,7 @@ function createUi(services: Services): Ui {
       edgeSnapEnabled: settings.trigger.enabled,
       hotkeysEnabled: settings.layouts.hotkeysEnabled,
       language: settings.general.language,
+      update: services.updates.current(),
       text: messagesFor(resolveLocale(settings.general.language, app.getPreferredSystemLanguages()))
         .tray,
     };
@@ -195,7 +211,7 @@ function createUi(services: Services): Ui {
 }
 
 function wire(services: Services, ui: Ui): void {
-  const { helper, settings, library, status, coordinator } = services;
+  const { helper, settings, library, status, updates, coordinator } = services;
   let onboardingShown = false;
   helper.connection.onState(({ state, message }) => {
     status.setHelperState(state, message);
@@ -229,6 +245,9 @@ function wire(services: Services, ui: Ui): void {
   });
   status.onChange((next) => {
     broadcast(Channels.systemStatusChanged, next);
+    ui.tray.update(ui.model());
+  });
+  updates.onChange(() => {
     ui.tray.update(ui.model());
   });
 }
@@ -265,6 +284,7 @@ export async function bootstrap(): Promise<AppRuntime> {
   ui.shortcuts.apply(services.settings.get().layouts.hotkeysEnabled);
   syncLoginItem(services.settings.get().general.launchAtLogin);
   services.helper.connection.start();
+  services.updates.start();
   return {
     openMain: (tab) => {
       ui.main.open(tab);
@@ -272,6 +292,7 @@ export async function bootstrap(): Promise<AppRuntime> {
     stop: () => {
       services.palette.stop();
       services.status.stop();
+      services.updates.stop();
       services.helper.connection.stop();
       ui.tray.destroy();
     },

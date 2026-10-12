@@ -1,0 +1,19 @@
+name: Bug report / 버그 신고
+description: Something does not work as expected. / 기대한 대로 동작하지 않아요.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened? / 무슨 일이 있었나요?
+      description: Steps to reproduce, what you expected and what happened instead. / 재현 방법, 기대한 결과, 실제 결과
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics / 진단 정보
+      description: Menu bar menu › Get Support… › Copy diagnostics, then paste here. / 메뉴 막대 메뉴 › 지원 받기… › 진단 정보 복사 후 붙여 넣기
+      render: text
+    validations:
+      required: true

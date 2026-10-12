@@ -127,6 +127,16 @@ export interface SystemStatus {
   readonly canUndo: boolean;
 }
 
+/** Auto-update progress shown in the tray. `unsupported` = development run (not packaged). */
+export type UpdateState =
+  | { readonly kind: 'unsupported' }
+  | { readonly kind: 'idle' }
+  | { readonly kind: 'checking' }
+  | { readonly kind: 'upToDate' }
+  | { readonly kind: 'downloading'; readonly version: string }
+  | { readonly kind: 'ready'; readonly version: string }
+  | { readonly kind: 'failed' };
+
 /** Versions shown on the support page and copied into support requests. */
 export interface AppInfo {
   readonly appVersion: string;

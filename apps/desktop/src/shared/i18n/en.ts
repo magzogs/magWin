@@ -271,6 +271,8 @@ export const en: Messages = {
       'Reply to our existing email instead of sending a new request about the same problem.',
       'Diagnostics never include window titles, app names or layout names.',
     ],
+    sponsorTitle: 'Support development',
+    sponsorBody: 'OrgaWin is free. If it helps you, consider sponsoring its development.',
   },
   save: {
     title: 'Save current layout',
@@ -310,6 +312,13 @@ export const en: Messages = {
     status: 'Permissions & Status…',
     help: 'OrgaWin Help…',
     support: 'Get Support…',
+    sponsor: '♥ Sponsor OrgaWin',
+    checkForUpdates: 'Check for updates…',
+    checkingForUpdates: 'Checking for updates…',
+    upToDate: 'OrgaWin is up to date — check again',
+    updateFailed: '⚠️ Update check failed — try again',
+    downloadingUpdate: (version) => `Downloading v${version}…`,
+    installUpdate: (version) => `Restart to update (v${version})`,
     quit: 'Quit OrgaWin',
   },
 };
