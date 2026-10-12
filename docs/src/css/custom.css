@@ -1,18 +1,18 @@
 :root {
-  --ifm-color-primary: #0a84ff;
-  --ifm-color-primary-dark: #0077e6;
-  --ifm-color-primary-darker: #0070d9;
-  --ifm-color-primary-darkest: #005cb3;
-  --ifm-color-primary-light: #2491ff;
-  --ifm-color-primary-lighter: #3398ff;
-  --ifm-color-primary-lightest: #5cadff;
+  --ifm-color-primary: #d6336c;
+  --ifm-color-primary-dark: #c7285f;
+  --ifm-color-primary-darker: #bc265a;
+  --ifm-color-primary-darkest: #9a1f4a;
+  --ifm-color-primary-light: #da497c;
+  --ifm-color-primary-lighter: #dd5484;
+  --ifm-color-primary-lightest: #e3759c;
   --ifm-font-family-base:
     -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Pretendard', sans-serif;
   --ifm-code-font-size: 92%;
 }
 
 [data-theme='dark'] {
-  --ifm-color-primary: #4da3ff;
+  --ifm-color-primary: #f06595;
 }
 
 table {

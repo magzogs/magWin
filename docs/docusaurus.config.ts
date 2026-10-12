@@ -5,7 +5,7 @@ import { themes as prismThemes } from 'prism-react-renderer';
 const config: Config = {
   title: 'magWin Docs',
   tagline: '창 가장자리 그리드 스냅과 Desktop을 기억하는 레이아웃',
-  favicon: 'img/favicon.svg',
+  favicon: 'img/logo.svg',
   url: 'https://docs.magwin.local',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -32,7 +32,7 @@ const config: Config = {
   themeConfig: {
     navbar: {
       title: 'magWin',
-      logo: { alt: 'magWin', src: 'img/favicon.svg' },
+      logo: { alt: 'magWin', src: 'img/logo.svg' },
       items: [
         { type: 'docSidebar', sidebarId: 'docs', position: 'left', label: '문서' },
         { to: '/help', position: 'left', label: '도움말' },
