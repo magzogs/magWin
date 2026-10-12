@@ -1,23 +1,25 @@
 # magWin
 
-macOS 메뉴 막대 창 관리 앱입니다.
+**English** · [한국어](README.ko.md)
 
-- **엣지 그리드 스냅**: 창 가장자리에 커서를 잠시 두면 2×2, 2×3, 3×2, 3×3, 4×4 같은 그리드 팔레트가 뜹니다. 한 그리드에서 칸(직사각형)을 고르고 **적용**을 누르면 창이 그 자리로 갑니다.
-- **Desktop 레이아웃**: 창 배치를 Desktop 정보까지 저장합니다. 복원할 때는 그 Desktop으로 먼저 이동한 뒤 앱을 띄워 배치합니다.
-- **언어**: 한국어 · English (설정 › 일반 › 언어, 기본은 시스템 설정 따르기). 문서도 두 언어로 빌드됩니다.
+A macOS menu bar window manager.
+
+- **Edge grid snap**: Rest the cursor on a window edge for a moment and a grid palette appears (2×2, 2×3, 3×2, 3×3, 4×4, and more). Pick a cell range (a rectangle) in one grid and press **Apply** to move the window there.
+- **Desktop layouts**: Saves window arrangements together with their Desktop (Space). On restore, magWin first switches to that Desktop, then launches the apps and places their windows.
+- **Languages**: Korean · English (Settings › General › Language; follows the system setting by default). The docs are built in both languages too.
 
 ```bash
 pnpm install
-pnpm dev          # Swift 헬퍼 빌드 + 앱 실행 (손쉬운 사용 권한 필요)
-pnpm check        # lint · 포맷 · 타입 · 테스트 전체
-pnpm dev:docs     # 문서 (Docusaurus)
+pnpm dev          # Build the Swift helper and run the app (needs Accessibility permission)
+pnpm check        # Lint, format, type check, and tests
+pnpm dev:docs     # Docs (Docusaurus)
 ```
 
-| 경로                  | 내용                               |
-| --------------------- | ---------------------------------- |
-| `apps/desktop`        | Electron + React 앱                |
-| `packages/core`       | 순수 TypeScript 도메인 로직        |
-| `native/MagWinHelper` | Swift 헬퍼 (Accessibility, Spaces) |
-| `docs`                | Docusaurus 문서 사이트             |
+| Path                  | Contents                             |
+| --------------------- | ------------------------------------ |
+| `apps/desktop`        | Electron + React app                 |
+| `packages/core`       | Pure TypeScript domain logic         |
+| `native/MagWinHelper` | Swift helper (Accessibility, Spaces) |
+| `docs`                | Docusaurus documentation site        |
 
-작업 규칙은 [AGENTS.md](AGENTS.md)에 있습니다.
+Working rules live in [AGENTS.md](AGENTS.md).

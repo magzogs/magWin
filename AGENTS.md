@@ -58,6 +58,8 @@ Run `pnpm dev:docs` to browse them.
    and `en.ts` — add every new string to both (ADR-005). Components read it with `useI18n()`;
    main-process services return error codes. Docs changes also update the English translation
    under `docs/i18n/en/`.
+10. The README exists in two languages: `README.md` (English, the GitHub default) and
+    `README.ko.md` (Korean). Edit both together and keep the language switcher at the top of each.
 
 ## Commands
 
