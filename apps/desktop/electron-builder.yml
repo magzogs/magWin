@@ -23,8 +23,17 @@ mac:
   gatekeeperAssess: false
   entitlements: build/entitlements.mac.plist
   entitlementsInherit: build/entitlements.mac.plist
-  notarize: false
+  # Notarizes when credentials are in the environment (pnpm release uses the orgawin-notary
+  # keychain profile); without them electron-builder warns and skips notarization.
+  notarize: true
   extendInfo:
     LSUIElement: true
 dmg:
   title: OrgaWin
+# Release files go to this repository's GitHub Releases. Releases are created as drafts and only
+# reach users (and the auto-updater) once published on GitHub.
+publish:
+  provider: github
+  owner: magzogs
+  repo: orgawin
+  releaseType: draft

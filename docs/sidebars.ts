@@ -33,6 +33,7 @@ const sidebars: SidebarsConfig = {
             'architecture/decisions/adr-003-keyboard-desktop-switching',
             'architecture/decisions/adr-004-typescript-toolchain',
             'architecture/decisions/adr-005-localization',
+            'architecture/decisions/adr-006-auto-update',
           ],
         },
       ],

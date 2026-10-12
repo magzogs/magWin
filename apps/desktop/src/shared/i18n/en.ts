@@ -310,6 +310,12 @@ export const en: Messages = {
     status: 'Permissions & Status…',
     help: 'OrgaWin Help…',
     support: 'Get Support…',
+    checkForUpdates: 'Check for updates…',
+    checkingForUpdates: 'Checking for updates…',
+    upToDate: 'OrgaWin is up to date — check again',
+    updateFailed: '⚠️ Update check failed — try again',
+    downloadingUpdate: (version) => `Downloading v${version}…`,
+    installUpdate: (version) => `Restart to update (v${version})`,
     quit: 'Quit OrgaWin',
   },
 };

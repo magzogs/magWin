@@ -6,14 +6,15 @@ sidebar_position: 4
 
 ## Detection (helper `EdgeDetector`)
 
-Input: the cursor position, the list of **regular app windows** on screen (layer 0, excluding Dock apps and OrgaWin) in front-to-back order, each display's visibleFrame, the detection width `band`, and the enabled edges.
+Input: the cursor position, the list of **regular app windows** on screen (layer 0, excluding Dock apps and OrgaWin) in front-to-back order, each display's frame and visibleFrame, the Dock position (`com.apple.dock` `orientation`: bottom, left or right), the detection width `band`, and the enabled edges.
 
 1. If the cursor is not inside any visibleFrame (menu bar, Dock), no detection is performed.
 2. Walk the windows **from the front** and pick the first window whose rectangle, expanded by `band`, contains the cursor. If a front window covers the edge of a window behind it, the rear window is not a candidate.
 3. The result is the nearest of the four sides that is within `band`.
 4. **Corner exclusion**: for the top or bottom side, the region within `max(3·band, 16)` px of the left and right ends is excluded. For the left or right side, the same distance from the top and bottom ends is excluded (diagonal resize handles).
+5. **Dock-side exclusion**: if the resulting side faces the Dock and the gap between that window side and the screen (frame) edge is at most `band + 8` px, nothing triggers. An auto-hidden Dock slides up over that edge, so triggering there would raise the Dock and the palette together. If another display lies beyond that screen edge at the cursor position, it is an inner boundary where the Dock never appears, so it is not excluded. The window's other sides keep working.
 
-Reading the window list (CGWindowList) is the most expensive step, so it is cached for 150ms and invalidated when a mouse button is released (a window may have moved) and when the display configuration changes.
+Reading the window list (CGWindowList) is the most expensive step, so it is cached for 150ms and invalidated when a mouse button is released (a window may have moved) and when the display configuration changes. At those moments the display list and Dock position are re-read too (including the click that changes the Dock position in System Settings).
 
 ## Dwell state machine (helper `DwellTracker`)
 

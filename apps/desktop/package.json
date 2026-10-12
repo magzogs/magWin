@@ -10,7 +10,8 @@
     "build": "electron-vite build",
     "preview": "electron-vite preview",
     "preview:ui": "vite --config vite.preview.config.ts",
-    "package": "electron-builder --mac --config electron-builder.yml",
+    "package": "electron-builder --mac --config electron-builder.yml --publish never",
+    "package:publish": "gh release view v$npm_package_version -R magzogs/orgawin >/dev/null 2>&1 || gh release create v$npm_package_version -R magzogs/orgawin --draft --title $npm_package_version --notes '' && electron-builder --mac --config electron-builder.yml --publish always",
     "package:dir": "CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac --dir --config electron-builder.yml",
     "typecheck": "tsc -p tsconfig.node.json --noEmit && tsc -p tsconfig.web.json --noEmit",
     "test": "vitest run"
@@ -22,6 +23,7 @@
     "@vitejs/plugin-react": "5.2.0",
     "electron": "44.4.5",
     "electron-builder": "26.15.3",
+    "electron-updater": "6.8.10",
     "electron-vite": "5.0.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",

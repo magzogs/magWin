@@ -301,6 +301,12 @@ export const ko = {
     status: '권한 및 상태…',
     help: 'OrgaWin 도움말…',
     support: '지원 받기…',
+    checkForUpdates: '업데이트 확인…',
+    checkingForUpdates: '업데이트 확인 중…',
+    upToDate: '최신 버전 사용 중 — 다시 확인',
+    updateFailed: '⚠️ 업데이트 확인 실패 — 다시 시도',
+    downloadingUpdate: (version: string): string => `v${version} 내려받는 중…`,
+    installUpdate: (version: string): string => `재시작해서 업데이트 (v${version})`,
     quit: 'OrgaWin 종료',
   },
 };

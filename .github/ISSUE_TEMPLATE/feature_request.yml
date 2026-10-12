@@ -1,0 +1,11 @@
+name: Feature request / 기능 요청
+description: Suggest an idea for OrgaWin. / OrgaWin에 바라는 기능을 알려 주세요.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like? / 어떤 기능이 필요한가요?
+      description: The problem it solves and how you imagine it working. / 해결하고 싶은 문제와 기대하는 동작
+    validations:
+      required: true

@@ -31,22 +31,70 @@ public struct EdgeHit: Equatable, Sendable {
     }
 }
 
+/// A display's full frame and its visible frame (minus menu bar and a shown Dock).
+public struct ScreenArea: Equatable, Sendable {
+    public let frame: Rect
+    public let visibleFrame: Rect
+
+    public init(frame: Rect, visibleFrame: Rect) {
+        self.frame = frame
+        self.visibleFrame = visibleFrame
+    }
+}
+
 /// Pure hit testing. See docs/docs/architecture/edge-detection.md.
 public enum EdgeDetector {
     /// - Parameters:
     ///   - windows: candidate windows ordered front to back.
-    ///   - visibleFrames: display frames minus menu bar and Dock; points outside never trigger.
+    ///   - screens: displays; points outside every visible frame never trigger.
+    ///   - dockSide: the screen side the Dock lives on (`top` never happens).
     ///   - band: half width of the trigger band around each edge line.
     public static func hit(
-        at point: Point, windows: [WindowCandidate], visibleFrames: [Rect], band: Double,
-        edges: Set<Edge>
+        at point: Point, windows: [WindowCandidate], screens: [ScreenArea], dockSide: Edge?,
+        band: Double, edges: Set<Edge>
     ) -> EdgeHit? {
-        guard visibleFrames.contains(where: { $0.contains(point) }) else { return nil }
+        guard let screen = screens.first(where: { $0.visibleFrame.contains(point) }) else { return nil }
         // The front-most window whose band contains the point decides; windows behind it are covered.
         guard let window = windows.first(where: { $0.frame.insetBy(-band).contains(point) }) else {
             return nil
         }
-        return classify(point: point, window: window, band: band, edges: edges)
+        guard let hit = classify(point: point, window: window, band: band, edges: edges) else { return nil }
+        if let dockSide, hit.edge == dockSide,
+            touchesDock(point: point, window: window.frame, screen: screen, screens: screens, side: dockSide, band: band)
+        {
+            return nil
+        }
+        return hit
+    }
+
+    /// How close a window edge may sit to the Dock's screen edge before it stops triggering:
+    /// the trigger band plus the strip that reveals an auto-hidden Dock.
+    public static func dockClearance(band: Double) -> Double { band + 8 }
+
+    /// A window edge lying against the Dock's screen edge overlaps the Dock (an auto-hidden one
+    /// slides up over it), so hovering there would raise the Dock and the palette together.
+    static func touchesDock(
+        point: Point, window: Rect, screen: ScreenArea, screens: [ScreenArea], side: Edge, band: Double
+    ) -> Bool {
+        let frame = screen.frame
+        let gap: Double
+        let beyond: Point
+        switch side {
+        case .bottom:
+            gap = frame.maxY - window.maxY
+            beyond = Point(x: point.x, y: frame.maxY + 1)
+        case .left:
+            gap = window.minX - frame.minX
+            beyond = Point(x: frame.minX - 1, y: point.y)
+        case .right:
+            gap = frame.maxX - window.maxX
+            beyond = Point(x: frame.maxX + 1, y: point.y)
+        case .top:
+            return false
+        }
+        // The Dock only appears on an outer screen edge; another display beyond it means no Dock here.
+        let outer = !screens.contains(where: { $0.frame.contains(beyond) })
+        return outer && gap <= dockClearance(band: band)
     }
 
     /// Corners are the diagonal resize handles, so they never trigger.

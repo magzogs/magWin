@@ -77,6 +77,7 @@ A window edge is in the same place as the macOS **resize handle**. So the palett
 - It does not appear while a mouse button is held (moving or resizing a window). Even if the spot where you finish dragging is an edge, the cursor must leave and come back before it appears again.
 - It does not appear at corners (diagonal resize).
 - It does not appear in the menu bar and Dock areas.
+- It does not appear on a window side that lies against the Dock's screen edge (for example, the Dock is at the bottom and the window's bottom side touches the bottom of the screen), so an auto-hidden Dock does not pop up with it.
 
 ## Windows that are not supported
 

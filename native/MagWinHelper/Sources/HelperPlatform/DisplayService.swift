@@ -11,6 +11,17 @@ public final class DisplayService {
         return screens.compactMap { dto(for: $0, primaryHeight: primaryHeight) }
     }
 
+    /// The screen side the Dock is pinned to (System Settings › Desktop & Dock › Position).
+    public func dockSide() -> Edge {
+        let domain = "com.apple.dock" as CFString
+        CFPreferencesAppSynchronize(domain)
+        switch CFPreferencesCopyAppValue("orientation" as CFString, domain) as? String {
+        case "left": return .left
+        case "right": return .right
+        default: return .bottom
+        }
+    }
+
     public func mainDisplayUuid() -> String? {
         DisplayService.uuid(for: CGMainDisplayID())
     }
