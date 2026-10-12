@@ -304,6 +304,8 @@ export const en: Messages = {
     restoring: 'Restoring…',
     undo: 'Undo last restore',
     edgeSnap: 'Enable edge snap',
+    language: '🌐 Language',
+    languageSystem: 'Match system',
     settings: 'Settings…',
     status: 'Permissions & Status…',
     help: 'magWin Help…',

@@ -1,13 +1,14 @@
-import type { LayoutSummary } from '@magwin/core';
+import { SUPPORTED_LOCALES, type LanguagePreference, type LayoutSummary } from '@magwin/core';
 import type { MenuItemConstructorOptions } from 'electron';
 import type { MainTab, SystemStatus } from '../../../shared/contracts';
-import type { Messages } from '../../../shared/i18n';
+import { LANGUAGE_NAMES, type Messages } from '../../../shared/i18n';
 
 export interface TrayModel {
   readonly layouts: readonly LayoutSummary[];
   readonly status: SystemStatus;
   readonly edgeSnapEnabled: boolean;
   readonly hotkeysEnabled: boolean;
+  readonly language: LanguagePreference;
   /** Menu text in the resolved UI language. */
   readonly text: Messages['tray'];
 }
@@ -18,6 +19,7 @@ export interface TrayActions {
   undo(): void;
   openMain(tab: MainTab): void;
   setEdgeSnap(enabled: boolean): void;
+  setLanguage(language: LanguagePreference): void;
   quit(): void;
 }
 
@@ -60,6 +62,23 @@ function layoutItem(
         },
       },
     ],
+  };
+}
+
+const LANGUAGE_CHOICES: readonly LanguagePreference[] = ['system', ...SUPPORTED_LOCALES];
+
+/** Language picker right in the menu; language names are shown in their own language. */
+function languageItem(model: TrayModel, actions: TrayActions): MenuItemConstructorOptions {
+  return {
+    label: model.text.language,
+    submenu: LANGUAGE_CHOICES.map((choice): MenuItemConstructorOptions => ({
+      label: choice === 'system' ? model.text.languageSystem : LANGUAGE_NAMES[choice],
+      type: 'radio',
+      checked: model.language === choice,
+      click: () => {
+        if (model.language !== choice) actions.setLanguage(choice);
+      },
+    })),
   };
 }
 
@@ -127,6 +146,7 @@ export function buildTrayMenu(
         actions.setEdgeSnap(!model.edgeSnapEnabled);
       },
     },
+    languageItem(model, actions),
     {
       label: model.text.manageLayouts,
       click: () => {

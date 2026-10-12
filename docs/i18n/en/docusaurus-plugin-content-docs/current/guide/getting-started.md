@@ -37,7 +37,7 @@ Electron launched with `pnpm dev` is a child process of your terminal, so macOS 
 
 ## Language
 
-magWin supports Korean and English. Choose one in **Settings › General › Language**.
+magWin supports Korean and English. Switch right from the **🌐 Language** submenu of the menu bar icon, or choose one in **Settings › General › Language**.
 
 | Value            | Behavior                                                                                    |
 | ---------------- | ------------------------------------------------------------------------------------------- |

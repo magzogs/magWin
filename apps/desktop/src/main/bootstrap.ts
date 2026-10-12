@@ -161,6 +161,9 @@ function createUi(services: Services): Ui {
     setEdgeSnap: (enabled) => {
       void services.settings.update({ trigger: { enabled } });
     },
+    setLanguage: (language) => {
+      void services.settings.update({ general: { language } });
+    },
     quit: () => {
       app.quit();
     },
@@ -183,6 +186,7 @@ function createUi(services: Services): Ui {
       status: services.status.current(),
       edgeSnapEnabled: settings.trigger.enabled,
       hotkeysEnabled: settings.layouts.hotkeysEnabled,
+      language: settings.general.language,
       text: messagesFor(resolveLocale(settings.general.language, app.getPreferredSystemLanguages()))
         .tray,
     };

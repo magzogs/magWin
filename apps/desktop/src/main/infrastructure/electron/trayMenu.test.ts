@@ -27,6 +27,7 @@ function actions(): TrayActions & { calls: string[] } {
     undo: () => calls.push('undo'),
     openMain: (tab) => calls.push(`open ${tab}`),
     setEdgeSnap: (enabled) => calls.push(`edge ${String(enabled)}`),
+    setLanguage: (language) => calls.push(`language ${language}`),
     quit: () => calls.push('quit'),
   };
 }
@@ -47,6 +48,7 @@ function model(overrides: Partial<TrayModel> = {}): TrayModel {
     status: readyStatus,
     edgeSnapEnabled: true,
     hotkeysEnabled: true,
+    language: 'system',
     text: ko.tray,
     ...overrides,
   };
@@ -133,5 +135,20 @@ describe('rasterizeGridGlyph', () => {
     expect(labels).toContain('Save current layout…');
     expect(labels).toContain('Coding  ·  3 windows');
     expect(labels).toContain('Quit magWin');
+  });
+
+  it('switches the language from a radio submenu', () => {
+    const a = actions();
+    const menu = buildTrayMenu(model({ language: 'ko' }), a);
+    const item = menu.find((entry) => entry.label === '🌐 언어');
+    const submenu = item?.submenu as MenuItemConstructorOptions[];
+    expect(submenu.map((entry) => [entry.label, entry.type, entry.checked])).toEqual([
+      ['시스템 설정 따르기', 'radio', false],
+      ['English', 'radio', false],
+      ['한국어', 'radio', true],
+    ]);
+    click(submenu[1]);
+    click(submenu[2]);
+    expect(a.calls).toEqual(['language en']);
   });
 });

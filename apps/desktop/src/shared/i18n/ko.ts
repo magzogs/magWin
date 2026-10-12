@@ -295,6 +295,8 @@ export const ko = {
     restoring: '복원 중…',
     undo: '직전 배치로 되돌리기',
     edgeSnap: '엣지 스냅 사용',
+    language: '🌐 언어',
+    languageSystem: '시스템 설정 따르기',
     settings: '설정…',
     status: '권한 및 상태…',
     help: 'magWin 도움말…',
