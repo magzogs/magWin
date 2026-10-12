@@ -33,7 +33,7 @@ function describe<T, R>(result: Result<T>, map: (value: T) => R): R | string {
   return result.ok ? map(result.value) : `error: ${result.error.code} ${result.error.message}`;
 }
 
-/** Read-only self check used by `magWin --diagnose`. Never moves windows or switches desktops. */
+/** Read-only self check used by `OrgaWin --diagnose`. Never moves windows or switches desktops. */
 export class DiagnosticsService {
   constructor(private readonly deps: DiagnosticsDeps) {}
 

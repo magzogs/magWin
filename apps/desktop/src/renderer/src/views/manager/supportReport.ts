@@ -16,7 +16,7 @@ function hotkeyLine(status: SystemStatus): string {
  * never contains window titles, app names or layout names.
  */
 export function buildDiagnostics(info: AppInfo, status: SystemStatus | null): string {
-  const lines = [`magWin ${info.appVersion}`, `macOS ${info.osVersion} (${info.arch})`];
+  const lines = [`OrgaWin ${info.appVersion}`, `macOS ${info.osVersion} (${info.arch})`];
   if (status !== null) {
     lines.push(
       `helper: ${status.helper}${status.helperMessage === null ? '' : ` (${status.helperMessage})`}`,

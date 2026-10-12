@@ -5,7 +5,7 @@ import { useI18n } from '../../i18n/I18nContext';
 import { helpQuestions, helpTopics, searchHelp } from './helpContent';
 
 /**
- * magWin help: search, topic cards that open the docs site, and short answers that work
+ * OrgaWin help: search, topic cards that open the docs site, and short answers that work
  * offline. Modeled on a help center front page.
  */
 export function HelpTab({ onNavigate }: { onNavigate: (tab: MainTab) => void }): ReactNode {

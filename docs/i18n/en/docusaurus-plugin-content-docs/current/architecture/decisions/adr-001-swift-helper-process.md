@@ -26,6 +26,6 @@ Place a Swift executable in `native/MagWinHelper`, have the Electron main proces
 
 ## Consequences
 
-- Permissions (TCC) attach to the **responsible process** that launched the helper. In a packaged app that is magWin.app, and in development mode it is the terminal app that ran `pnpm dev`.
+- Permissions (TCC) attach to the **responsible process** that launched the helper. In a packaged app that is OrgaWin.app, and in development mode it is the terminal app that ran `pnpm dev`.
 - Communication latency is under 1ms, so there is no perceptible difference. Edge detection finishes inside the helper and only the result events cross over.
 - When shipping, the helper binary must be signed with the same certificate as the app ([Release](../../development/release.md)).

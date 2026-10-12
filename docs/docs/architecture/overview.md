@@ -84,7 +84,7 @@ sequenceDiagram
 
 ## 파일로 남는 것
 
-`~/Library/Application Support/magWin/`
+`~/Library/Application Support/OrgaWin/`
 
 | 파일                 | 내용                                         |
 | -------------------- | -------------------------------------------- |

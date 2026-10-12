@@ -3,7 +3,7 @@ import type { Config } from '@docusaurus/types';
 import { themes as prismThemes } from 'prism-react-renderer';
 
 const config: Config = {
-  title: 'magWin Docs',
+  title: 'OrgaWin Docs',
   tagline: '창 가장자리 그리드 스냅과 Desktop을 기억하는 레이아웃',
   favicon: 'img/logo.svg',
   url: 'https://docs.magwin.local',
@@ -31,8 +31,8 @@ const config: Config = {
   ],
   themeConfig: {
     navbar: {
-      title: 'magWin',
-      logo: { alt: 'magWin', src: 'img/logo.svg' },
+      title: 'OrgaWin',
+      logo: { alt: 'OrgaWin', src: 'img/logo.svg' },
       items: [
         { type: 'docSidebar', sidebarId: 'docs', position: 'left', label: '문서' },
         { to: '/help', position: 'left', label: '도움말' },
@@ -41,7 +41,7 @@ const config: Config = {
     },
     footer: {
       style: 'dark',
-      copyright: `© ${String(new Date().getFullYear())} magzog · magWin`,
+      copyright: `© ${String(new Date().getFullYear())} magzog · OrgaWin`,
     },
     prism: {
       theme: prismThemes.github,

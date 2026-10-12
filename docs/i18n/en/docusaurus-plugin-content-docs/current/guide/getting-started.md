@@ -32,12 +32,12 @@ Once running, a 2×2 grid icon appears in the menu bar. The Dock icon appears on
 On first launch the Permissions & Status tab opens. Click **Request permission** to show the macOS prompt, then turn it on in **System Settings › Privacy & Security › Accessibility**.
 
 :::caution Permission target in development mode
-Electron launched with `pnpm dev` is a child process of your terminal, so macOS asks for permission on **the terminal app that ran the command** (Terminal, iTerm, VS Code, etc.). During development, grant Accessibility to that app. The packaged `magWin.app` receives permission under its own name.
+Electron launched with `pnpm dev` is a child process of your terminal, so macOS asks for permission on **the terminal app that ran the command** (Terminal, iTerm, VS Code, etc.). During development, grant Accessibility to that app. The packaged `OrgaWin.app` receives permission under its own name.
 :::
 
 ## Language
 
-magWin supports Korean and English. Switch right from the **🌐 Language** submenu of the menu bar icon, or choose one in **Settings › General › Language**.
+OrgaWin supports Korean and English. Switch right from the **🌐 Language** submenu of the menu bar icon, or choose one in **Settings › General › Language**.
 
 | Value            | Behavior                                                                                    |
 | ---------------- | ------------------------------------------------------------------------------------------- |
@@ -48,12 +48,12 @@ Changes apply immediately to open windows and the menu bar menu. Change the lang
 
 ## Desktop switch shortcuts
 
-To restore layouts, magWin moves between Desktops by pressing the shortcuts in **Keyboard settings › Keyboard Shortcuts › Mission Control**. At least one of these must be on:
+To restore layouts, OrgaWin moves between Desktops by pressing the shortcuts in **Keyboard settings › Keyboard Shortcuts › Mission Control**. At least one of these must be on:
 
 - "Switch to Desktop N" (off by default; the fastest when on)
 - "Move left/right a space" (on by default, ⌃← / ⌃→)
 
-You can change the shortcut keys. magWin reads the current settings and presses exactly those.
+You can change the shortcut keys. OrgaWin reads the current settings and presses exactly those.
 
 ## Diagnostics
 

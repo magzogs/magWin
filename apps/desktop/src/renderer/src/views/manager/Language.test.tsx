@@ -39,7 +39,7 @@ describe('UI language', () => {
       channels.settings.emit(withLanguage('en'));
     });
     expect(screen.getByText('No saved layouts yet.')).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'magWin Help' })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'OrgaWin Help' })).toBeInTheDocument();
   });
 
   it('is chosen in Settings › General', async () => {

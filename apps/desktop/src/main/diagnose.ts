@@ -6,7 +6,7 @@ import { ConsoleLogger, TimerScheduler } from './infrastructure/system/NodeSyste
 const CONNECT_TIMEOUT_MS = 8_000;
 
 /**
- * `magWin --diagnose`: starts the helper, prints a read-only report as JSON and exits.
+ * `OrgaWin --diagnose`: starts the helper, prints a read-only report as JSON and exits.
  * Useful when a permission or shortcut problem needs to be reported.
  */
 export async function runDiagnostics(): Promise<number> {

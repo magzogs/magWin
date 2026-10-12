@@ -21,7 +21,7 @@ export const en: Messages = {
   },
   errors: {
     accessibilityDenied:
-      'magWin needs Accessibility permission. Allow it on the Permissions & Status tab.',
+      'OrgaWin needs Accessibility permission. Allow it on the Permissions & Status tab.',
     windowNotFound: 'The window could not be found. It was closed or moved to another Desktop.',
     notResizable: 'This window cannot be moved or resized.',
     fullscreen: 'Full-screen windows cannot be moved.',
@@ -75,7 +75,7 @@ export const en: Messages = {
     layouts: 'Layouts',
     settings: 'Settings',
     status: 'Permissions & Status',
-    help: 'magWin Help',
+    help: 'OrgaWin Help',
     support: 'Get Support',
   },
   settings: {
@@ -106,7 +106,7 @@ export const en: Messages = {
     layouts: {
       launchMissing: 'Launch apps that are not running',
       launchMissingHint:
-        'When restoring, magWin switches to the saved Desktop, then launches the app.',
+        'When restoring, OrgaWin switches to the saved Desktop, then launches the app.',
       hotkeys: 'Global shortcuts (⌃⌥⌘S save, ⌃⌥⌘1–9 restore)',
       excluded: 'Apps excluded by default when saving (bundle IDs, one per line)',
     },
@@ -165,12 +165,12 @@ export const en: Messages = {
     off: 'Off',
     available: 'Available',
     accessibilityBody:
-      'To move windows and switch Desktops, allow magWin in System Settings › Privacy & Security › Accessibility. During development (pnpm dev), allow the terminal app that ran the command.',
+      'To move windows and switch Desktops, allow OrgaWin in System Settings › Privacy & Security › Accessibility. During development (pnpm dev), allow the terminal app that ran the command.',
     requestPermission: 'Request permission',
     openSystemSettings: 'Open System Settings',
     shortcuts: 'Desktop switching shortcuts',
     shortcutsBody:
-      'macOS has no public API for switching Desktops, so magWin presses the shortcuts from Keyboard settings › Keyboard Shortcuts › Mission Control for you.',
+      'macOS has no public API for switching Desktops, so OrgaWin presses the shortcuts from Keyboard settings › Keyboard Shortcuts › Mission Control for you.',
     directOn: (desktops) => `"Switch to Desktop N" on: ${desktops}`,
     directOff: '"Switch to Desktop N" off',
     moveOn: '"Move left/right a space" on',
@@ -222,7 +222,7 @@ export const en: Messages = {
       permission: {
         question: 'I granted permission but it still does not work',
         answer:
-          'Remove magWin from the list in System Settings › Accessibility, add it again, then restart the app.',
+          'Remove OrgaWin from the list in System Settings › Accessibility, add it again, then restart the app.',
       },
       desktop: {
         question: 'Desktops do not switch',
@@ -263,7 +263,7 @@ export const en: Messages = {
     copied: 'Copied',
     copyFailed: 'Could not copy',
     email: 'Email support',
-    mailSubject: 'magWin support request',
+    mailSubject: 'OrgaWin support request',
     tipsTitle: 'Before you write',
     tips: [
       'Include error messages or screenshots, and when the problem started.',
@@ -308,8 +308,8 @@ export const en: Messages = {
     languageSystem: 'Match system',
     settings: 'Settings…',
     status: 'Permissions & Status…',
-    help: 'magWin Help…',
+    help: 'OrgaWin Help…',
     support: 'Get Support…',
-    quit: 'Quit magWin',
+    quit: 'Quit OrgaWin',
   },
 };

@@ -13,7 +13,7 @@ function bigrams(text: string): Map<string, number> {
 
 /**
  * Title similarity in [0, 1] (Sørensen–Dice on character bigrams).
- * Window titles drift ("● main.ts — magWin" vs "main.ts — magWin"), so exact matching is too strict.
+ * Window titles drift ("● main.ts — OrgaWin" vs "main.ts — OrgaWin"), so exact matching is too strict.
  */
 export function titleSimilarity(a: string, b: string): number {
   const left = normalize(a);

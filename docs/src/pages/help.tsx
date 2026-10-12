@@ -82,7 +82,7 @@ export default function Help(): ReactNode {
   const shown = matching(topics(), query);
   const title = translate({ id: 'help.title', message: '무엇을 도와드릴까요?' });
   return (
-    <Layout title={translate({ id: 'help.pageTitle', message: 'magWin 도움말' })}>
+    <Layout title={translate({ id: 'help.pageTitle', message: 'OrgaWin 도움말' })}>
       <header className={cls('hero')}>
         <h1>{title}</h1>
         <input

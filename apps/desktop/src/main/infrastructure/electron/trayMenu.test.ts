@@ -124,7 +124,7 @@ describe('rasterizeGridGlyph', () => {
   it('opens the help and support pages', () => {
     const a = actions();
     const menu = buildTrayMenu(model(), a);
-    click(menu.find((item) => item.label === 'magWin 도움말…'));
+    click(menu.find((item) => item.label === 'OrgaWin 도움말…'));
     click(menu.find((item) => item.label === '지원 받기…'));
     expect(a.calls).toEqual(['open help', 'open support']);
   });
@@ -134,7 +134,7 @@ describe('rasterizeGridGlyph', () => {
     const labels = menu.map((item) => item.label);
     expect(labels).toContain('Save current layout…');
     expect(labels).toContain('Coding  ·  3 windows');
-    expect(labels).toContain('Quit magWin');
+    expect(labels).toContain('Quit OrgaWin');
   });
 
   it('switches the language from a radio submenu', () => {

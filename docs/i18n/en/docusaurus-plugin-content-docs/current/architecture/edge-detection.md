@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ## Detection (helper `EdgeDetector`)
 
-Input: the cursor position, the list of **regular app windows** on screen (layer 0, excluding Dock apps and magWin) in front-to-back order, each display's visibleFrame, the detection width `band`, and the enabled edges.
+Input: the cursor position, the list of **regular app windows** on screen (layer 0, excluding Dock apps and OrgaWin) in front-to-back order, each display's visibleFrame, the detection width `band`, and the enabled edges.
 
 1. If the cursor is not inside any visibleFrame (menu bar, Dock), no detection is performed.
 2. Walk the windows **from the front** and pick the first window whose rectangle, expanded by `band`, contains the cursor. If a front window covers the edge of a window behind it, the rear window is not a candidate.

@@ -1,11 +1,11 @@
 ---
 id: intro
-title: magWin 소개
+title: OrgaWin 소개
 slug: /
 sidebar_position: 1
 ---
 
-magWin은 macOS 메뉴 막대에 상주하는 창 관리 앱입니다. 두 가지 일을 합니다.
+OrgaWin은 macOS 메뉴 막대에 상주하는 창 관리 앱입니다. 두 가지 일을 합니다.
 
 | 기능                 | 한 줄 설명                                                                                                                | 문서                                     |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
@@ -16,7 +16,7 @@ magWin은 macOS 메뉴 막대에 상주하는 창 관리 앱입니다. 두 가�
 
 ```mermaid
 flowchart LR
-  subgraph Electron["magWin (Electron)"]
+  subgraph Electron["OrgaWin (Electron)"]
     R["렌더러 (React)<br/>팔레트 · 관리 창 · HUD"]
     M["메인 프로세스<br/>application 서비스"]
   end
@@ -40,6 +40,6 @@ pnpm dev
 
 ## 알아둘 제약
 
-- macOS에는 다른 앱의 창을 특정 Desktop으로 보내는 **공개 API가 없습니다.** 그래서 magWin은 "Desktop으로 먼저 이동 → 그곳에서 앱 실행 → 배치" 순서로 복원합니다 ([ADR-002](architecture/decisions/adr-002-desktop-first-restore.md)).
+- macOS에는 다른 앱의 창을 특정 Desktop으로 보내는 **공개 API가 없습니다.** 그래서 OrgaWin은 "Desktop으로 먼저 이동 → 그곳에서 앱 실행 → 배치" 순서로 복원합니다 ([ADR-002](architecture/decisions/adr-002-desktop-first-restore.md)).
 - Desktop 전환은 사용자가 설정한 Mission Control 단축키를 대신 눌러서 합니다 ([ADR-003](architecture/decisions/adr-003-keyboard-desktop-switching.md)).
 - 개발 환경: macOS 26.6 (Apple Silicon), Xcode 26 / Swift 6.2, Node 22.

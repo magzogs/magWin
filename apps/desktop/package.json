@@ -2,7 +2,7 @@
   "name": "@magwin/desktop",
   "version": "0.1.0",
   "private": true,
-  "description": "magWin desktop app: edge grid snapping and Desktop-aware layout snapshots",
+  "description": "OrgaWin desktop app: edge grid snapping and Desktop-aware layout snapshots",
   "author": "magzog",
   "main": "./out/main/index.js",
   "scripts": {

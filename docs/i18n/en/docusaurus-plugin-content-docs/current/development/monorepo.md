@@ -5,7 +5,7 @@ sidebar_position: 2
 ---
 
 ```text
-magWin/
+magwin-orgawin/
 ├── AGENTS.md                     # Working rules (links to these docs)
 ├── apps/desktop/                 # Electron app
 │   ├── electron.vite.config.ts

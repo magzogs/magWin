@@ -11,7 +11,7 @@ application.setActivationPolicy(.accessory)
 let output = OutputChannel()
 let rpcQueue = DispatchQueue(label: "magwin.helper.rpc")
 let edgeQueue = DispatchQueue(label: "magwin.helper.edge")
-// Never treat magWin's own windows (palette, HUDs) as snap targets.
+// Never treat OrgaWin's own windows (palette, HUDs) as snap targets.
 let ignoredPids: Set<Int32> = [getpid(), getppid()]
 
 let services = HelperServices(ignoredPids: ignoredPids)

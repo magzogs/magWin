@@ -33,7 +33,7 @@ export function PreviewShell({ controls }: { controls: PreviewControls }): React
       <I18nProvider>
         <div className="preview-shell">
           <nav className="preview-bar">
-            <strong>magWin UI preview</strong>
+            <strong>OrgaWin UI preview</strong>
             {SCREENS.map((item) => (
               <button
                 key={item.id}

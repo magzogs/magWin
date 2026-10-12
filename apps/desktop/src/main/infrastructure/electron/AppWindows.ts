@@ -29,7 +29,7 @@ export class MainWindow {
     }
     const window = new BrowserWindow({
       ...mainWindowSizeOptions(),
-      title: 'magWin',
+      title: 'OrgaWin',
       show: false,
       webPreferences: secureWebPreferences(),
     });
@@ -64,7 +64,7 @@ export class SaveHudWindow {
       minWidth: 640,
       minHeight: 460,
       // The renderer sets the localized title once it loads.
-      title: 'magWin',
+      title: 'OrgaWin',
       show: false,
       alwaysOnTop: true,
       fullscreenable: false,
@@ -88,7 +88,7 @@ const HUD_SIZE = { width: 380, height: 360 };
 const HUD_MARGIN = 16;
 
 /**
- * Restore progress. A non-activating panel on every desktop, so it stays visible while magWin
+ * Restore progress. A non-activating panel on every desktop, so it stays visible while OrgaWin
  * switches desktops and launches apps without stealing focus from them.
  */
 export class ProgressHudWindow implements RestoreProgressView {

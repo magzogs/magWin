@@ -11,7 +11,7 @@ describe('buildDiagnostics', () => {
   it('summarizes versions, permissions and shortcuts', () => {
     expect(buildDiagnostics(testAppInfo, readyStatus)).toBe(
       [
-        'magWin 0.1.0',
+        'OrgaWin 0.1.0',
         'macOS 26.6.2 (arm64)',
         'helper: ready',
         'accessibility: yes',
@@ -33,7 +33,7 @@ describe('buildDiagnostics', () => {
   });
 
   it('works before the status arrives', () => {
-    expect(buildDiagnostics(testAppInfo, null)).toBe('magWin 0.1.0\nmacOS 26.6.2 (arm64)');
+    expect(buildDiagnostics(testAppInfo, null)).toBe('OrgaWin 0.1.0\nmacOS 26.6.2 (arm64)');
   });
 });
 

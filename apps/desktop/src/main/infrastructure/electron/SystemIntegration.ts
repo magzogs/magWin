@@ -27,7 +27,7 @@ export class TrayController {
 
   start(model: TrayModel): void {
     this.tray = new Tray(createTrayIcon());
-    this.tray.setToolTip('magWin');
+    this.tray.setToolTip('OrgaWin');
     this.update(model);
   }
 

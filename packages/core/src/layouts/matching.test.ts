@@ -5,12 +5,12 @@ import { titleSimilarity } from './similarity';
 
 describe('titleSimilarity', () => {
   it('is 1 for equal titles ignoring case and spacing', () => {
-    expect(titleSimilarity('Main.ts  — magWin', 'main.ts — magwin')).toBe(1);
+    expect(titleSimilarity('Main.ts  — OrgaWin', 'main.ts — orgawin')).toBe(1);
   });
 
   it('scores drifting titles higher than unrelated ones', () => {
-    const drift = titleSimilarity('● main.ts — magWin', 'main.ts — magWin');
-    const unrelated = titleSimilarity('main.ts — magWin', 'Inbox (3)');
+    const drift = titleSimilarity('● main.ts — OrgaWin', 'main.ts — OrgaWin');
+    const unrelated = titleSimilarity('main.ts — OrgaWin', 'Inbox (3)');
     expect(drift).toBeGreaterThan(0.8);
     expect(unrelated).toBeLessThan(0.2);
   });

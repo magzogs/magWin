@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
-  <title>magWin</title>
+  <title>OrgaWin</title>
   <!-- docs/static/img/logo.svg on the macOS icon grid: 824px shape inset 100px, with a soft shadow. -->
   <defs>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">

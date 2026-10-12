@@ -2,7 +2,7 @@
   "name": "@magwin/core",
   "version": "0.1.0",
   "private": true,
-  "description": "Platform independent domain logic for magWin (grid selection, geometry, layouts, restore planning)",
+  "description": "Platform independent domain logic for OrgaWin (grid selection, geometry, layouts, restore planning)",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## Only one coordinate system is used
 
-Every coordinate in magWin is a **Quartz global coordinate** (in points).
+Every coordinate in OrgaWin is a **Quartz global coordinate** (in points).
 
 - Origin: the **top-left** of the main display (the screen with the menu bar)
 - y increases **downward**

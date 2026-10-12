@@ -1,4 +1,4 @@
-# magWin
+# OrgaWin
 
 [English](README.md) · **한국어**
 

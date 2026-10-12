@@ -13,7 +13,7 @@ sidebar_position: 3
 
 ## Applying SOLID
 
-| Principle                 | magWin rule                                                                                                                                                                                                                                                         | Example                                            |
+| Principle                 | OrgaWin rule                                                                                                                                                                                                                                                        | Example                                            |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
 | **S**ingle Responsibility | A class changes for only one reason. The palette lifetime (`PaletteController`) is separate from window move calculation (`SnapService`), and the restore algorithm (`LayoutRestoreService`) is separate from concurrent execution and undo (`RestoreCoordinator`). | `WindowWaiter` only "waits until a window appears" |
 | **O**pen/Closed           | Helper RPCs are added with `Router.register` without editing the dispatch code. Desktop switching strategies are extended by adding cases to `SwitchPlan`.                                                                                                          | `Handlers.swift`                                   |

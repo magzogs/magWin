@@ -49,7 +49,7 @@ describe('SupportTab', () => {
     const { api } = createFakeApi();
     renderWithApi(<SupportTab onNavigate={vi.fn()} />, api);
     const diagnostics = await screen.findByLabelText('진단 정보');
-    expect(diagnostics).toHaveTextContent('magWin 0.1.0');
+    expect(diagnostics).toHaveTextContent('OrgaWin 0.1.0');
     fireEvent.click(screen.getByRole('button', { name: '진단 정보 복사' }));
     expect(writeText).toHaveBeenCalledWith(diagnostics.textContent);
     expect(await screen.findByText('복사했어요')).toBeInTheDocument();
@@ -75,7 +75,7 @@ describe('ManagerApp help navigation', () => {
   it('moves from help to support', () => {
     const { api } = createFakeApi();
     renderWithApi(<ManagerApp initialTab="help" />, api);
-    expect(screen.getByRole('tab', { name: 'magWin 도움말' })).toHaveAttribute(
+    expect(screen.getByRole('tab', { name: 'OrgaWin 도움말' })).toHaveAttribute(
       'aria-selected',
       'true',
     );

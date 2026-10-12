@@ -6,7 +6,7 @@ sidebar_position: 6
 
 ## Distribution Channel
 
-magWin uses private APIs (CGS, `_AXUIElementGetWindow`), so it **cannot be published on the Mac App Store.** It is signed with a Developer ID, notarized, and distributed directly.
+OrgaWin uses private APIs (CGS, `_AXUIElementGetWindow`), so it **cannot be published on the Mac App Store.** It is signed with a Developer ID, notarized, and distributed directly.
 
 ## Building
 
@@ -61,9 +61,8 @@ In that case the output path is `.build/apple/Products/Release/MagWinHelper`, so
 
 ## URLs to Change Before Release
 
-The app's Help and Support tabs use the URLs in `apps/desktop/src/shared/links.ts`. They are placeholders for now.
+The app's Help and Support tabs use the URLs in `apps/desktop/src/shared/links.ts`. `DOCS_URL` is still a placeholder; `SUPPORT_EMAIL` (`orgawin@magzog.com`) is the real support mailbox.
 
-| Constant        | Current value               | Also change                                      |
-| --------------- | --------------------------- | ------------------------------------------------ |
-| `DOCS_URL`      | `https://docs.magwin.local` | `url` in `docs/docusaurus.config.ts`             |
-| `SUPPORT_EMAIL` | `support@magwin.local`      | A support mailbox that actually receives replies |
+| Constant   | Current value               | Also change                          |
+| ---------- | --------------------------- | ------------------------------------ |
+| `DOCS_URL` | `https://docs.magwin.local` | `url` in `docs/docusaurus.config.ts` |

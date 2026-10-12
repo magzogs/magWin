@@ -28,7 +28,7 @@ export function ManagerApp({ initialTab }: { initialTab: MainTab }): ReactNode {
 
   return (
     <div className="manager">
-      <nav className="tabs" role="tablist" aria-label="magWin">
+      <nav className="tabs" role="tablist" aria-label="OrgaWin">
         {TABS.map((item) => (
           <button
             key={item.id}

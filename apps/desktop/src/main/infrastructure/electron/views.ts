@@ -68,7 +68,7 @@ export function broadcast(channel: string, payload: unknown): void {
 }
 
 /**
- * magWin is a menu bar app, but while a regular window (main, save HUD) is open it shows a Dock
+ * OrgaWin is a menu bar app, but while a regular window (main, save HUD) is open it shows a Dock
  * icon so the window can be reached with ⌘Tab.
  */
 export class DockPresence {

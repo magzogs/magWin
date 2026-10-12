@@ -41,7 +41,7 @@ function reduce(state: ProgressState, progress: RestoreProgress): ProgressState 
   }
 }
 
-/** Restore HUD: what magWin is doing right now, then a summary that explains any leftovers. */
+/** Restore HUD: what OrgaWin is doing right now, then a summary that explains any leftovers. */
 export function ProgressApp(): ReactNode {
   const api = useApi();
   const { t } = useI18n();

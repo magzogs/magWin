@@ -84,7 +84,7 @@ sequenceDiagram
 
 ## What is persisted to files
 
-`~/Library/Application Support/magWin/`
+`~/Library/Application Support/OrgaWin/`
 
 | File                 | Contents                                                                   |
 | -------------------- | -------------------------------------------------------------------------- |

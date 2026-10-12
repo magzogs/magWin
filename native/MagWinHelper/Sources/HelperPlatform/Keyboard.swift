@@ -2,7 +2,7 @@ import CoreGraphics
 import Foundation
 import HelperCore
 
-/// Reads the user's Mission Control shortcuts so magWin presses exactly what the user configured.
+/// Reads the user's Mission Control shortcuts so OrgaWin presses exactly what the user configured.
 public final class HotkeyStore {
     public init() {}
 

@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ## 판정 (헬퍼 `EdgeDetector`)
 
-입력: 커서 위치, 화면에 있는 **일반 앱 창**(layer 0, Dock 앱, magWin 제외) 목록(앞→뒤 순), 디스플레이의 visibleFrame, 감지 폭 `band`, 켜진 가장자리.
+입력: 커서 위치, 화면에 있는 **일반 앱 창**(layer 0, Dock 앱, OrgaWin 제외) 목록(앞→뒤 순), 디스플레이의 visibleFrame, 감지 폭 `band`, 켜진 가장자리.
 
 1. 커서가 어느 visibleFrame에도 없으면(메뉴 막대·Dock) 판정하지 않습니다.
 2. 창을 **앞에서부터** 보며 `band`만큼 넓힌 사각형에 커서가 든 첫 창을 고릅니다. 앞 창이 뒤 창의 가장자리를 가리면 뒤 창은 후보가 되지 않습니다.

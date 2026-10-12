@@ -4,11 +4,11 @@ title: Get Support
 sidebar_position: 5
 ---
 
-magWin support is provided **by email**. There is no phone support, and replies go out in the order received. Checking the steps below first solves most problems right away.
+OrgaWin support is provided **by email**. There is no phone support, and replies go out in the order received. Checking the steps below first solves most problems right away.
 
 ## 1. Look for an answer in Help
 
-- App: menu bar icon › **magWin Help…**. Search, or expand the frequently asked questions.
+- App: menu bar icon › **OrgaWin Help…**. Search, or expand the frequently asked questions.
 - Web: browse by topic in the [Help Center](/help).
 - Fixes by symptom are collected in [Troubleshooting](troubleshooting.md).
 

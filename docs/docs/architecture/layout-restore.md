@@ -23,7 +23,7 @@ sidebar_position: 6
         "name": "Code",
         "path": "/Applications/Visual Studio Code.app"
       },
-      "title": "main.ts — magWin",
+      "title": "main.ts — OrgaWin",
       "frame": { "x": 0, "y": 30, "width": 2534, "height": 2130 },
       "relativeFrame": { "x": 0, "y": 0, "width": 0.66, "height": 1 },
       "displayUuid": "2084E4AD-…",

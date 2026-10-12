@@ -2,11 +2,11 @@ import type { Locale } from '@magwin/core';
 
 /**
  * External addresses used by the help and support pages. Keep DOCS_URL equal to `url` in
- * docs/docusaurus.config.ts. Both are placeholders until the docs site and a support mailbox
- * are published (docs/docs/development/release.md).
+ * docs/docusaurus.config.ts. DOCS_URL is a placeholder until the docs site is published
+ * (docs/docs/development/release.md).
  */
 export const DOCS_URL = 'https://docs.magwin.local';
-export const SUPPORT_EMAIL = 'support@magwin.local';
+export const SUPPORT_EMAIL = 'orgawin@magzog.com';
 
 /** Doc page ids under docs/docs, e.g. 'guide/edge-snap'. */
 export type DocPath = `guide/${string}`;

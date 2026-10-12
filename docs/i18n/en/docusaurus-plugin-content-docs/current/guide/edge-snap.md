@@ -82,6 +82,6 @@ A window edge is in the same place as the macOS **resize handle**. So the palett
 
 - Full-screen windows, and windows whose size or position cannot be changed
 - Windows of apps that are not in the Dock, such as menu bar apps
-- magWin's own windows
+- OrgaWin's own windows
 
 If an app sets a minimum size, the window may be larger than the selected area (for example, Terminal, which resizes in character units).

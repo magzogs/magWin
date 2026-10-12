@@ -1,7 +1,7 @@
 # Packaging for direct distribution (Developer ID + notarization). The Mac App Store is not an
-# option because magWin uses private APIs. See docs/docs/development/release.md.
+# option because OrgaWin uses private APIs. See docs/docs/development/release.md.
 appId: com.magzog.magwin
-productName: magWin
+productName: OrgaWin
 directories:
   output: release
   buildResources: build
@@ -27,4 +27,4 @@ mac:
   extendInfo:
     LSUIElement: true
 dmg:
-  title: magWin
+  title: OrgaWin

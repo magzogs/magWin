@@ -2,7 +2,7 @@
   "name": "@magwin/docs",
   "version": "0.1.0",
   "private": true,
-  "description": "magWin documentation (Docusaurus)",
+  "description": "OrgaWin documentation (Docusaurus)",
   "scripts": {
     "start": "docusaurus start",
     "build": "docusaurus build",

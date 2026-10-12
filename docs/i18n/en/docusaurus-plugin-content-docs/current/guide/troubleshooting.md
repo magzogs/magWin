@@ -25,7 +25,7 @@ First check permissions, shortcuts, and helper status with [diagnostic mode](get
 ## Desktops do not switch
 
 - In Keyboard settings › Keyboard Shortcuts › Mission Control, turn on "Switch to Desktop N" or "Move left/right a space".
-- If another app intercepts the same shortcut, "Switch to Desktop N" can fail. magWin then retries one step at a time with move left/right.
+- If another app intercepts the same shortcut, "Switch to Desktop N" can fail. OrgaWin then retries one step at a time with move left/right.
 - If Spaces are separate per display and the target Desktop is on another monitor, the cursor briefly moves to that monitor to use move left/right.
 
 ## "Native helper error"

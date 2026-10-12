@@ -72,7 +72,7 @@ export const ko = {
     layouts: '레이아웃',
     settings: '설정',
     status: '권한 및 상태',
-    help: 'magWin 도움말',
+    help: 'OrgaWin 도움말',
     support: '지원 받기',
   },
   settings: {
@@ -160,12 +160,12 @@ export const ko = {
     off: '꺼짐',
     available: '사용 가능',
     accessibilityBody:
-      '창을 옮기고 Desktop을 전환하려면 시스템 설정 › 개인정보 보호 및 보안 › 손쉬운 사용에서 magWin을 허용해야 해요. 개발 중(pnpm dev)에는 명령을 실행한 터미널 앱을 허용해 주세요.',
+      '창을 옮기고 Desktop을 전환하려면 시스템 설정 › 개인정보 보호 및 보안 › 손쉬운 사용에서 OrgaWin을 허용해야 해요. 개발 중(pnpm dev)에는 명령을 실행한 터미널 앱을 허용해 주세요.',
     requestPermission: '권한 요청',
     openSystemSettings: '시스템 설정 열기',
     shortcuts: 'Desktop 전환 단축키',
     shortcutsBody:
-      'macOS에는 Desktop을 옮기는 공개 API가 없어서, 키보드 설정 › 키보드 단축키 › Mission Control의 단축키를 magWin이 대신 눌러요.',
+      'macOS에는 Desktop을 옮기는 공개 API가 없어서, 키보드 설정 › 키보드 단축키 › Mission Control의 단축키를 OrgaWin이 대신 눌러요.',
     directOn: (desktops: string): string => `"Desktop N으로 전환" 켜짐: ${desktops}`,
     directOff: '"Desktop N으로 전환" 꺼짐',
     moveOn: '"왼쪽/오른쪽 Space로 이동" 켜짐',
@@ -214,7 +214,7 @@ export const ko = {
       permission: {
         question: '권한을 줬는데도 동작하지 않아요',
         answer:
-          '시스템 설정 › 손쉬운 사용 목록에서 magWin을 지웠다가 다시 추가한 뒤 앱을 다시 시작하세요.',
+          '시스템 설정 › 손쉬운 사용 목록에서 OrgaWin을 지웠다가 다시 추가한 뒤 앱을 다시 시작하세요.',
       },
       desktop: {
         question: 'Desktop이 전환되지 않아요',
@@ -254,7 +254,7 @@ export const ko = {
     copied: '복사했어요',
     copyFailed: '복사하지 못했어요',
     email: '이메일로 문의',
-    mailSubject: 'magWin 문의',
+    mailSubject: 'OrgaWin 문의',
     tipsTitle: '문의할 때 알아 두세요',
     tips: [
       '오류 메시지나 스크린샷, 문제가 처음 생긴 때를 함께 알려 주세요.',
@@ -299,9 +299,9 @@ export const ko = {
     languageSystem: '시스템 설정 따르기',
     settings: '설정…',
     status: '권한 및 상태…',
-    help: 'magWin 도움말…',
+    help: 'OrgaWin 도움말…',
     support: '지원 받기…',
-    quit: 'magWin 종료',
+    quit: 'OrgaWin 종료',
   },
 };
 

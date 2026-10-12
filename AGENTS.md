@@ -1,4 +1,4 @@
-# AGENTS.md — magWin
+# AGENTS.md — OrgaWin
 
 Working rules for AI agents and new contributors. The full specification lives in the Docusaurus
 site under `docs/`; this file is the entry point and links to the pages that matter.
