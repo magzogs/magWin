@@ -29,8 +29,55 @@ function shortcutText(t: Messages, hotkeys: HotkeySummary): string {
   return `${direct} · ${move}`;
 }
 
+function AccessibilityCard({
+  granted,
+  showDevHints,
+}: {
+  granted: boolean;
+  showDevHints: boolean;
+}): ReactNode {
+  const api = useApi();
+  const s = useI18n().t.status;
+  return (
+    <article className="card">
+      <h3>
+        {s.accessibility} <Badge ok={granted} label={granted ? s.allowed : s.required} />
+      </h3>
+      <p className="muted">{s.accessibilityBody}</p>
+      {granted ? null : <p className="muted">{s.accessibilityStale}</p>}
+      {showDevHints ? <p className="muted">{s.accessibilityDevHint}</p> : null}
+      {granted ? null : (
+        <div className="inline">
+          <button
+            type="button"
+            className="primary"
+            onClick={() => {
+              void api.system.requestAccessibility();
+            }}
+          >
+            {s.requestPermission}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              void api.system.openSettings('accessibility');
+            }}
+          >
+            {s.openSystemSettings}
+          </button>
+        </div>
+      )}
+    </article>
+  );
+}
+
+export interface StatusTabProps {
+  /** Show hints that only apply to `pnpm dev` builds. Production builds hide them. */
+  readonly showDevHints?: boolean;
+}
+
 /** Permissions and platform prerequisites, with direct links to System Settings. */
-export function StatusTab(): ReactNode {
+export function StatusTab({ showDevHints = import.meta.env.DEV }: StatusTabProps): ReactNode {
   const api = useApi();
   const { t } = useI18n();
   const status = useLive(api.system.status, api.system.onStatus);
@@ -50,34 +97,7 @@ export function StatusTab(): ReactNode {
         </h3>
         <p className="muted">{s.helperBody}</p>
       </article>
-      <article className="card">
-        <h3>
-          {s.accessibility}{' '}
-          <Badge ok={status.accessibility} label={status.accessibility ? s.allowed : s.required} />
-        </h3>
-        <p className="muted">{s.accessibilityBody}</p>
-        {status.accessibility ? null : (
-          <div className="inline">
-            <button
-              type="button"
-              className="primary"
-              onClick={() => {
-                void api.system.requestAccessibility();
-              }}
-            >
-              {s.requestPermission}
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                void api.system.openSettings('accessibility');
-              }}
-            >
-              {s.openSystemSettings}
-            </button>
-          </div>
-        )}
-      </article>
+      <AccessibilityCard granted={status.accessibility} showDevHints={showDevHints} />
       <article className="card">
         <h3>
           {s.shortcuts} <Badge ok={canSwitch} label={canSwitch ? s.available : s.off} />
@@ -103,7 +123,10 @@ export function StatusTab(): ReactNode {
         <button
           type="button"
           onClick={() => {
-            void api.system.openSettings('screenRecording');
+            // macOS lists an app under Screen Recording only after it has asked for access.
+            void api.system
+              .requestScreenRecording()
+              .finally(() => api.system.openSettings('screenRecording'));
           }}
         >
           {s.openScreenRecording}

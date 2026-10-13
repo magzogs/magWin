@@ -29,6 +29,10 @@ export class HelperPermissionGate implements PermissionGate {
   requestAccessibility(): Promise<Result<PermissionStatus>> {
     return this.client.request('permissions.requestAccessibility', {}, permissionResult);
   }
+
+  requestScreenRecording(): Promise<Result<PermissionStatus>> {
+    return this.client.request('permissions.requestScreenRecording', {}, permissionResult);
+  }
 }
 
 export class HelperShortcutInspector implements ShortcutInspector {

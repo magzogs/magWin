@@ -83,6 +83,7 @@ export function createFakeApi() {
     system: {
       status: vi.fn().mockResolvedValue(readyStatus),
       requestAccessibility: vi.fn().mockResolvedValue(readyStatus),
+      requestScreenRecording: vi.fn().mockResolvedValue(readyStatus),
       openSettings: vi.fn().mockResolvedValue(undefined),
       about: vi.fn().mockResolvedValue(testAppInfo),
       onStatus: channels.status.subscribe,

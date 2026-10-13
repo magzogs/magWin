@@ -20,7 +20,12 @@ First check permissions, shortcuts, and helper status with [diagnostic mode](get
 ## Permission is granted but nothing works
 
 - **Rebuilding a development build** changes its ad-hoc signature, so macOS may not recognize the earlier approval. Remove the entry from the Accessibility list and add it again. When packaging, use a fixed signing certificate ([Release](../development/release.md)).
+- If **OrgaWin is already switched on in the Accessibility list but the app still says Required**, the switch belongs to a differently signed copy (an earlier build). Toggling it does not help: select OrgaWin, remove it with the **−** button, then press **Request permission** again in the Permissions & Status tab.
 - After granting permission, restarting the app is the surest fix.
+
+## OrgaWin is missing from the Screen Recording list
+
+macOS only lists apps that have asked for Screen Recording at least once. **Open Screen Recording settings** in the Permissions & Status tab asks for access first, which adds OrgaWin to the list, and then opens the settings. After allowing it, quit and reopen OrgaWin.
 
 ## Desktops do not switch
 

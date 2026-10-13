@@ -141,6 +141,27 @@ describe('StatusTab', () => {
     expect(api.system.requestAccessibility).toHaveBeenCalled();
     expect(api.system.openSettings).toHaveBeenCalledWith('accessibility');
     expect(screen.getByText(/"Desktop N으로 전환" 켜짐: 1, 2/)).toBeInTheDocument();
+    expect(screen.getByText(/− 버튼으로 지운 뒤/)).toBeInTheDocument();
+  });
+
+  it('shows the pnpm dev hint only in development builds', async () => {
+    const { api } = createFakeApi();
+    const { unmount } = renderWithApi(<StatusTab showDevHints={false} />, api);
+    await screen.findByRole('button', { name: '화면 기록 설정 열기' });
+    expect(screen.queryByText(/pnpm dev/)).not.toBeInTheDocument();
+    unmount();
+    renderWithApi(<StatusTab showDevHints />, api);
+    expect(await screen.findByText(/pnpm dev/)).toBeInTheDocument();
+  });
+
+  it('registers for Screen Recording before opening its settings', async () => {
+    const { api } = createFakeApi();
+    renderWithApi(<StatusTab />, api);
+    fireEvent.click(await screen.findByRole('button', { name: '화면 기록 설정 열기' }));
+    expect(api.system.requestScreenRecording).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(api.system.openSettings).toHaveBeenCalledWith('screenRecording');
+    });
   });
 });
 

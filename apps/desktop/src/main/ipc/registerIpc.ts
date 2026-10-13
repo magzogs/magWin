@@ -118,6 +118,9 @@ function registerLayouts(services: IpcServices): void {
 function registerSystem(services: IpcServices): void {
   handle(Channels.systemStatus, none, () => services.status.refresh());
   handle(Channels.systemRequestAccessibility, none, () => services.status.requestAccessibility());
+  handle(Channels.systemRequestScreenRecording, none, () =>
+    services.status.requestScreenRecording(),
+  );
   handle(Channels.systemOpenSettings, settingsTargetSchema, (target) =>
     services.openSettings(target),
   );

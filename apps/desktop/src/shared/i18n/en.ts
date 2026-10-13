@@ -165,7 +165,11 @@ export const en: Messages = {
     off: 'Off',
     available: 'Available',
     accessibilityBody:
-      'To move windows and switch Desktops, allow OrgaWin in System Settings › Privacy & Security › Accessibility. During development (pnpm dev), allow the terminal app that ran the command.',
+      'To move windows and switch Desktops, allow OrgaWin in System Settings › Privacy & Security › Accessibility.',
+    accessibilityStale:
+      'If OrgaWin is already switched on there but this still says Required, select OrgaWin, remove it with the − button, then press Request permission again. The old switch belongs to a previous version.',
+    accessibilityDevHint:
+      'During development (pnpm dev), allow the terminal app that ran the command.',
     requestPermission: 'Request permission',
     openSystemSettings: 'Open System Settings',
     shortcuts: 'Desktop switching shortcuts',
@@ -178,7 +182,7 @@ export const en: Messages = {
     openShortcuts: 'Open Keyboard Shortcuts',
     screenRecording: 'Screen Recording (optional)',
     screenRecordingBody:
-      'Used only to read the titles of windows on other Desktops. Saving and restoring work without it, but matching several windows of the same app can be less accurate.',
+      'Used only to read the titles of windows on other Desktops. Saving and restoring work without it, but matching several windows of the same app can be less accurate. After allowing it, quit and reopen OrgaWin.',
     openScreenRecording: 'Open Screen Recording settings',
   },
   help: {

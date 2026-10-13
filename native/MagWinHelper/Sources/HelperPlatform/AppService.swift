@@ -80,4 +80,11 @@ public enum Permissions {
         let trusted = AXIsProcessTrustedWithOptions([key: true] as CFDictionary)
         return PermissionStatus(accessibility: trusted, screenRecording: CGPreflightScreenCaptureAccess())
     }
+
+    /// Adds OrgaWin to System Settings › Screen Recording and shows the system prompt the first
+    /// time. `CGPreflightScreenCaptureAccess` alone never adds the app to that list.
+    public static func requestScreenRecording() -> PermissionStatus {
+        let granted = CGRequestScreenCaptureAccess()
+        return PermissionStatus(accessibility: AXIsProcessTrusted(), screenRecording: granted)
+    }
 }

@@ -249,9 +249,10 @@ function wire(services: Services, ui: Ui): void {
 }
 
 export async function bootstrap(): Promise<AppRuntime> {
-  // The renderer never needs camera, microphone, notifications or similar.
-  session.defaultSession.setPermissionRequestHandler((_contents, _permission, callback) => {
-    callback(false);
+  // The renderer never needs camera, microphone, notifications or similar. Writing to the
+  // clipboard (support page "Copy diagnostics") is the one exception.
+  session.defaultSession.setPermissionRequestHandler((_contents, permission, callback) => {
+    callback(permission === 'clipboard-sanitized-write');
   });
   const services = await createServices();
   const ui = createUi(services);

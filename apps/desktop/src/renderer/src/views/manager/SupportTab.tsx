@@ -38,7 +38,12 @@ function DiagnosticsCard({ text }: { text: string }): ReactNode {
         >
           {s.copy}
         </button>
-        <a className="button primary" href={supportMailto(s.mailSubject, body)}>
+        <a
+          className="button primary"
+          href={supportMailto(s.mailSubject, body)}
+          target="_blank"
+          rel="noreferrer"
+        >
           {s.email}
         </a>
         <span role="status" className="muted">

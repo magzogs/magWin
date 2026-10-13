@@ -20,6 +20,7 @@ export const Channels = {
   restoreUndo: 'restore:undo',
   systemStatus: 'system:status',
   systemRequestAccessibility: 'system:request-accessibility',
+  systemRequestScreenRecording: 'system:request-screen-recording',
   systemOpenSettings: 'system:open-settings',
   systemAbout: 'system:about',
   // renderer → main, fire and forget

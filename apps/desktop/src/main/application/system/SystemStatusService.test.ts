@@ -47,6 +47,13 @@ describe('SystemStatusService', () => {
     expect(permissions.requested).toBe(1);
   });
 
+  it('asks for Screen Recording through the permission gate', async () => {
+    const { service, permissions } = setup();
+    service.setHelperState('ready');
+    await service.requestScreenRecording();
+    expect(permissions.screenRecordingRequested).toBe(1);
+  });
+
   it('tracks helper failures and restore state', () => {
     const { service } = setup();
     service.setHelperState('failed', 'binary missing');
