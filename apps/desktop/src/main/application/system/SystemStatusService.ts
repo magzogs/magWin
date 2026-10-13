@@ -86,6 +86,11 @@ export class SystemStatusService {
     return this.refresh();
   }
 
+  async requestScreenRecording(): Promise<SystemStatus> {
+    await this.deps.permissions.requestScreenRecording();
+    return this.refresh();
+  }
+
   stop(): void {
     this.cancelPoll?.();
     this.cancelPoll = null;

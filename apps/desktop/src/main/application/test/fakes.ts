@@ -338,12 +338,17 @@ export class MemorySettingsRepository implements SettingsRepository {
 export class FakePermissions implements PermissionGate, ShortcutInspector {
   status_: PermissionStatus = { accessibility: false, screenRecording: false };
   requested = 0;
+  screenRecordingRequested = 0;
   hotkeys: HotkeySummary = { directDesktops: [1, 2], moveLeft: true, moveRight: true };
   status(): Promise<Result<PermissionStatus>> {
     return Promise.resolve(ok(this.status_));
   }
   requestAccessibility(): Promise<Result<PermissionStatus>> {
     this.requested += 1;
+    return Promise.resolve(ok(this.status_));
+  }
+  requestScreenRecording(): Promise<Result<PermissionStatus>> {
+    this.screenRecordingRequested += 1;
     return Promise.resolve(ok(this.status_));
   }
   missionControlHotkeys(): Promise<Result<HotkeySummary>> {

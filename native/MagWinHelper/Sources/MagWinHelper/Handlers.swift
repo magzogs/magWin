@@ -18,6 +18,9 @@ enum Handlers {
         router.register("permissions.requestAccessibility") { (_: Empty) in
             DispatchQueue.main.sync { Permissions.requestAccessibility() }
         }
+        router.register("permissions.requestScreenRecording") { (_: Empty) in
+            DispatchQueue.main.sync { Permissions.requestScreenRecording() }
+        }
         router.register("displays.list") { (_: Empty) in
             DisplaysResult(displays: DispatchQueue.main.sync { services.displays.displays() })
         }

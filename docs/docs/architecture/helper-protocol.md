@@ -27,22 +27,23 @@ Electron 메인 프로세스와 `MagWinHelper` 사이의 계약입니다. 코드
 
 ## 메서드
 
-| 메서드                             | params                                          | result                                                                                |
-| ---------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `hello`                            | –                                               | `{ protocolVersion, pid, accessibility }`                                             |
-| `permissions.status`               | –                                               | `{ accessibility, screenRecording }`                                                  |
-| `permissions.requestAccessibility` | –                                               | 같음 (시스템 안내 표시)                                                               |
-| `displays.list`                    | –                                               | `{ displays: [{ id, uuid, name, frame, visibleFrame, isMain }] }`                     |
-| `spaces.topology`                  | –                                               | `{ displays: [{ displayUuid, currentSpaceId, spaces: [{ id, uuid?, kind }] }] }`      |
-| `spaces.switch`                    | `{ spaceId }`                                   | `{ method: "none" \| "direct" \| "steps", steps }`                                    |
-| `hotkeys.status`                   | –                                               | `{ switchToDesktop: [{ number, binding }], moveLeft?, moveRight? }`                   |
-| `windows.list`                     | `{ scope: "current" \| "all" }`                 | `{ windows: [{ id, pid, bundleId?, appName, title?, frame, isOnScreen, spaceIds }] }` |
-| `windows.setFrame`                 | `{ windowId, pid, frame }`                      | `{ frame }` (앱이 실제로 받아들인 프레임)                                             |
-| `windows.focus`                    | `{ windowId, pid }`                             | `{}`                                                                                  |
-| `apps.list`                        | –                                               | `{ apps: [{ pid, bundleId?, name, path?, isHidden }] }`                               |
-| `apps.launch`                      | `{ bundleId?, path? }`                          | `{ pid }`                                                                             |
-| `edge.configure`                   | `{ enabled, edges, dwellMs, bandPx, modifier }` | `{}`                                                                                  |
-| `edge.setPaused`                   | `{ paused }`                                    | `{}`                                                                                  |
+| 메서드                               | params                                          | result                                                                                |
+| ------------------------------------ | ----------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `hello`                              | –                                               | `{ protocolVersion, pid, accessibility }`                                             |
+| `permissions.status`                 | –                                               | `{ accessibility, screenRecording }`                                                  |
+| `permissions.requestAccessibility`   | –                                               | 같음 (시스템 안내 표시)                                                               |
+| `permissions.requestScreenRecording` | –                                               | 같음 (설정의 화면 기록 목록에 OrgaWin 추가, 처음엔 시스템 안내 표시)                  |
+| `displays.list`                      | –                                               | `{ displays: [{ id, uuid, name, frame, visibleFrame, isMain }] }`                     |
+| `spaces.topology`                    | –                                               | `{ displays: [{ displayUuid, currentSpaceId, spaces: [{ id, uuid?, kind }] }] }`      |
+| `spaces.switch`                      | `{ spaceId }`                                   | `{ method: "none" \| "direct" \| "steps", steps }`                                    |
+| `hotkeys.status`                     | –                                               | `{ switchToDesktop: [{ number, binding }], moveLeft?, moveRight? }`                   |
+| `windows.list`                       | `{ scope: "current" \| "all" }`                 | `{ windows: [{ id, pid, bundleId?, appName, title?, frame, isOnScreen, spaceIds }] }` |
+| `windows.setFrame`                   | `{ windowId, pid, frame }`                      | `{ frame }` (앱이 실제로 받아들인 프레임)                                             |
+| `windows.focus`                      | `{ windowId, pid }`                             | `{}`                                                                                  |
+| `apps.list`                          | –                                               | `{ apps: [{ pid, bundleId?, name, path?, isHidden }] }`                               |
+| `apps.launch`                        | `{ bundleId?, path? }`                          | `{ pid }`                                                                             |
+| `edge.configure`                     | `{ enabled, edges, dwellMs, bandPx, modifier }` | `{}`                                                                                  |
+| `edge.setPaused`                     | `{ paused }`                                    | `{}`                                                                                  |
 
 - 좌표는 모두 [Quartz 전역 좌표](coordinates.md)입니다.
 - `spaces.kind`: `desktop` (CGS type 0), `fullscreen` (type 4), `other`

@@ -160,7 +160,10 @@ export const ko = {
     off: '꺼짐',
     available: '사용 가능',
     accessibilityBody:
-      '창을 옮기고 Desktop을 전환하려면 시스템 설정 › 개인정보 보호 및 보안 › 손쉬운 사용에서 OrgaWin을 허용해야 해요. 개발 중(pnpm dev)에는 명령을 실행한 터미널 앱을 허용해 주세요.',
+      '창을 옮기고 Desktop을 전환하려면 시스템 설정 › 개인정보 보호 및 보안 › 손쉬운 사용에서 OrgaWin을 허용해야 해요.',
+    accessibilityStale:
+      '목록에서 OrgaWin이 이미 켜져 있는데도 계속 필요로 나오면, OrgaWin을 선택해 − 버튼으로 지운 뒤 권한 요청을 다시 눌러 주세요. 이전 버전에 대한 허용이 남아 있는 경우예요.',
+    accessibilityDevHint: '개발 중(pnpm dev)에는 명령을 실행한 터미널 앱을 허용해 주세요.',
     requestPermission: '권한 요청',
     openSystemSettings: '시스템 설정 열기',
     shortcuts: 'Desktop 전환 단축키',
@@ -173,7 +176,7 @@ export const ko = {
     openShortcuts: '키보드 단축키 설정 열기',
     screenRecording: '화면 기록 (선택)',
     screenRecordingBody:
-      '다른 Desktop에 있는 창의 제목을 읽을 때만 쓰여요. 없어도 저장·복원은 동작하지만, 같은 앱의 창이 여러 개일 때 짝을 맞추는 정확도가 떨어질 수 있어요.',
+      '다른 Desktop에 있는 창의 제목을 읽을 때만 쓰여요. 없어도 저장·복원은 동작하지만, 같은 앱의 창이 여러 개일 때 짝을 맞추는 정확도가 떨어질 수 있어요. 허용한 뒤에는 OrgaWin을 다시 실행해야 적용돼요.',
     openScreenRecording: '화면 기록 설정 열기',
   },
   help: {

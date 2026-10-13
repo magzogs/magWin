@@ -27,22 +27,23 @@ Swift **omits** optional fields that have no value (`bundleId`, `title`, `uuid`,
 
 ## Methods
 
-| Method                             | params                                          | result                                                                                |
-| ---------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `hello`                            | –                                               | `{ protocolVersion, pid, accessibility }`                                             |
-| `permissions.status`               | –                                               | `{ accessibility, screenRecording }`                                                  |
-| `permissions.requestAccessibility` | –                                               | Same (shows the system prompt)                                                        |
-| `displays.list`                    | –                                               | `{ displays: [{ id, uuid, name, frame, visibleFrame, isMain }] }`                     |
-| `spaces.topology`                  | –                                               | `{ displays: [{ displayUuid, currentSpaceId, spaces: [{ id, uuid?, kind }] }] }`      |
-| `spaces.switch`                    | `{ spaceId }`                                   | `{ method: "none" \| "direct" \| "steps", steps }`                                    |
-| `hotkeys.status`                   | –                                               | `{ switchToDesktop: [{ number, binding }], moveLeft?, moveRight? }`                   |
-| `windows.list`                     | `{ scope: "current" \| "all" }`                 | `{ windows: [{ id, pid, bundleId?, appName, title?, frame, isOnScreen, spaceIds }] }` |
-| `windows.setFrame`                 | `{ windowId, pid, frame }`                      | `{ frame }` (the frame the app actually accepted)                                     |
-| `windows.focus`                    | `{ windowId, pid }`                             | `{}`                                                                                  |
-| `apps.list`                        | –                                               | `{ apps: [{ pid, bundleId?, name, path?, isHidden }] }`                               |
-| `apps.launch`                      | `{ bundleId?, path? }`                          | `{ pid }`                                                                             |
-| `edge.configure`                   | `{ enabled, edges, dwellMs, bandPx, modifier }` | `{}`                                                                                  |
-| `edge.setPaused`                   | `{ paused }`                                    | `{}`                                                                                  |
+| Method                               | params                                          | result                                                                                |
+| ------------------------------------ | ----------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `hello`                              | –                                               | `{ protocolVersion, pid, accessibility }`                                             |
+| `permissions.status`                 | –                                               | `{ accessibility, screenRecording }`                                                  |
+| `permissions.requestAccessibility`   | –                                               | Same (shows the system prompt)                                                        |
+| `permissions.requestScreenRecording` | –                                               | Same (adds OrgaWin to the Screen Recording list, prompts the first time)              |
+| `displays.list`                      | –                                               | `{ displays: [{ id, uuid, name, frame, visibleFrame, isMain }] }`                     |
+| `spaces.topology`                    | –                                               | `{ displays: [{ displayUuid, currentSpaceId, spaces: [{ id, uuid?, kind }] }] }`      |
+| `spaces.switch`                      | `{ spaceId }`                                   | `{ method: "none" \| "direct" \| "steps", steps }`                                    |
+| `hotkeys.status`                     | –                                               | `{ switchToDesktop: [{ number, binding }], moveLeft?, moveRight? }`                   |
+| `windows.list`                       | `{ scope: "current" \| "all" }`                 | `{ windows: [{ id, pid, bundleId?, appName, title?, frame, isOnScreen, spaceIds }] }` |
+| `windows.setFrame`                   | `{ windowId, pid, frame }`                      | `{ frame }` (the frame the app actually accepted)                                     |
+| `windows.focus`                      | `{ windowId, pid }`                             | `{}`                                                                                  |
+| `apps.list`                          | –                                               | `{ apps: [{ pid, bundleId?, name, path?, isHidden }] }`                               |
+| `apps.launch`                        | `{ bundleId?, path? }`                          | `{ pid }`                                                                             |
+| `edge.configure`                     | `{ enabled, edges, dwellMs, bandPx, modifier }` | `{}`                                                                                  |
+| `edge.setPaused`                     | `{ paused }`                                    | `{}`                                                                                  |
 
 - All coordinates are [Quartz global coordinates](coordinates.md).
 - `spaces.kind`: `desktop` (CGS type 0), `fullscreen` (type 4), `other`

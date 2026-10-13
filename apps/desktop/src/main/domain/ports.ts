@@ -67,6 +67,8 @@ export interface PermissionStatus {
 export interface PermissionGate {
   status(): Promise<Result<PermissionStatus>>;
   requestAccessibility(): Promise<Result<PermissionStatus>>;
+  /** Registers the app in the Screen Recording list (and prompts the first time). */
+  requestScreenRecording(): Promise<Result<PermissionStatus>>;
 }
 
 export interface ShortcutInspector {

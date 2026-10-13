@@ -67,6 +67,7 @@ export interface MagWinApi {
   readonly system: {
     readonly status: () => Promise<SystemStatus>;
     readonly requestAccessibility: () => Promise<SystemStatus>;
+    readonly requestScreenRecording: () => Promise<SystemStatus>;
     readonly openSettings: (target: SettingsTarget) => Promise<void>;
     readonly about: () => Promise<AppInfo>;
     readonly onStatus: Listen<SystemStatus>;
